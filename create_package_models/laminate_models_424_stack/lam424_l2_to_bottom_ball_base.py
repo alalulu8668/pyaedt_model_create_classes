@@ -165,17 +165,18 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
                                ballPattern=ballPattern,
                                padType=bottomBallPadName,
                                layers=['L10'],
-                               signalVoids=['L01', 'gndPlaneL01', 'l1antiPadR_bottomBall',
-                                            'L02', 'gndPlaneL02', 'l2antiPadR_bottomBall',
-                                            'L03', 'gndPlaneL03', 'l3antiPadR_bottomBall',
-                                            'L04', 'gndPlaneL04', 'l4antiPadR_bottomBall',
-                                            'L05', 'gndPlaneL05', 'l5antiPadR_bottomBall',
-                                            'L06', 'gndPlaneL06', 'l6antiPadR_bottomBall',
-                                            'L07', 'gndPlaneL07', 'l7antiPadR_bottomBall',
-                                            'L08', 'gndPlaneL08', 'l8antiPadR_bottomBall',
-                                            'L09', 'gndPlaneL09', 'l9antiPadR_bottomBall',
-                                            'L10', 'gndPlaneL10', 'l10antiPadR_bottomBall',
-                                            ],
+                               signalVoids=[
+                                   'L01', 'gndPlaneL01', 'l1antiPadR_bottomBall',
+                                   'L02', 'gndPlaneL02', 'l2antiPadR_bottomBall',
+                                   'L03', 'gndPlaneL03', 'l3antiPadR_bottomBall',
+                                   'L04', 'gndPlaneL04', 'l4antiPadR_bottomBall',
+                                   'L05', 'gndPlaneL05', 'l5antiPadR_bottomBall',
+                                   'L06', 'gndPlaneL06', 'l6antiPadR_bottomBall',
+                                   'L07', 'gndPlaneL07', 'l7antiPadR_bottomBall',
+                                   'L08', 'gndPlaneL08', 'l8antiPadR_bottomBall',
+                                   'L09', 'gndPlaneL09', 'l9antiPadR_bottomBall',
+                                   'L10', 'gndPlaneL10', 'l10antiPadR_bottomBall',
+                                   ],
                                gndLayers=gnd_layers,
                                sigNamePattern=sigNamePattern,
                                ballPitch='ballPitchBottom')
@@ -327,12 +328,13 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
             viaList=viaList, viaNames=viaNames,
             signalViaCoordinateList=l9l10_signal_vias,
             viaType='L9_L10_VIA', layers=['L09', 'L10'],
-            voids=['L06', 'gndPlaneL06', 'l6antiPadR_l9l10via',
-                   'L07', 'gndPlaneL07', 'l7antiPadR_l9l10via',
-                   'L08', 'gndPlaneL08', 'l8antiPadR_l9l10via',
-                   'L09', 'gndPlaneL09', 'l9antiPadR_l9l10via',
-                   'L10', 'gndPlaneL10', 'l10antiPadR_l9l10via',
-                   ],
+            voids=[
+                'L06', 'gndPlaneL06', 'l6antiPadR_l9l10via',
+                'L07', 'gndPlaneL07', 'l7antiPadR_l9l10via',
+                'L08', 'gndPlaneL08', 'l8antiPadR_l9l10via',
+                'L09', 'gndPlaneL09', 'l9antiPadR_l9l10via',
+                'L10', 'gndPlaneL10', 'l10antiPadR_l9l10via',
+                ],
             gndLayers=gnd_layers)
 
     #### ADD GND VIAS AROUND L9-L10 SIGNAL VIAS
@@ -389,12 +391,13 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
             signalViaCoordinateList=l8l9_signal_vias,
             viaType='L8_L9_VIA',
             layers=['L08', 'L09'],
-            voids=['L06', 'gndPlaneL06', 'l6antiPadR_l8l9via',
-                   'L07', 'gndPlaneL07', 'l7antiPadR_l8l9via',
-                   'L08', 'gndPlaneL08', 'l8antiPadR_l8l9via',
-                   'L09', 'gndPlaneL09', 'l9antiPadR_l8l9via',
-                   'L10', 'gndPlaneL10', 'l10antiPadR_l8l9via',
-                   ],
+            voids=[
+                'L06', 'gndPlaneL06', 'l6antiPadR_l8l9via',
+                'L07', 'gndPlaneL07', 'l7antiPadR_l8l9via',
+                'L08', 'gndPlaneL08', 'l8antiPadR_l8l9via',
+                'L09', 'gndPlaneL09', 'l9antiPadR_l8l9via',
+                'L10', 'gndPlaneL10', 'l10antiPadR_l8l9via',
+                ],
             gndLayers=gnd_layers)
     
     #### ADD GND VIAS AROUND L8-L9 SIGNAL VIAS
@@ -461,12 +464,13 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
             signalViaCoordinateList=l7l8_signal_vias,
             viaType='L7_L8_VIA',
             layers=['L07', 'L08'],
-            voids=['L06', 'gndPlaneL06', 'l6antiPadR_l7l8via',
-                   'L07', 'gndPlaneL07', 'l7antiPadR_l7l8via',
-                   'L08', 'gndPlaneL08', 'l8antiPadR_l7l8via',
-                   'L09', 'gndPlaneL09', 'l9antiPadR_l7l8via',
-                   'L10', 'gndPlaneL10', 'l10antiPadR_l7l8via',
-                   ],
+            voids=[
+                'L06', 'gndPlaneL06', 'l6antiPadR_l7l8via',
+                'L07', 'gndPlaneL07', 'l7antiPadR_l7l8via',
+                'L08', 'gndPlaneL08', 'l8antiPadR_l7l8via',
+                'L09', 'gndPlaneL09', 'l9antiPadR_l7l8via',
+                'L10', 'gndPlaneL10', 'l10antiPadR_l7l8via',
+                ],
             gndLayers=gnd_layers)
         
     #### ADD GND VIAS AROUND L7-L8 SIGNAL VIAS
@@ -533,12 +537,13 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
             signalViaCoordinateList=l6l7_signal_vias,
             viaType='L6_L7_VIA',
             layers=['L06', 'L07'],
-            voids=['L06', 'gndPlaneL06', 'l6antiPadR_l6l7via',
-                   'L07', 'gndPlaneL07', 'l7antiPadR_l6l7via',
-                   'L08', 'gndPlaneL08', 'l8antiPadR_l6l7via',
-                   'L09', 'gndPlaneL09', 'l9antiPadR_l6l7via',
-                   'L10', 'gndPlaneL10', 'l10antiPadR_l6l7via',
-                   ],
+            voids=[
+                'L06', 'gndPlaneL06', 'l6antiPadR_l6l7via',
+                'L07', 'gndPlaneL07', 'l7antiPadR_l6l7via',
+                'L08', 'gndPlaneL08', 'l8antiPadR_l6l7via',
+                'L09', 'gndPlaneL09', 'l9antiPadR_l6l7via',
+                'L10', 'gndPlaneL10', 'l10antiPadR_l6l7via',
+                ],
             gndLayers=gnd_layers)
 
     #### ADD GND VIAS AROUND L6-L7 SIGNAL VIAS
@@ -600,30 +605,31 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
             signalViaCoordinateList=l5l6_signal_vias,
             viaType='L5_L6_CORE_VIA',
             layers=['L05', 'L06'],
-            voids=['L01', 'gndPlaneL01', 'l1antiPadR_coreVia',
-                   'L02', 'gndPlaneL02', 'l2antiPadR_coreVia',
-                   'L03', 'gndPlaneL03', 'l3antiPadR_coreVia',
-                   'L04', 'gndPlaneL04', 'l4antiPadR_coreVia',
-                   'L05', 'gndPlaneL05', 'l5antiPadR_coreVia',
-                   'L06', 'gndPlaneL06', 'l6antiPadR_coreVia',
-                   'L07', 'gndPlaneL07', 'l7antiPadR_coreVia',
-                   'L08', 'gndPlaneL08', 'l8antiPadR_coreVia',
-                   'L09', 'gndPlaneL09', 'l9antiPadR_coreVia',
-                   'L10', 'gndPlaneL10', 'l10antiPadR_coreVia',
-                   ],
+            voids=[
+                'L01', 'gndPlaneL01', 'l1antiPadR_coreVia',
+                'L02', 'gndPlaneL02', 'l2antiPadR_coreVia',
+                'L03', 'gndPlaneL03', 'l3antiPadR_coreVia',
+                'L04', 'gndPlaneL04', 'l4antiPadR_coreVia',
+                'L05', 'gndPlaneL05', 'l5antiPadR_coreVia',
+                'L06', 'gndPlaneL06', 'l6antiPadR_coreVia',
+                'L07', 'gndPlaneL07', 'l7antiPadR_coreVia',
+                'L08', 'gndPlaneL08', 'l8antiPadR_coreVia',
+                'L09', 'gndPlaneL09', 'l9antiPadR_coreVia',
+                'L10', 'gndPlaneL10', 'l10antiPadR_coreVia',
+                ],
             gndLayers=gnd_layers)
 
     #### ADD GND VIAS AROUND L5-L6 SIGNAL CORE VIAS
     # Add coaxial via-via spacing parameters
-    edb.add_design_variable('mViaOffset_l9l10_coreVia', 'max(l9antiPadR_coreVia, l10antiPadR_coreVia) + max(l9viaD, l10viaD)/2')
-    edb.add_design_variable('mViaOffset_l8l9_coreVia', 'max(l8antiPadR_coreVia, l9antiPadR_coreVia) + max(l8viaD, l9viaD)/2')
-    edb.add_design_variable('mViaOffset_l7l8_coreVia', 'max(l7antiPadR_coreVia, l8antiPadR_coreVia) + max(l7viaD, l8viaD)/2')
-    edb.add_design_variable('mViaOffset_l6l7_coreVia', 'max(l6antiPadR_coreVia, l7antiPadR_coreVia) + max(l6viaD, l7viaD)/2')
-    edb.add_design_variable('mViaOffset_l5l6_coreVia', 'max(l5antiPadR_coreVia, l6antiPadR_coreVia) + cViaD/2')
-    edb.add_design_variable('mViaOffset_l4l5_coreVia', 'max(l4antiPadR_coreVia, l5antiPadR_coreVia) + max(l4viaD, l5viaD)/2')
-    edb.add_design_variable('mViaOffset_l3l4_coreVia', 'max(l3antiPadR_coreVia, l4antiPadR_coreVia) + max(l3viaD, l4viaD)/2')
-    edb.add_design_variable('mViaOffset_l2l3_coreVia', 'max(l2antiPadR_coreVia, l3antiPadR_coreVia) + max(l4viaD, l3viaD)/2')
     edb.add_design_variable('mViaOffset_l1l2_coreVia', 'max(l1antiPadR_coreVia, l2antiPadR_coreVia) + max(l1viaD, l2viaD)/2')
+    edb.add_design_variable('mViaOffset_l2l3_coreVia', 'max(l2antiPadR_coreVia, l3antiPadR_coreVia) + max(l4viaD, l3viaD)/2')
+    edb.add_design_variable('mViaOffset_l3l4_coreVia', 'max(l3antiPadR_coreVia, l4antiPadR_coreVia) + max(l3viaD, l4viaD)/2')
+    edb.add_design_variable('mViaOffset_l4l5_coreVia', 'max(l4antiPadR_coreVia, l5antiPadR_coreVia) + max(l4viaD, l5viaD)/2')
+    edb.add_design_variable('mViaOffset_l5l6_coreVia', 'max(l5antiPadR_coreVia, l6antiPadR_coreVia) + cViaD/2')
+    edb.add_design_variable('mViaOffset_l6l7_coreVia', 'max(l6antiPadR_coreVia, l7antiPadR_coreVia) + max(l6viaD, l7viaD)/2')
+    edb.add_design_variable('mViaOffset_l7l8_coreVia', 'max(l7antiPadR_coreVia, l8antiPadR_coreVia) + max(l7viaD, l8viaD)/2')
+    edb.add_design_variable('mViaOffset_l8l9_coreVia', 'max(l8antiPadR_coreVia, l9antiPadR_coreVia) + max(l8viaD, l9viaD)/2')
+    edb.add_design_variable('mViaOffset_l9l10_coreVia', 'max(l9antiPadR_coreVia, l10antiPadR_coreVia) + max(l9viaD, l10viaD)/2')
     for l in range(1,10):
         viaType = 'L' + str(l) + '_L' + str(l+1) + '_VIA'
         if l == 9:
@@ -674,10 +680,11 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
             signalViaCoordinateList=l4l5_signal_vias,
             viaType='L4_L5_VIA',
             layers=['L04', 'L05'],
-            voids=['L03', 'gndPlaneL03', 'l3antiPadR_l4l5via',
-                   'L04', 'gndPlaneL04', 'l4antiPadR_l4l5via',
-                   'L05', 'gndPlaneL05', 'l5antiPadR_l4l5via',
-                   ],
+            voids=[
+                'L03', 'gndPlaneL03', 'l3antiPadR_l4l5via',
+                'L04', 'gndPlaneL04', 'l4antiPadR_l4l5via',
+                'L05', 'gndPlaneL05', 'l5antiPadR_l4l5via',
+                ],
             gndLayers=gnd_layers)
 
     #### ADD GND VIAS AROUND L4-L5 SIGNAL VIAS
@@ -743,11 +750,12 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
             signalViaCoordinateList=l3l4_signal_vias,
             viaType='L3_L4_VIA',
             layers=['L03', 'L04'],
-            voids=['L02', 'gndPlaneL02', 'l2antiPadR_l3l4via',
-                   'L03', 'gndPlaneL03', 'l3antiPadR_l3l4via',
-                   'L04', 'gndPlaneL04', 'l4antiPadR_l3l4via',
-                   'L05', 'gndPlaneL05', 'l5antiPadR_l3l4via',
-                   ],
+            voids=[
+                'L02', 'gndPlaneL02', 'l2antiPadR_l3l4via',
+                'L03', 'gndPlaneL03', 'l3antiPadR_l3l4via',
+                'L04', 'gndPlaneL04', 'l4antiPadR_l3l4via',
+                'L05', 'gndPlaneL05', 'l5antiPadR_l3l4via',
+                ],
             gndLayers=gnd_layers)
 
     #### ADD GND VIAS AROUND L3-L4 SIGNAL VIAS
@@ -823,11 +831,12 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
             signalViaCoordinateList=l2l3_signal_vias,
             viaType='L2_L3_VIA',
             layers=['L02', 'L03'],
-            voids=['L01', 'gndPlaneL01', 'l1antiPadR_l2l3via',
-                   'L02', 'gndPlaneL02', 'l2antiPadR_l2l3via',
-                   'L03', 'gndPlaneL03', 'l3antiPadR_l2l3via',
-                   'L04', 'gndPlaneL04', 'l4antiPadR_l2l3via',
-                   ],
+            voids=[
+                'L01', 'gndPlaneL01', 'l1antiPadR_l2l3via',
+                'L02', 'gndPlaneL02', 'l2antiPadR_l2l3via',
+                'L03', 'gndPlaneL03', 'l3antiPadR_l2l3via',
+                'L04', 'gndPlaneL04', 'l4antiPadR_l2l3via',
+               ],
             gndLayers=gnd_layers)
 
     #### ADD GND VIAS AROUND L2-L3 SIGNAL VIAS
