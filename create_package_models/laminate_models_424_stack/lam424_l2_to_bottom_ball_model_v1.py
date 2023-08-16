@@ -97,10 +97,10 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
     edb.add_design_variable('l10viaD', designRules['l10viaD'])
     
     # Strip line design parameters
-    edb.add_design_variable('lineWidth', '25um')
-    edb.add_design_variable('lineSpace', '50um')
-    edb.add_design_variable('diffLineSpace', '50um')
-    edb.add_design_variable('shieldViaSpace', 'max(l4viaD, l4viaD)')
+    edb.add_design_variable('lineWidth', designRules['minLwL2'])
+    edb.add_design_variable('lineSpace', '2*lineWidth')
+    edb.add_design_variable('diffLineSpace', '2*lineWidth')
+    edb.add_design_variable('shieldViaSpace', 'max(l2viaD, l3viaD)')
     edb.add_design_variable('totalRoutingLength', totalLength)
     
     # Top impedance converter design parameters
@@ -151,7 +151,7 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
     # edb.add_design_variable('l3antiPadR_bottomBall', '0um')
     # edb.add_design_variable('l4antiPadR_bottomBall', '0um')
     # edb.add_design_variable('l5antiPadR_bottomBall', '0um')
-    # edb.add_design_variable('l6antiPadR_bottomBall', '0um')
+    edb.add_design_variable('l6antiPadR_bottomBall', '0um')
     edb.add_design_variable('l7antiPadR_bottomBall', 'bottomAntiPad')
     edb.add_design_variable('l8antiPadR_bottomBall', 'bottomAntiPad')
     edb.add_design_variable('l9antiPadR_bottomBall', 'bottomAntiPad')
@@ -171,7 +171,7 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
                                    # 'L03', 'gndPlaneL03', 'l3antiPadR_bottomBall',
                                    # 'L04', 'gndPlaneL04', 'l4antiPadR_bottomBall',
                                    # 'L05', 'gndPlaneL05', 'l5antiPadR_bottomBall',
-                                   # 'L06', 'gndPlaneL06', 'l6antiPadR_bottomBall',
+                                   'L06', 'gndPlaneL06', 'l6antiPadR_bottomBall',
                                    'L07', 'gndPlaneL07', 'l7antiPadR_bottomBall',
                                    'L08', 'gndPlaneL08', 'l8antiPadR_bottomBall',
                                    'L09', 'gndPlaneL09', 'l9antiPadR_bottomBall',
@@ -206,8 +206,8 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
     #                         'max(l4antiPadR_bottomBall, l5antiPadR_bottomBall) + max(l4viaD, l5viaD)/2')
     # edb.add_design_variable('mViaOffset_l5l6_bottomPad',
     #                         'max(l5antiPadR_bottomBall, l6antiPadR_bottomBall) + cViaD/2')
-    # edb.add_design_variable('mViaOffset_l6l7_bottomPad',
-    #                         'max(l6antiPadR_bottomBall, l7antiPadR_bottomBall) + max(l6viaD, l7viaD)/2')
+    edb.add_design_variable('mViaOffset_l6l7_bottomPad',
+                            'max(l6antiPadR_bottomBall, l7antiPadR_bottomBall) + max(l6viaD, l7viaD)/2')
     edb.add_design_variable('mViaOffset_l7l8_bottomPad',
                             'max(l7antiPadR_bottomBall, l8antiPadR_bottomBall)+ max(l7viaD, l8viaD)/2')
     edb.add_design_variable('mViaOffset_l8l9_bottomPad',
@@ -971,7 +971,7 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
     #### CREATE COMPONENTS ON TOP BGA BALLS
     bottomBgaPins = [x for x in edb.core_padstack.get_via_instance_from_net()
                   if x.GetName() in bottomBallNames]
-    bottomBgaComp = edb.core_components.create(pins=bottomBgaPins, component_name='U1', placement_layer='L10')
+    bottomBgaComp = edb.core_components.create(pins=bottomBgaPins, component_name='U0', placement_layer='L10')
     
     #### CREATE WAVE PORT ON END-LINES
     edb.hfss.create_differential_wave_port(lineObjList[-2], deembedLine_EndPoints[0]['coord'],

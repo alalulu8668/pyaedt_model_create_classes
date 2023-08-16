@@ -97,10 +97,10 @@ def L4_SL_TO_BALL_BOTTOM_DIFF(prjPath,
     edb.add_design_variable('l10viaD', designRules['l10viaD'])
     
     # Strip line design parameters
-    edb.add_design_variable('lineWidth', '25um')
-    edb.add_design_variable('lineSpace', '50um')
-    edb.add_design_variable('diffLineSpace', '50um')
-    edb.add_design_variable('shieldViaSpace', 'max(l4viaD, l4viaD)')
+    edb.add_design_variable('lineWidth', designRules['minLwL4'])
+    edb.add_design_variable('lineSpace', '2*lineWidth')
+    edb.add_design_variable('diffLineSpace', '2*lineWidth')
+    edb.add_design_variable('shieldViaSpace', 'max(l4viaD, l5viaD)')
     edb.add_design_variable('totalRoutingLength', totalLength)
     
     # Top impedance converter design parameters
@@ -809,7 +809,7 @@ def L4_SL_TO_BALL_BOTTOM_DIFF(prjPath,
     #### CREATE COMPONENTS ON TOP BGA BALLS
     bottomBgaPins = [x for x in edb.core_padstack.get_via_instance_from_net()
                   if x.GetName() in bottomBallNames]
-    bottomBgaComp = edb.core_components.create(pins=bottomBgaPins, component_name='U1', placement_layer='L10')
+    bottomBgaComp = edb.core_components.create(pins=bottomBgaPins, component_name='U0', placement_layer='L10')
     
     #### CREATE WAVE PORT ON END-LINES
     edb.hfss.create_differential_wave_port(lineObjList[-2], deembedLine_EndPoints[0]['coord'],

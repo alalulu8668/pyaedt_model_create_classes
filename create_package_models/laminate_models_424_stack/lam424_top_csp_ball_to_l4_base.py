@@ -78,8 +78,8 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
 
     # Strip line design parameters
     edb.add_design_variable('lineWidth', designRules['minLwL4'])
-    edb.add_design_variable('lineSpace', '2xlineWidth')
-    edb.add_design_variable('diffLineSpace', '2xlineWidth')
+    edb.add_design_variable('lineSpace', '2*lineWidth')
+    edb.add_design_variable('diffLineSpace', '2*lineWidth')
     edb.add_design_variable('shieldViaSpace', 'max(l4viaD, l4viaD)')
     edb.add_design_variable('totalRoutingLength', totalLength)
     
@@ -124,10 +124,11 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
         
     #### ADD CSP BALLS ON TOP LAYER
     # Add anti-pad parameters
-    edb.add_design_variable('l1antiPadR_topBall', 'ballPadTopD/2+lineSpace')
-    edb.add_design_variable('l2antiPadR_topBall', '0um')
-    edb.add_design_variable('l3antiPadR_topBall', '0um')
-    edb.add_design_variable('l4antiPadR_topBall', '0um')
+    edb.add_design_variable('topAntiPad', 'ballPadTopD/2+lineSpace')
+    edb.add_design_variable('l1antiPadR_topBall', 'topAntiPad')
+    edb.add_design_variable('l2antiPadR_topBall', 'topAntiPad')
+    edb.add_design_variable('l3antiPadR_topBall', 'topAntiPad')
+    edb.add_design_variable('l4antiPadR_topBall', 'topAntiPad')
     topBallList, topBallNames, sigNameList, top_signal_pads = \
         add_bga_ball_pads_diff(edb=edb,
                                edbWrapper=edb_wrapper,
@@ -137,10 +138,12 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
                                ballPattern=ballPattern,
                                padType=topBallPadName,
                                layers=['L01'],
-                               signalVoids=['L01', 'gndPlaneL01', 'l1antiPadR_topBall',
-                                            'L02', 'gndPlaneL02', 'l2antiPadR_topBall',
-                                            'L03', 'gndPlaneL03', 'l3antiPadR_topBall',
-                                            'L04', 'gndPlaneL04', 'l4antiPadR_topBall'],
+                               signalVoids=[
+                                   'L01', 'gndPlaneL01', 'l1antiPadR_topBall',
+                                   'L02', 'gndPlaneL02', 'l2antiPadR_topBall',
+                                   'L03', 'gndPlaneL03', 'l3antiPadR_topBall',
+                                   'L04', 'gndPlaneL04', 'l4antiPadR_topBall'
+                                   ],
                                gndLayers=gnd_layers,
                                sigNamePattern=sigNamePattern,
                                ballPitch=ballPitchTop)
@@ -161,13 +164,13 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
     #### ADD GND VIAS AROUND SIGNAL PADS IN TOP
     # Add coaxial via-via spacing parameters
     edb.add_design_variable('mViaOffset_l1l2_l1Pad',
-                            'max(l1antiPadR_topBall, l2antiPadR_topBall) + lineSpace')
+                            'max(l1antiPadR_topBall, l2antiPadR_topBall) + max(l1viaD,l2viaD)/2')
     edb.add_design_variable('mViaOffset_l2l3_l1Pad',
-                            'max(l1antiPadR_topBall, l2antiPadR_topBall) + lineSpace')
+                            'max(l1antiPadR_topBall, l2antiPadR_topBall) + max(l2viaD,l3viaD)/2')
     edb.add_design_variable('mViaOffset_l3l4_l1Pad',
-                            'max(l1antiPadR_topBall, l2antiPadR_topBall) + lineSpace')
+                            'max(l1antiPadR_topBall, l2antiPadR_topBall) + max(l3viaD,l4viaD)/2')
     edb.add_design_variable('mViaOffset_l4l5_l1Pad',
-                            'max(l1antiPadR_topBall, l2antiPadR_topBall) + lineSpace')
+                            'max(l1antiPadR_topBall, l2antiPadR_topBall) + max(l4viaD,l5viaD)/2')
     # L1-L2
     viaList, viaNames = \
         add_coax_gnd_vias_around_signal_diff(
@@ -231,10 +234,12 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
             viaList=viaList, viaNames=viaNames,
             signalViaCoordinateList=l1l2_signal_vias,
             viaType='L1_L2_VIA', layers=['L01', 'L02'],
-            voids=['L01', 'gndPlaneL01', 'l1antiPadR_l1l2via',
-                   'L02', 'gndPlaneL02', 'l2antiPadR_l1l2via',
-                   'L03', 'gndPlaneL03', 'l3antiPadR_l1l2via',
-                   'L04', 'gndPlaneL04', 'l4antiPadR_l1l2via'],
+            voids=[
+                'L01', 'gndPlaneL01', 'l1antiPadR_l1l2via',
+                'L02', 'gndPlaneL02', 'l2antiPadR_l1l2via',
+                'L03', 'gndPlaneL03', 'l3antiPadR_l1l2via',
+                'L04', 'gndPlaneL04', 'l4antiPadR_l1l2via',
+                ],
             gndLayers=gnd_layers)
 
     #### ADD GND VIAS AROUND L1-L2 SIGNAL VIAS
