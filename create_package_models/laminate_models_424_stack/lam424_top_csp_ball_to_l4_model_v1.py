@@ -522,29 +522,11 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
 
     #### DEFINE HFSS ANALYSIS, SWEEP AND BOUNDARY BOX
     if createAnalysis:
-        setup, sweep = createAnalysis(h3d=h3d)
-
-    # # CHANGE SOLDER BALL PROPERITES
-    # for cmp in list(h3d.modeler.components):
-    #     h3d.modeler.components[cmp].set_solderball(solderball_type=None)    
-      
-    # ########################################################################    
-
-    # for p in [x for x in h3d.modeler.pins.keys() if 'U0' in x]:
-    #     h3d.modeler.pins[p].set_property_value(property_name='Pad Port Layer', property_value='BGA_N1')
-    # for p in [x for x in h3d.modeler.pins.keys() if 'U1' in x]:
-    #     h3d.modeler.pins[p].set_property_value(property_name='Pad Port Layer', property_value='PCB_N1')
-        
-    # for u in [x for x in h3d.boundaries if 'U0' in x.name]:
-    #     u.props['Layer Alignment'] = 'Lower'
-    #     u.props['Radial Extent Factor'] = '100um'
-    #     u.update()
-    # for u in [x for x in h3d.boundaries if 'U1' in x.name]:
-    #     u.props['Layer Alignment'] = 'Upper'
-    #     u.props['Radial Extent Factor'] = '100um'
-    #     u.update()
+        pass
+        # setup, sweep = createAnalysis(h3d=h3d)
 
     h3d.save_project()
+    h3d.archive_project(include_results_file=False)
     h3d.close_project()
 
     return designName

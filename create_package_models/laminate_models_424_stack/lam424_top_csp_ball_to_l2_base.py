@@ -378,6 +378,7 @@ def BALL_TOP_TO_L2_SL_DIFF(prjPath,
         # setup, sweep = createAnalysis(h3d=h3d)
 
     h3d.save_project()
+    h3d.archive_project(include_results_file=False)
     h3d.close_project()
 
     return designName
