@@ -518,7 +518,8 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
 
     #### DEFINE HFSS ANALYSIS, SWEEP AND BOUNDARY BOX
     if createAnalysis:
-        setup, sweep = createAnalysis(h3d=h3d)
+        pass
+        # setup, sweep = createAnalysis(h3d=h3d)
 
     # # CHANGE SOLDER BALL PROPERITES
     # for cmp in list(h3d.modeler.components):

@@ -5,7 +5,7 @@ Created on Mon Jun 26 07:43:32 2023
 @author: emanhan
 """
 
-#### ADD CSP BALLS ON TOP LAYER
+#### ADD CSP BALLS
 def add_bga_ball_pads_diff(edb,
                            edbWrapper,
                            ballList,

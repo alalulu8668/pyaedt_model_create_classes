@@ -146,11 +146,11 @@ def L4_SL_TO_BALL_BOTTOM_DIFF(prjPath,
     # Add anti-pad parameters
     edb.add_design_variable('bottomAntiPad', '500um')
     # edb.add_design_variable('l1antiPadR_bottomBall', '0um')
-    # edb.add_design_variable('l2antiPadR_bottomBall', '0um')
-    # edb.add_design_variable('l3antiPadR_bottomBall', '0um')
-    # edb.add_design_variable('l4antiPadR_bottomBall', '0um')
-    # edb.add_design_variable('l5antiPadR_bottomBall', '0um')
-    edb.add_design_variable('l6antiPadR_bottomBall', '0um')
+    edb.add_design_variable('l2antiPadR_bottomBall', 'bottomAntiPad')
+    edb.add_design_variable('l3antiPadR_bottomBall', 'bottomAntiPad')
+    edb.add_design_variable('l4antiPadR_bottomBall', 'bottomAntiPad')
+    edb.add_design_variable('l5antiPadR_bottomBall', 'bottomAntiPad')
+    edb.add_design_variable('l6antiPadR_bottomBall', 'bottomAntiPad')
     edb.add_design_variable('l7antiPadR_bottomBall', 'bottomAntiPad')
     edb.add_design_variable('l8antiPadR_bottomBall', 'bottomAntiPad')
     edb.add_design_variable('l9antiPadR_bottomBall', 'bottomAntiPad')
@@ -166,10 +166,10 @@ def L4_SL_TO_BALL_BOTTOM_DIFF(prjPath,
                                layers=['L10'],
                                signalVoids=[
                                    # 'L01', 'gndPlaneL01', 'l1antiPadR_bottomBall',
-                                   # 'L02', 'gndPlaneL02', 'l2antiPadR_bottomBall',
-                                   # 'L03', 'gndPlaneL03', 'l3antiPadR_bottomBall',
-                                   # 'L04', 'gndPlaneL04', 'l4antiPadR_bottomBall',
-                                   # 'L05', 'gndPlaneL05', 'l5antiPadR_bottomBall',
+                                   'L02', 'gndPlaneL02', 'l2antiPadR_bottomBall',
+                                   'L03', 'gndPlaneL03', 'l3antiPadR_bottomBall',
+                                   'L04', 'gndPlaneL04', 'l4antiPadR_bottomBall',
+                                   'L05', 'gndPlaneL05', 'l5antiPadR_bottomBall',
                                    'L06', 'gndPlaneL06', 'l6antiPadR_bottomBall',
                                    'L07', 'gndPlaneL07', 'l7antiPadR_bottomBall',
                                    'L08', 'gndPlaneL08', 'l8antiPadR_bottomBall',
@@ -197,14 +197,14 @@ def L4_SL_TO_BALL_BOTTOM_DIFF(prjPath,
     # Add coaxial via-via spacing parameters
     # edb.add_design_variable('mViaOffset_l1l2_bottomPad',
     #                         'max(l1antiPadR_bottomBall, l2antiPadR_bottomBall) + max(l1viaD, l2viaD)/2')
-    # edb.add_design_variable('mViaOffset_l2l3_bottomPad',
-    #                         'max(l2antiPadR_bottomBall, l3antiPadR_bottomBall) + max(l2viaD, l3viaD)/2')
-    # edb.add_design_variable('mViaOffset_l3l4_bottomPad',
-    #                         'max(l3antiPadR_bottomBall, l4antiPadR_bottomBall) + max(l3viaD, l4viaD)/2')
-    # edb.add_design_variable('mViaOffset_l4l5_bottomPad',
-    #                         'max(l4antiPadR_bottomBall, l5antiPadR_bottomBall) + max(l4viaD, l5viaD)/2')
-    # edb.add_design_variable('mViaOffset_l5l6_bottomPad',
-    #                         'max(l5antiPadR_bottomBall, l6antiPadR_bottomBall) + cViaD/2')
+    edb.add_design_variable('mViaOffset_l2l3_bottomPad',
+                            'max(l2antiPadR_bottomBall, l3antiPadR_bottomBall) + max(l2viaD, l3viaD)/2')
+    edb.add_design_variable('mViaOffset_l3l4_bottomPad',
+                            'max(l3antiPadR_bottomBall, l4antiPadR_bottomBall) + max(l3viaD, l4viaD)/2')
+    edb.add_design_variable('mViaOffset_l4l5_bottomPad',
+                            'max(l4antiPadR_bottomBall, l5antiPadR_bottomBall) + max(l4viaD, l5viaD)/2')
+    edb.add_design_variable('mViaOffset_l5l6_bottomPad',
+                            'max(l5antiPadR_bottomBall, l6antiPadR_bottomBall) + cViaD/2')
     edb.add_design_variable('mViaOffset_l6l7_bottomPad',
                             'max(l6antiPadR_bottomBall, l7antiPadR_bottomBall) + max(l6viaD, l7viaD)/2')
     edb.add_design_variable('mViaOffset_l7l8_bottomPad',
@@ -223,42 +223,42 @@ def L4_SL_TO_BALL_BOTTOM_DIFF(prjPath,
     #         gndLayers=gnd_layers,
     #         angleOffset=0,
     #         viaOffset='mViaOffset_l1l2_bottomPad')
-    # # L2-L3
-    # viaList, viaNames = \
-    #     add_coax_gnd_vias_around_signal_diff(
-    #         edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
-    #         signalViaCoordinateList=bottom_signal_pads,
-    #         viaType='L2_L3_VIA', layers=['L02', 'L03'],
-    #         gndLayers=gnd_layers,
-    #         angleOffset=22.5,
-    #         viaOffset='mViaOffset_l2l3_bottomPad')
-    # # L3-L4
-    # viaList, viaNames = \
-    #     add_coax_gnd_vias_around_signal_diff(
-    #         edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
-    #         signalViaCoordinateList=bottom_signal_pads,
-    #         viaType='L3_L4_VIA', layers=['L03', 'L04'],
-    #         gndLayers=gnd_layers,
-    #         angleOffset=0,
-    #         viaOffset='mViaOffset_l3l4_bottomPad')
-    # # L4-L5
-    # viaList, viaNames = \
-    #     add_coax_gnd_vias_around_signal_diff(
-    #         edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
-    #         signalViaCoordinateList=bottom_signal_pads,
-    #         viaType='L4_L5_VIA', layers=['L04', 'L05'],
-    #         gndLayers=gnd_layers,
-    #         angleOffset=22.5,
-    #         viaOffset='mViaOffset_l4l5_bottomPad')
-    # # L5-L6
-    # viaList, viaNames = \
-    #     add_coax_gnd_vias_around_signal_diff(
-    #         edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
-    #         signalViaCoordinateList=bottom_signal_pads,
-    #         viaType='L5_L6_CORE_VIA', layers=['L05', 'L06'],
-    #         gndLayers=gnd_layers,
-    #         angleOffset=0,
-    #         viaOffset='mViaOffset_l5l6_bottomPad')        
+    # L2-L3
+    viaList, viaNames = \
+        add_coax_gnd_vias_around_signal_diff(
+            edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
+            signalViaCoordinateList=bottom_signal_pads,
+            viaType='L2_L3_VIA', layers=['L02', 'L03'],
+            gndLayers=gnd_layers,
+            angleOffset=22.5,
+            viaOffset='mViaOffset_l2l3_bottomPad')
+    # L3-L4
+    viaList, viaNames = \
+        add_coax_gnd_vias_around_signal_diff(
+            edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
+            signalViaCoordinateList=bottom_signal_pads,
+            viaType='L3_L4_VIA', layers=['L03', 'L04'],
+            gndLayers=gnd_layers,
+            angleOffset=0,
+            viaOffset='mViaOffset_l3l4_bottomPad')
+    # L4-L5
+    viaList, viaNames = \
+        add_coax_gnd_vias_around_signal_diff(
+            edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
+            signalViaCoordinateList=bottom_signal_pads,
+            viaType='L4_L5_VIA', layers=['L04', 'L05'],
+            gndLayers=gnd_layers,
+            angleOffset=22.5,
+            viaOffset='mViaOffset_l4l5_bottomPad')
+    # L5-L6
+    viaList, viaNames = \
+        add_coax_gnd_vias_around_signal_diff(
+            edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
+            signalViaCoordinateList=bottom_signal_pads,
+            viaType='L5_L6_CORE_VIA', layers=['L05', 'L06'],
+            gndLayers=gnd_layers,
+            angleOffset=0,
+            viaOffset='mViaOffset_l5l6_bottomPad')        
     # L6-L7
     viaList, viaNames = \
         add_coax_gnd_vias_around_signal_diff(
@@ -361,9 +361,9 @@ def L4_SL_TO_BALL_BOTTOM_DIFF(prjPath,
 
     #### ADD OFFSET LINE ON L9
     # Via offset parameters
-    edb.add_design_variable('l9offsL', 'l9viaD/2 + l10viaD/2')
+    edb.add_design_variable('l9offsL', 'l6viaD/2 + cViaD/2')
     edb.add_design_variable('l9offsW', 'max(l9viaD, l10viaD)')
-    edb.add_design_variable('l9offsDir', '90deg')
+    edb.add_design_variable('l9offsDir', '45deg')
     lineStructList, lineNamesList, lineObjList, l8l9_signal_vias = \
         add_signal_offset_line_diff(
             edbWrapper=edb_wrapper,
@@ -509,7 +509,7 @@ def L4_SL_TO_BALL_BOTTOM_DIFF(prjPath,
     # Via offset parameters
     edb.add_design_variable('l7offsL', '0um')
     edb.add_design_variable('l7offsW', 'max(l7viaD, l8viaD)')
-    edb.add_design_variable('l7offsDir', '180deg')
+    edb.add_design_variable('l7offsDir', '0deg')
     lineStructList, lineNamesList, lineObjList, l6l7_signal_vias = \
         add_signal_offset_line_diff(
             edbWrapper=edb_wrapper,
@@ -572,7 +572,7 @@ def L4_SL_TO_BALL_BOTTOM_DIFF(prjPath,
     # Via offset parameters
     edb.add_design_variable('l6offsL', 'l6viaD/2 + cViaD/2')
     edb.add_design_variable('l6offsW', 'l6viaD')
-    edb.add_design_variable('l6offsDir', '90deg')
+    edb.add_design_variable('l6offsDir', '-135deg')
     lineStructList, lineNamesList, lineObjList, l5l6_signal_vias = \
         add_signal_offset_line_diff(
             edbWrapper=edb_wrapper,
@@ -587,12 +587,13 @@ def L4_SL_TO_BALL_BOTTOM_DIFF(prjPath,
 
     #### ADD SIGNAL CORE VIAS FROM L5 to L6
     # Add anti-pad parameters
+    edb.add_design_variable('antiPadR_coreVia', '400um')
     edb.add_design_variable('l1antiPadR_coreVia', '0um')
-    edb.add_design_variable('l2antiPadR_coreVia', '400um')
-    edb.add_design_variable('l3antiPadR_coreVia', '400um')
-    edb.add_design_variable('l4antiPadR_coreVia', '400um')
-    edb.add_design_variable('l5antiPadR_coreVia', '400um')
-    edb.add_design_variable('l6antiPadR_coreVia', '400um')
+    edb.add_design_variable('l2antiPadR_coreVia', 'antiPadR_coreVia')
+    edb.add_design_variable('l3antiPadR_coreVia', 'antiPadR_coreVia')
+    edb.add_design_variable('l4antiPadR_coreVia', 'antiPadR_coreVia')
+    edb.add_design_variable('l5antiPadR_coreVia', 'antiPadR_coreVia')
+    edb.add_design_variable('l6antiPadR_coreVia', 'antiPadR_coreVia')
     edb.add_design_variable('l7antiPadR_coreVia', '0um')
     edb.add_design_variable('l8antiPadR_coreVia', '0um')
     edb.add_design_variable('l9antiPadR_coreVia', '0um')
