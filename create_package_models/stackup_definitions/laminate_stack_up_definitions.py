@@ -132,7 +132,6 @@ class CORE_800um_PrePreg_30um_424_LWS25_25(edb_stackup_wrapper_class):
         for v in vias: self.padStack.append(v)
         # Bump pad definitions
         bumpPads = [
-            ['BUMP_PAD_50', ['L01'], '50um', '0um', 'copper', 100],
             ['BUMP_PAD_110', ['L01'], '110um', '0um', 'copper', 100],
             ]
         for v in bumpPads: self.padStack.append(v)
@@ -173,7 +172,6 @@ class CORE_800um_PrePreg_30um_424_LWS25_25(edb_stackup_wrapper_class):
                             'l9viaD': '95um',
                             'l10viaD': '105um',
                             
-                            'bumpD_50': '50um',
                             'bumpD_110': '110um',
 
                             'ballPadD_P400': ballPadSizeVsPitch['400um'],
@@ -329,7 +327,6 @@ class CORE_200um_PrePreg_30um_424_LWS25_25(edb_stackup_wrapper_class):
         for v in vias: self.padStack.append(v)
         # Bump pad definitions
         bumpPads = [
-            ['BUMP_PAD_50', ['L01'], '50um', '0um', 'copper', 100],
             ['BUMP_PAD_110', ['L01'], '110um', '0um', 'copper', 100],
             ]
         for v in bumpPads: self.padStack.append(v)
@@ -370,7 +367,6 @@ class CORE_200um_PrePreg_30um_424_LWS25_25(edb_stackup_wrapper_class):
                             'l9viaD': '95um',
                             'l10viaD': '105um',
                             
-                            'bumpD_50': '50um',
                             'bumpD_110': '110um',
                             
                             'ballPadD_P400': ballPadSizeVsPitch['400um'],
@@ -526,7 +522,6 @@ class CORE_200um_PrePreg_30um_424_LWS12_12(edb_stackup_wrapper_class):
         for v in vias: self.padStack.append(v)
         # Bump pad definitions
         bumpPads = [
-            ['BUMP_PAD_50', ['L01'], '50um', '0um', 'copper', 100],
             ['BUMP_PAD_90', ['L01'], '90um', '0um', 'copper', 100],
             ['BUMP_PAD_110', ['L01'], '110um', '0um', 'copper', 100],
             ]
@@ -568,7 +563,6 @@ class CORE_200um_PrePreg_30um_424_LWS12_12(edb_stackup_wrapper_class):
                             'l9viaD': '85um',
                             'l10viaD': '95um',
                             
-                            'bumpD_50': '50um',
                             'bumpD_90': '90um',
                             'bumpD_110': '110um',
 

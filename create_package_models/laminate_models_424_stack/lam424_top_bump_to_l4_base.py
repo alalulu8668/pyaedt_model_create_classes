@@ -63,12 +63,15 @@ def BUMP_TOP_TO_L4_SL_DIFF(prjPath,
     #### DEFINE DESIGN VARIABLES FOR TEST BENCH
     
     # Via and pad diameter rules
-    if bumpPitchTop in ['150um']:
+    if bumpPitchTop in ['130um', '150um']:
         topBumpPadName = 'BUMP_PAD_110'
         edb.add_design_variable('bumpPadTopD', designRules['bumpD_110'])
-    elif bumpPitchTop in ['80um']:
-        topBumpPadName = 'BUMP_PAD_50'
-        edb.add_design_variable('bumpPadTopD', designRules['bumpD_50'])
+    elif bumpPitchTop in ['110um']:
+        topBumpPadName = 'BUMP_PAD_90'
+        edb.add_design_variable('bumpPadTopD', designRules['bumpD_90'])
+    # elif bumpPitchTop in ['80um', '90um']:
+    #     topBumpPadName = 'BUMP_PAD_50'
+    #     edb.add_design_variable('bumpPadTopD', designRules['bumpD_50'])
         
     edb.add_design_variable('l1viaD', designRules['l1viaD'])
     edb.add_design_variable('l2viaD', designRules['l2viaD'])
@@ -101,8 +104,8 @@ def BUMP_TOP_TO_L4_SL_DIFF(prjPath,
     edb.add_design_variable('yModelSizePt1', '$yRef - (' + str(noBumpsInY) + ' + 5)*bumpPitchTop')
     edb.add_design_variable('yModelSizePt2', '$yRef + 5*bumpPitchTop + totalRoutingLength')
 
-    topBallList = []
-    topBallNames = []
+    topBumpList = []
+    topBumpNames = []
     lineStructList = []
     lineNamesList = []
     lineObjList = []
@@ -125,28 +128,30 @@ def BUMP_TOP_TO_L4_SL_DIFF(prjPath,
     #### ADD CSP BALLS ON TOP LAYER
     # Add anti-pad parameters
     edb.add_design_variable('topAntiPadR', 'bumpPadTopD/2+lineSpace')
-    edb.add_design_variable('l1antiPadR_topBall', 'topAntiPadR')
-    edb.add_design_variable('l2antiPadR_topBall', 'topAntiPadR')
-    edb.add_design_variable('l3antiPadR_topBall', 'topAntiPadR')
-    edb.add_design_variable('l4antiPadR_topBall', 'topAntiPadR')
-    topBallList, topBallNames, sigNameList, top_signal_pads = \
+    edb.add_design_variable('l1antiPadR_topBump', 'topAntiPadR')
+    edb.add_design_variable('l2antiPadR_topBump', 'topAntiPadR')
+    edb.add_design_variable('l3antiPadR_topBump', 'topAntiPadR')
+    edb.add_design_variable('l4antiPadR_topBump', 'topAntiPadR')
+    edb.add_design_variable('l5antiPadR_topBump', '0um')
+    topBumpList, topBumpNames, sigNameList, top_signal_pads = \
         add_bump_pads_diff(edb=edb,
                            edbWrapper=edb_wrapper,
-                           bumpList=topBallList,
-                           bumpNames=topBallNames,
+                           bumpList=topBumpList,
+                           bumpNames=topBumpNames,
                            sigNameList=sigNameList,
                            bumpPattern=bumpPattern,
                            padType=topBumpPadName,
                            layers=['L01'],
                            signalVoids=[
-                               'L01', 'gndPlaneL01', 'l1antiPadR_topBall',
-                               'L02', 'gndPlaneL02', 'l2antiPadR_topBall',
-                               'L03', 'gndPlaneL03', 'l3antiPadR_topBall',
-                               'L04', 'gndPlaneL04', 'l4antiPadR_topBall'
+                               'L01', 'gndPlaneL01', 'l1antiPadR_topBump',
+                               'L02', 'gndPlaneL02', 'l2antiPadR_topBump',
+                               'L03', 'gndPlaneL03', 'l3antiPadR_topBump',
+                               'L04', 'gndPlaneL04', 'l4antiPadR_topBump',
+                               'L05', 'gndPlaneL05', 'l5antiPadR_topBump',
                                ],
                            gndLayers=gnd_layers,
                            sigNamePattern=sigNamePattern,
-                           bumpPitch=bumpPitchTop)
+                           bumpPitch='bumpPitchTop')
 
     #### ADD 4x GND VIAS AT GND PADS ON TOP
     viaList, viaNames = \
@@ -157,20 +162,20 @@ def BUMP_TOP_TO_L4_SL_DIFF(prjPath,
             viaType='L1_L2_VIA',
             layers=['L01', 'L02'],
             gndLayers=gnd_layers,
-            bumpPitch=bumpPitchTop,
+            bumpPitch='bumpPitchTop',
             angleOffset=0,
-            radialOffset='max(l1viaD, l2viaD)')
+            radialOffset='0um')
 
     #### ADD GND VIAS AROUND SIGNAL PADS IN TOP
     # Add coaxial via-via spacing parameters
     edb.add_design_variable('mViaOffset_l1l2_l1Pad',
-                            'max(l1antiPadR_topBall, l2antiPadR_topBall) + max(l1viaD,l2viaD)/2')
+                            'max(l1antiPadR_topBump, l2antiPadR_topBump) + max(l1viaD,l2viaD)/2')
     edb.add_design_variable('mViaOffset_l2l3_l1Pad',
-                            'max(l1antiPadR_topBall, l2antiPadR_topBall) + max(l2viaD,l3viaD)/2')
+                            'max(l1antiPadR_topBump, l2antiPadR_topBump) + max(l2viaD,l3viaD)/2')
     edb.add_design_variable('mViaOffset_l3l4_l1Pad',
-                            'max(l1antiPadR_topBall, l2antiPadR_topBall) + max(l3viaD,l4viaD)/2')
+                            'max(l1antiPadR_topBump, l2antiPadR_topBump) + max(l3viaD,l4viaD)/2')
     edb.add_design_variable('mViaOffset_l4l5_l1Pad',
-                            'max(l1antiPadR_topBall, l2antiPadR_topBall) + max(l4viaD,l5viaD)/2')
+                            'max(l1antiPadR_topBump, l2antiPadR_topBump) + max(l4viaD,l5viaD)/2')
     # L1-L2
     viaList, viaNames = \
         add_coax_gnd_vias_around_signal_diff(
@@ -296,10 +301,12 @@ def BUMP_TOP_TO_L4_SL_DIFF(prjPath,
             signalViaCoordinateList=l2l3_signal_vias,
             viaType='L2_L3_VIA',
             layers=['L02', 'L03'],
-            voids=['L01', 'gndPlaneL01', 'l1antiPadR_l2l3via',
-                   'L02', 'gndPlaneL02', 'l2antiPadR_l2l3via',
-                   'L03', 'gndPlaneL03', 'l3antiPadR_l2l3via',
-                   'L04', 'gndPlaneL04', 'l4antiPadR_l2l3via'],
+            voids=[
+                  'L01', 'gndPlaneL01', 'l1antiPadR_l2l3via',
+                  'L02', 'gndPlaneL02', 'l2antiPadR_l2l3via',
+                  'L03', 'gndPlaneL03', 'l3antiPadR_l2l3via',
+                  'L04', 'gndPlaneL04', 'l4antiPadR_l2l3via',
+                ],
             gndLayers=gnd_layers)
     
     #### ADD GND VIAS AROUND L2-L3 SIGNAL VIAS
@@ -366,11 +373,13 @@ def BUMP_TOP_TO_L4_SL_DIFF(prjPath,
             signalViaCoordinateList=l3l4_signal_vias,
             viaType='L3_L4_VIA',
             layers=['L03', 'L04'],
-            voids=['L01', 'gndPlaneL01', 'l1antiPadR_l3l4via',
-                   'L02', 'gndPlaneL02', 'l2antiPadR_l3l4via',
-                   'L03', 'gndPlaneL03', 'l3antiPadR_l3l4via',
-                   'L04', 'gndPlaneL04', 'l4antiPadR_l3l4via',
-                   'L05', 'gndPlaneL05', 'l5antiPadR_l3l4via'],
+            voids=[
+                'L01', 'gndPlaneL01', 'l1antiPadR_l3l4via',
+                'L02', 'gndPlaneL02', 'l2antiPadR_l3l4via',
+                'L03', 'gndPlaneL03', 'l3antiPadR_l3l4via',
+                'L04', 'gndPlaneL04', 'l4antiPadR_l3l4via',
+                'L05', 'gndPlaneL05', 'l5antiPadR_l3l4via',
+                ],
             gndLayers=gnd_layers)
         
     #### ADD GND VIAS AROUND L3-L4 SIGNAL VIAS
@@ -496,13 +505,13 @@ def BUMP_TOP_TO_L4_SL_DIFF(prjPath,
             )
         
     #### CREATE COMPONENTS ON TOP BGA BALLS
-    topBgaPins = [x for x in edb.core_padstack.get_via_instance_from_net()
-                  if x.GetName() in topBallNames]
-    topBgaComp = edb.core_components.create(pins=topBgaPins, component_name='U0', placement_layer='L01')
+    topBumpPins = [x for x in edb.core_padstack.get_via_instance_from_net()
+                  if x.GetName() in topBumpNames]
+    topBumpComp = edb.core_components.create(pins=topBumpPins, component_name='U0', placement_layer='L01')
     
     #### CREATE WAVE PORT ON END-LINES
     edb.hfss.create_differential_wave_port(lineObjList[-2], deembedLine_EndPoints[0]['coord'],
-                                           lineObjList[-1], deembedLine_EndPoints[1]['coord'], "SL_L4")
+                                            lineObjList[-1], deembedLine_EndPoints[1]['coord'], "SL_L4")
     
     edb.logger.info("Create Components and excitations.")
 
