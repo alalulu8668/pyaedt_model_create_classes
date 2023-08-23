@@ -271,8 +271,6 @@ def BUMP_TOP_TO_L2_SL_DIFF(prjPath,
             angleOffset=0,
             viaOffset='mViaOffset_l2l3_l1l2via')
         
-
-
     #### ADD SIGNAL LINES ON L2
     # Add fanout line
     edb.add_design_variable('l2_fanout_length', '100um')
@@ -360,9 +358,9 @@ def BUMP_TOP_TO_L2_SL_DIFF(prjPath,
             )
         
     #### CREATE COMPONENTS ON TOP BGA BALLS
-    topBgaPins = [x for x in edb.core_padstack.get_via_instance_from_net()
-                  if x.GetName() in topBallNames]
-    topBgaComp = edb.core_components.create(pins=topBgaPins, component_name='U0', placement_layer='L01')
+    topBumpPins = [x for x in edb.core_padstack.get_via_instance_from_net()
+                  if x.GetName() in topBumpNames]
+    topBumpComp = edb.core_components.create(pins=topBumpPins, component_name='U0', placement_layer='L01')
     
     #### CREATE WAVE PORT ON END-LINES
     edb.hfss.create_differential_wave_port(lineObjList[-2], deembedLine_EndPoints[0]['coord'],

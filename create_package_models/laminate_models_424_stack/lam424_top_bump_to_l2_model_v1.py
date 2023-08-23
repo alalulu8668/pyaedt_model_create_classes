@@ -270,34 +270,6 @@ def BUMP_TOP_TO_L2_SL_DIFF(prjPath,
     #         gndLayers=gnd_layers, 
     #         angleOffset=0,
     #         viaOffset='mViaOffset_l2l3_l1l2via')
-        
-    #### ADD OFFSET LINE ON L2
-    # Via offset parameters
-    edb.add_design_variable('l2offsL', '0um')
-    edb.add_design_variable('l2offsW', '0um')
-    edb.add_design_variable('l2offsDir', '0deg')
-    lineStructList, lineNamesList, lineObjList, l2l3_signal_vias = \
-        add_signal_offset_line_diff(
-            edbWrapper=edb_wrapper,
-            lineStructList=lineStructList,
-            lineNamesList=lineNamesList,
-            lineObjList=lineObjList,
-            signalViaCoordinateList=l1l2_signal_vias,
-            viaType='L1_L2_VIA', layers=['L01', 'L02'],
-            gndLayers=gnd_layers, 
-            angleOffset=0,
-            viaOffset='mViaOffset_l1l2_l1l2via')
-    # L2-L3
-    viaList, viaNames = \
-        add_coax_gnd_vias_around_signal_diff(
-            edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
-            signalViaCoordinateList=l1l2_signal_vias,
-            viaType='L2_L3_VIA', layers=['L02', 'L03'],
-            gndLayers=gnd_layers, 
-            angleOffset=0,
-            viaOffset='mViaOffset_l2l3_l1l2via')
-        
-
 
     #### ADD SIGNAL LINES ON L2
     # Add fanout line
@@ -386,9 +358,9 @@ def BUMP_TOP_TO_L2_SL_DIFF(prjPath,
             )
         
     #### CREATE COMPONENTS ON TOP BGA BALLS
-    topBgaPins = [x for x in edb.core_padstack.get_via_instance_from_net()
-                  if x.GetName() in topBallNames]
-    topBgaComp = edb.core_components.create(pins=topBgaPins, component_name='U0', placement_layer='L01')
+    topBumpPins = [x for x in edb.core_padstack.get_via_instance_from_net()
+                  if x.GetName() in topBumpNames]
+    topBumpComp = edb.core_components.create(pins=topBumpPins, component_name='U0', placement_layer='L01')
     
     #### CREATE WAVE PORT ON END-LINES
     edb.hfss.create_differential_wave_port(lineObjList[-2], deembedLine_EndPoints[0]['coord'],
