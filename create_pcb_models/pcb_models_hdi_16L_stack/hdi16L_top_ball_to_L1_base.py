@@ -77,6 +77,17 @@ def BALL_TOP_TO_L1_MS_DIFF(prjPath,
     edb.add_design_variable('l3viaD', designRules['l3viaD'])
     edb.add_design_variable('l4viaD', designRules['l4viaD'])
     edb.add_design_variable('l5viaD', designRules['l5viaD'])
+    edb.add_design_variable('l6viaD', designRules['l6viaD'])
+    edb.add_design_variable('l7viaD', designRules['l7viaD'])
+    edb.add_design_variable('l8viaD', designRules['l8viaD'])
+    edb.add_design_variable('l9viaD', designRules['l9viaD'])
+    edb.add_design_variable('l10viaD', designRules['l10viaD'])
+    edb.add_design_variable('l11viaD', designRules['l11viaD'])
+    edb.add_design_variable('l12viaD', designRules['l12viaD'])
+    edb.add_design_variable('l13viaD', designRules['l13viaD'])
+    edb.add_design_variable('l14viaD', designRules['l14viaD'])
+    edb.add_design_variable('l15viaD', designRules['l15viaD'])
+    edb.add_design_variable('l16viaD', designRules['l16viaD'])
 
     # Strip line design parameters
     edb.add_design_variable('lineWidth', designRules['minLwL1'])
@@ -132,6 +143,18 @@ def BALL_TOP_TO_L1_MS_DIFF(prjPath,
     edb.add_design_variable('l2antiPadR_ball', 'ballAntiPad')
     edb.add_design_variable('l3antiPadR_ball', 'ballAntiPad')
     edb.add_design_variable('l4antiPadR_ball', 'ballAntiPad')
+    edb.add_design_variable('l5antiPadR_ball', 'ballAntiPad')
+    edb.add_design_variable('l6antiPadR_ball', '0um')
+    edb.add_design_variable('l7antiPadR_ball', '0um')
+    edb.add_design_variable('l8antiPadR_ball', '0um')
+    edb.add_design_variable('l9antiPadR_ball', '0um')
+    edb.add_design_variable('l10antiPadR_ball', '0um')
+    edb.add_design_variable('l11antiPadR_ball', '0um')
+    edb.add_design_variable('l12antiPadR_ball', '0um')
+    edb.add_design_variable('l13antiPadR_ball', '0um')
+    edb.add_design_variable('l14antiPadR_ball', '0um')
+    edb.add_design_variable('l15antiPadR_ball', '0um')
+    edb.add_design_variable('l16antiPadR_ball', '0um')
     ballList, ballNames, sigNameList, top_signal_pads, gnd_pads = \
         add_bga_ball_pads_diff(edb=edb,
                                edbWrapper=edb_wrapper,
@@ -145,7 +168,19 @@ def BALL_TOP_TO_L1_MS_DIFF(prjPath,
                                    'L01', 'gndPlaneL01', 'l1antiPadR_ball',
                                    'L02', 'gndPlaneL02', 'l2antiPadR_ball',
                                    'L03', 'gndPlaneL03', 'l3antiPadR_ball',
-                                   'L04', 'gndPlaneL04', 'l4antiPadR_ball'
+                                   'L04', 'gndPlaneL04', 'l4antiPadR_ball',
+                                   'L05', 'gndPlaneL05', 'l5antiPadR_ball',
+                                   'L06', 'gndPlaneL06', 'l6antiPadR_ball',
+                                   'L07', 'gndPlaneL07', 'l7antiPadR_ball',
+                                   'L08', 'gndPlaneL08', 'l8antiPadR_ball',
+                                   'L09', 'gndPlaneL09', 'l9antiPadR_ball',
+                                   'L10', 'gndPlaneL10', 'l10antiPadR_ball',
+                                   'L11', 'gndPlaneL11', 'l11antiPadR_ball',
+                                   'L12', 'gndPlaneL12', 'l12antiPadR_ball',
+                                   'L13', 'gndPlaneL13', 'l13antiPadR_ball',
+                                   'L14', 'gndPlaneL14', 'l14antiPadR_ball',
+                                   'L15', 'gndPlaneL15', 'l15antiPadR_ball',
+                                   'L16', 'gndPlaneL16', 'l16antiPadR_ball',
                                    ],
                                gndLayers=gnd_layers,
                                sigNamePattern=sigNamePattern,
@@ -155,8 +190,8 @@ def BALL_TOP_TO_L1_MS_DIFF(prjPath,
     edb.add_design_variable('thRelY', 'ballPadD')        
     thrRelVoid = edb.core_primitives.create_rectangle(
         layer_name='L01', net_name='GND',
-        lower_left_point=['xModelSizePt1', '$yRef + thRelY'],
-        upper_right_point=['xModelSizePt2', 'yModelSizePt2'],
+        lower_left_point=['xModelSizePt1', 'yModelSizePt1'],
+        upper_right_point=['xModelSizePt2', '$yRef + thRelY'],
     )
     gnd_layers['L01'].add_void(thrRelVoid)
 

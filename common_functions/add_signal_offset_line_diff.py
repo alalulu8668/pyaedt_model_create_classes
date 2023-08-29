@@ -16,7 +16,8 @@ def add_signal_offset_line_diff(edbWrapper,
                                 lineWidth,
                                 lineDirection,
                                 voids,
-                                gndLayers):
+                                gndLayers,
+                                symmetric=True):
     
     startIndx = len(lineStructList)
     nextSignalViaCoordinateList = []
@@ -31,16 +32,25 @@ def add_signal_offset_line_diff(edbWrapper,
             x1 = x0 + ' + (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'
             y1 = y0 + ' + (' + lineLength + ')*sin(' + sigDir + ' - (' + lineDirection + '))'
             if sigDir == '90deg':
-                xC = diffPairCenter[0]
+                if symmetric:
+                    xC = diffPairCenter[0]
+                else:
+                    xC = diffPairCenter[0] + ' + (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'
                 yC = y1
             if sigDir == '0deg':
                 xC = x1
                 yC = diffPairCenter[1]
         if sigPol < 0:
-            x1 = x0 + ' - (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'
+            if symmetric:
+                x1 = x0 + ' - (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'
+            else:
+                x1 = x0 + ' + (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'
             y1 = y0 + ' + (' + lineLength + ')*sin(' + sigDir + ' - (' + lineDirection + '))'
             if sigDir == '90deg':
-                xC = diffPairCenter[0]
+                if symmetric:
+                    xC = diffPairCenter[0]
+                else:
+                    xC = diffPairCenter[0] + ' + (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'
                 yC = y1
             if sigDir == '0deg':
                 xC = x1
