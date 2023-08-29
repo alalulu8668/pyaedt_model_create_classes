@@ -82,7 +82,7 @@ def BALL_TOP_TO_L1_MS_DIFF(prjPath,
     edb.add_design_variable('lineWidth', designRules['minLwL1'])
     edb.add_design_variable('lineSpace', '2*lineWidth')
     edb.add_design_variable('diffLineSpace', '2*lineWidth')
-    edb.add_design_variable('shieldViaSpace', '4*l1viaD')
+    edb.add_design_variable('shieldViaSpace', 'l1viaD')
     edb.add_design_variable('totalRoutingLength', totalLength)
     
     # Top impedance converter design parameters
@@ -124,7 +124,7 @@ def BALL_TOP_TO_L1_MS_DIFF(prjPath,
             upper_right_point=['xModelSizePt2', 'yModelSizePt2'],
         )
         edb.logger.info("Added ground layers")
-        
+    
     #### ADD BALLS ON TOP LAYER
     # Add anti-pad parameters
     edb.add_design_variable('ballAntiPad', 'ballPadD/2+lineSpace')
@@ -132,7 +132,7 @@ def BALL_TOP_TO_L1_MS_DIFF(prjPath,
     edb.add_design_variable('l2antiPadR_ball', 'ballAntiPad')
     edb.add_design_variable('l3antiPadR_ball', 'ballAntiPad')
     edb.add_design_variable('l4antiPadR_ball', 'ballAntiPad')
-    ballList, ballNames, sigNameList, top_signal_pads = \
+    ballList, ballNames, sigNameList, top_signal_pads, gnd_pads = \
         add_bga_ball_pads_diff(edb=edb,
                                edbWrapper=edb_wrapper,
                                ballList=ballList,
@@ -151,18 +151,32 @@ def BALL_TOP_TO_L1_MS_DIFF(prjPath,
                                sigNamePattern=sigNamePattern,
                                ballPitch='ballPitch')
 
+    #### CREATE VOID FOR THERMAL RELIEF AROUND BALL PADS
+    edb.add_design_variable('thRelY', 'ballPadD')        
+    thrRelVoid = edb.core_primitives.create_rectangle(
+        layer_name='L01', net_name='GND',
+        lower_left_point=['xModelSizePt1', '$yRef + thRelY'],
+        upper_right_point=['xModelSizePt2', 'yModelSizePt2'],
+    )
+    gnd_layers['L01'].add_void(thrRelVoid)
+
     #### ADD 1x GND VIAS AT GND PADS ON TOP
+    edb.add_design_variable('ballViaOffsetLength', 'ballPadD/2 + l1viaD/2')
+    edb.add_design_variable('ballViaOffsetWidth', 'l1viaD')
+    edb.add_design_variable('ballViaOffsetAngle', '-50deg')
     viaList, viaNames = \
         add_1x_gnd_vias_on_bga_ball_pads(
             edbWrapper=edb_wrapper,
-            viaList=viaList, viaNames=viaNames,
+            viaList=viaList,
+            viaNames=viaNames,
             ballPattern=ballPattern,
             viaType='L1_L16_VIA',
             layers=['L01', 'L16'],
             gndLayers=gnd_layers,
             ballPitch='ballPitch',
-            angleOffset=0,
-            radialOffset='0um')
+            angleOffset='ballViaOffsetAngle',
+            radialOffset='ballViaOffsetLength',
+            offsetLineWidth='ballViaOffsetWidth')
    
     #### ADD SIGNAL LINES ON L1
     # Add fanout line

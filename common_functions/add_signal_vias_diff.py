@@ -7,14 +7,14 @@ Created on Mon Jun 26 07:45:04 2023
 
 #### ADD SIGNAL VIAS
 def add_signal_vias_diff(edb, 
-                          edbWrapper,
-                          viaList,
-                          viaNames,
-                          signalViaCoordinateList,
-                          viaType,
-                          layers,
-                          voids,
-                          gndLayers):
+                         edbWrapper,
+                         viaList,
+                         viaNames,
+                         signalViaCoordinateList,
+                         viaType,
+                         layers,
+                         voids,
+                         gndLayers):
     
     startIndx = len(viaList)
     for sigVia in signalViaCoordinateList:

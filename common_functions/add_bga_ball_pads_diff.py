@@ -21,6 +21,7 @@ def add_bga_ball_pads_diff(edb,
                           ):
     startIndx = len(ballList)
     signal_pads = []
+    gnd_pads = []
     for yI, yRow in enumerate(ballPattern):
         for xI, bType in enumerate(yRow):
             # Calculate pad coordinate (start upper left)
@@ -112,13 +113,15 @@ def add_bga_ball_pads_diff(edb,
             else:
                 # GND
                 ballList.append({'type': padType,
-                                    'signal': 'GND',
-                                    'x': x0,
-                                    'y': y0,
-                                    'layers': layers,
-                                    'voids': []
-                                    })            
+                                 'signal': 'GND',
+                                 'x': x0,
+                                 'y': y0,
+                                 'layers': layers,
+                                 'voids': []
+                                 })
+                # Save position of gnd BGA pads
+                gnd_pads.append({'coord': [x0, y0]})
          
     tmpViaNames = edbWrapper.create_signal_via_paths(ballList[startIndx:], gndLayers)
     [ballNames.append(x) for x in tmpViaNames]
-    return ballList, ballNames, sigNameList, signal_pads
+    return ballList, ballNames, sigNameList, signal_pads, gnd_pads
