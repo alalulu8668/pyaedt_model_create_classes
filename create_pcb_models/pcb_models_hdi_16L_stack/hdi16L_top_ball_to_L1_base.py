@@ -251,7 +251,7 @@ def BALL_TOP_TO_L1_MS_DIFF(prjPath,
                 lineObjList=lineObjList,
                 startViaCoordinateList=tuneLine1_EndPoints,
                 layer='L01',
-                lineLength='tune1_length', lineWidth='tune2_width',
+                lineLength='tune2_length', lineWidth='tune2_width',
                 diffLineSpace='diffLineSpace',
                 voids=['L01', 'gndPlaneL01', 'tune2_width + 2*lineSpace'],
                 gndLayers=gnd_layers)
