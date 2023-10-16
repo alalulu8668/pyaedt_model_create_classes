@@ -11,9 +11,9 @@ class CORE_800um_PrePreg_30um_424_LWS25_25(edb_stackup_wrapper_class):
 
         # Dielectical materials
         self.dielList = {
-            'UnderFill': {'name': 'UF',
-                          'Dk': 3.7,
-                          'tanD': 0.02},
+            'UnderFill': {'name': 'Loctite Eccobond UF 1173 (10GHz(',
+                          'Dk': 3.19,
+                          'tanD': 0.0176},
             'SolderMask': {'name': '7730L',
                            'Dk': 3.9,
                            'tanD': 0.03},
@@ -206,9 +206,9 @@ class CORE_200um_PrePreg_30um_424_LWS25_25(edb_stackup_wrapper_class):
 
         # Dielectical materials
         self.dielList = {
-            'UnderFill': {'name': 'UF',
-                          'Dk': 3.7,
-                          'tanD': 0.02},
+            'UnderFill': {'name': 'Loctite Eccobond UF 1173 (10GHz(',
+                          'Dk': 3.19,
+                          'tanD': 0.0176},
             'SolderMask': {'name': '7730L',
                            'Dk': 3.9,
                            'tanD': 0.03},
@@ -401,9 +401,9 @@ class CORE_200um_PrePreg_30um_424_LWS12_12(edb_stackup_wrapper_class):
 
         # Dielectical materials
         self.dielList = {
-            'UnderFill': {'name': 'UF',
-                          'Dk': 3.7,
-                          'tanD': 0.02},
+            'UnderFill': {'name': 'Loctite Eccobond UF 1173 (10GHz(',
+                          'Dk': 3.19,
+                          'tanD': 0.0176},
             'SolderMask': {'name': '7730L',
                            'Dk': 3.9,
                            'tanD': 0.03},
