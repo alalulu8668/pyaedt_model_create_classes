@@ -28,6 +28,8 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
                            ballPattern,
                            sigNamePattern=[],
                            ballPitchTop='500um',
+                           coreMaterial='DS8505SQ',
+                           prePregMaterial='DS8505SQ',
                            totalLength='2000um',
                            createAnalysis=False,
                            designName = "SiP_TOP_TO_L4",
@@ -52,7 +54,7 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
     ##########################################################################
     #### GET DATA FOR THE SELECTED STACK-UP
     stackUp = stackup(edb)
-    designRules = stackUp.setup()
+    designRules = stackUp.setup(coreMaterial=coreMaterial, buMaterial=prePregMaterial)
 
     ##########################################################################
     #### DEFINE PROJECT VARIABLES FOR TEST BENCH

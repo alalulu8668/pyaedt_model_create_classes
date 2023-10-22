@@ -29,6 +29,8 @@ def L4_SL_TO_BALL_BOTTOM_DIFF(prjPath,
                               ballPattern,
                               sigNamePattern=[],
                               ballPitchBottom='1000um',
+                              coreMaterial='DS8505SQ',
+                              prePregMaterial='DS8505SQ',
                               totalLength='2000um',
                               createAnalysis=False,
                               designName = "L4_TO_SIP_BOTTOM",
@@ -53,7 +55,7 @@ def L4_SL_TO_BALL_BOTTOM_DIFF(prjPath,
     ##########################################################################
     #### GET DATA FOR THE SELECTED STACK-UP
     stackUp = stackup(edb)
-    designRules = stackUp.setup()
+    designRules = stackUp.setup(coreMaterial=coreMaterial, buMaterial=prePregMaterial)
 
     ##########################################################################
     #### DEFINE PROJECT VARIABLES FOR TEST BENCH
@@ -155,7 +157,7 @@ def L4_SL_TO_BALL_BOTTOM_DIFF(prjPath,
     edb.add_design_variable('l8antiPadR_bottomBall', 'bottomAntiPad')
     edb.add_design_variable('l9antiPadR_bottomBall', 'bottomAntiPad')
     edb.add_design_variable('l10antiPadR_bottomBall', 'bottomAntiPad')
-    bottomBallList, bottomBallNames, sigNameList, bottom_signal_pads = \
+    bottomBallList, bottomBallNames, sigNameList, bottom_signal_pads, *args = \
         add_bga_ball_pads_diff(edb=edb,
                                edbWrapper=edb_wrapper,
                                ballList=bottomBallList,

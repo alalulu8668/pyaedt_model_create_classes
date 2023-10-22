@@ -29,6 +29,8 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
                               ballPattern,
                               sigNamePattern=[],
                               ballPitchBottom='1000um',
+                              coreMaterial='DS8505SQ',
+                              prePregMaterial='DS8505SQ',
                               totalLength='2000um',
                               createAnalysis=False,
                               designName = "L2_TO_SIP_BOTTOM",
@@ -53,7 +55,7 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
     ##########################################################################
     #### GET DATA FOR THE SELECTED STACK-UP
     stackUp = stackup(edb)
-    designRules = stackUp.setup()
+    designRules = stackUp.setup(coreMaterial=coreMaterial, buMaterial=prePregMaterial)
 
     ##########################################################################
     #### DEFINE PROJECT VARIABLES FOR TEST BENCH

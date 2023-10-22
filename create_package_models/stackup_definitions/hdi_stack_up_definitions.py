@@ -298,15 +298,15 @@ class CORE_355um_PrePreg_40um_424(edb_stackup_wrapper_class):
         self.padStack = []
         # Via definitions
         vias = [
-            ['L1_L2_VIA', ['L01', 'L02'], '200um', '100um', 'copper', 100],
-            ['L2_L3_VIA', ['L02', 'L03'], '200um', '100um', 'copper', 100],
-            ['L3_L4_VIA', ['L03', 'L04'], '200um', '100um', 'copper', 100],
-            ['L4_L5_VIA', ['L04', 'L05'], '200um', '100um', 'copper', 100],
+            ['L1_L2_VIA', ['L01', 'L02'], '140um', '75um', 'copper', 100],
+            ['L2_L3_VIA', ['L02', 'L03'], '140um', '75um', 'copper', 100],
+            ['L3_L4_VIA', ['L03', 'L04'], '140um', '75um', 'copper', 100],
+            ['L4_L5_VIA', ['L04', 'L05'], '140um', '75um', 'copper', 100],
             ['L5_L6_CORE_VIA', ['L05', 'L06'], '350um', '200um', 'copper', 100],
-            ['L6_L7_VIA', ['L06', 'L07'], '200um', '100um', 'copper', 100],
-            ['L7_L8_VIA', ['L06', 'L07'], '200um', '100um', 'copper', 100],
-            ['L8_L9_VIA', ['L08', 'L09'], '200um', '100um', 'copper', 100],
-            ['L9_L10_VIA', ['L09', 'L10'], '200um', '100um', 'copper', 100],
+            ['L6_L7_VIA', ['L06', 'L07'], '140um', '75um', 'copper', 100],
+            ['L7_L8_VIA', ['L06', 'L07'], '140um', '75um', 'copper', 100],
+            ['L8_L9_VIA', ['L08', 'L09'], '140um', '75um', 'copper', 100],
+            ['L9_L10_VIA', ['L09', 'L10'], '140um', '75um', 'copper', 100],
             ]
         for v in vias: self.padStack.append(v)
         # Ball pad definitions
@@ -334,17 +334,17 @@ class CORE_355um_PrePreg_40um_424(edb_stackup_wrapper_class):
             }
 
         # Design rules and via size defintions
-        self.designRules = {'l1viaD': '200um',
-                            'l2viaD': '200um',
-                            'l3viaD': '200um',
-                            'l4viaD': '200um',
-                            'l5viaD': '200um',
+        self.designRules = {'l1viaD': '140um',
+                            'l2viaD': '140um',
+                            'l3viaD': '140um',
+                            'l4viaD': '140um',
+                            'l5viaD': '140um',
                             'cViaD': '350um',
-                            'l6viaD': '200um',
-                            'l7viaD': '200um',
-                            'l8viaD': '200um',
-                            'l9viaD': '200um',
-                            'l10viaD': '200um',
+                            'l6viaD': '140um',
+                            'l7viaD': '140um',
+                            'l8viaD': '140um',
+                            'l9viaD': '140um',
+                            'l10viaD': '140um',
 
                             'ballPadD_P400': ballPadSizeVsPitch['400um'],
                             'ballPadD_P500': ballPadSizeVsPitch['500um'],
