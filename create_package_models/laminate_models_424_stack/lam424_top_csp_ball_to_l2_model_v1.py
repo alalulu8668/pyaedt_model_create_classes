@@ -128,7 +128,7 @@ def BALL_TOP_TO_L2_SL_DIFF(prjPath,
     edb.add_design_variable('l2antiPadR_topBall', 'topAntiPad')
     edb.add_design_variable('l3antiPadR_topBall', 'topAntiPad')
     edb.add_design_variable('l4antiPadR_topBall', 'topAntiPad')
-    topBallList, topBallNames, sigNameList, top_signal_pads, top_gnd_pads = \
+    topBallList, topBallNames, sigNameList, top_signal_pads, *args = \
         add_bga_ball_pads_diff(edb=edb,
                                edbWrapper=edb_wrapper,
                                ballList=topBallList,
