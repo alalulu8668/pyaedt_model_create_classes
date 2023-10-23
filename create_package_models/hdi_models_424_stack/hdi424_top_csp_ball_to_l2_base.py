@@ -130,7 +130,7 @@ def BALL_TOP_TO_L2_SL_DIFF(prjPath,
     edb.add_design_variable('l2antiPadR_topBall', 'topAntiPad')
     edb.add_design_variable('l3antiPadR_topBall', 'topAntiPad')
     edb.add_design_variable('l4antiPadR_topBall', 'topAntiPad')
-    topBallList, topBallNames, sigNameList, top_signal_pads = \
+    topBallList, topBallNames, sigNameList, top_signal_pads, *args = \
         add_bga_ball_pads_diff(edb=edb,
                                edbWrapper=edb_wrapper,
                                ballList=topBallList,
@@ -147,7 +147,7 @@ def BALL_TOP_TO_L2_SL_DIFF(prjPath,
                                    ],
                                gndLayers=gnd_layers,
                                sigNamePattern=sigNamePattern,
-                               ballPitch=ballPitchTop)
+                               ballPitch='ballPitchTop')
 
     #### ADD 1x GND VIAS AT GND PADS ON TOP
     viaList, viaNames = \
@@ -158,7 +158,7 @@ def BALL_TOP_TO_L2_SL_DIFF(prjPath,
             viaType='L1_L2_VIA',
             layers=['L01', 'L02'],
             gndLayers=gnd_layers,
-            ballPitch=ballPitchTop,
+            ballPitch='ballPitchTop',
             angleOffset=0,
             radialOffset='0um')
 

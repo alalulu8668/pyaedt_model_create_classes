@@ -148,7 +148,7 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
                                    ],
                                gndLayers=gnd_layers,
                                sigNamePattern=sigNamePattern,
-                               ballPitch=ballPitchTop)
+                               ballPitch='ballPitchTop')
 
     #### ADD 1x GND VIAS AT GND PADS ON TOP
     viaList, viaNames = \
@@ -159,7 +159,7 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
             viaType='L1_L2_VIA',
             layers=['L01', 'L02'],
             gndLayers=gnd_layers,
-            ballPitch=ballPitchTop,
+            ballPitch='ballPitchTop',
             angleOffset=0,
             radialOffset='0um')
 
