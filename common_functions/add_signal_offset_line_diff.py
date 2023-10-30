@@ -4,6 +4,8 @@ Created on Mon Jun 26 07:45:03 2023
 
 @author: emanhan
 """
+import re
+
 
 #### ADD OFFSET LINE
 def add_signal_offset_line_diff(edbWrapper,
@@ -17,7 +19,9 @@ def add_signal_offset_line_diff(edbWrapper,
                                 lineDirection,
                                 voids,
                                 gndLayers,
-                                symmetric=True):
+                                symmetric=True,
+                                bottomUp=True,  # EMANHAN 231029
+                                ):
     
     startIndx = len(lineStructList)
     nextSignalViaCoordinateList = []
@@ -28,49 +32,53 @@ def add_signal_offset_line_diff(edbWrapper,
         sigPol = sigPad['sigPol']
         sigDir = sigPad['sigDir']
         diffPairCenter = sigPad['diffPairCenter']
-        if sigPol > 0:
-            x1 = x0 + ' + (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'
-            y1 = y0 + ' + (' + lineLength + ')*sin(' + sigDir + ' - (' + lineDirection + '))'
-            if sigDir == '90deg':
-                if symmetric:
-                    xC = diffPairCenter[0]
-                else:
-                    xC = diffPairCenter[0] + ' + (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'
-                yC = y1
-            if sigDir == '0deg':
-                xC = x1
-                yC = diffPairCenter[1]
-        if sigPol < 0:
-            if symmetric:
-                x1 = x0 + ' - (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'
-            else:
-                x1 = x0 + ' + (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'
-            y1 = y0 + ' + (' + lineLength + ')*sin(' + sigDir + ' - (' + lineDirection + '))'
-            if sigDir == '90deg':
-                if symmetric:
-                    xC = diffPairCenter[0]
-                else:
-                    xC = diffPairCenter[0] + ' + (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'
-                yC = y1
-            if sigDir == '0deg':
-                xC = x1
-                yC = diffPairCenter[1]
+        
+        if (bottomUp and abs(sigPol) < int(re.findall(r'\d+', layer)[0])) or \
+           (not(bottomUp) and abs(sigPol) > int(re.findall(r'\d+', layer)[0])):  # EMANHAN 231029
 
-        # Save position of next via
-        nextSignalViaCoordinateList.append({'sigName': sigName,
-                                            'sigPol': sigPol,
-                                            'sigDir': sigDir,
-                                            'coord': [x1, y1],
-                                            'diffPairCenter': [xC, yC]})
-   
-        # ADD OFFSET LINE
-        lineStructList.append({'signal': sigName,
-                         'xyPairs': [[x0, y0],
-                                     [x1, y1]],
-                         'width': lineWidth,
-                         'layer': layer,
-                         'voids': voids,
-                         'endStyle': 'Round'})
+            if sigPol > 0:
+                x1 = x0 + ' + (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'
+                y1 = y0 + ' + (' + lineLength + ')*sin(' + sigDir + ' - (' + lineDirection + '))'
+                if sigDir == '90deg':
+                    if symmetric:
+                        xC = diffPairCenter[0]
+                    else:
+                        xC = diffPairCenter[0] + ' + (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'
+                    yC = y1
+                if sigDir == '0deg':
+                    xC = x1
+                    yC = diffPairCenter[1]
+            if sigPol < 0:
+                if symmetric:
+                    x1 = x0 + ' - (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'
+                else:
+                    x1 = x0 + ' + (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'
+                y1 = y0 + ' + (' + lineLength + ')*sin(' + sigDir + ' - (' + lineDirection + '))'
+                if sigDir == '90deg':
+                    if symmetric:
+                        xC = diffPairCenter[0]
+                    else:
+                        xC = diffPairCenter[0] + ' + (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'
+                    yC = y1
+                if sigDir == '0deg':
+                    xC = x1
+                    yC = diffPairCenter[1]
+    
+            # Save position of next via
+            nextSignalViaCoordinateList.append({'sigName': sigName,
+                                                'sigPol': sigPol,
+                                                'sigDir': sigDir,
+                                                'coord': [x1, y1],
+                                                'diffPairCenter': [xC, yC]})
+       
+            # ADD OFFSET LINE
+            lineStructList.append({'signal': sigName,
+                             'xyPairs': [[x0, y0],
+                                         [x1, y1]],
+                             'width': lineWidth,
+                             'layer': layer,
+                             'voids': voids,
+                             'endStyle': 'Round'})
 
     tmpLineNames, tmplineObj = edbWrapper.create_signal_line_paths(lineStructList[startIndx:], gndLayers)
     [lineNamesList.append(x) for x in tmpLineNames]

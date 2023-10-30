@@ -312,7 +312,9 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
             layer='L10',
             lineLength='l10offsL', lineWidth='l10offsW', lineDirection='l10offsDir',
             voids=['L10', 'gndPlaneL10', 'l10offsW + 2*lineSpace'],
-            gndLayers=gnd_layers)
+            gndLayers=gnd_layers,
+            bottomUp=True,  # EMANHAN 231030
+            )
     
 
     #### ADD SIGNAL VIAS FROM L9 to L10
@@ -375,7 +377,9 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
             layer='L09',
             lineLength='l9offsL', lineWidth='l9offsW', lineDirection='l9offsDir',
             voids=['L09', 'gndPlaneL09', 'l9offsW + 2*lineSpace'],
-            gndLayers=gnd_layers)
+            gndLayers=gnd_layers,
+            bottomUp=True,  # EMANHAN 231030
+            )
 
     #### ADD SIGNAL VIAS FROM L8 to L9
     # Add anti-pad parameters
@@ -448,7 +452,9 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
             layer='L08',
             lineLength='l8offsL', lineWidth='l8offsW', lineDirection='l8offsDir',
             voids=['L08', 'gndPlaneL08', 'l8offsW + 2*lineSpace'],
-            gndLayers=gnd_layers)
+            gndLayers=gnd_layers,
+            bottomUp=True,  # EMANHAN 231030
+            )
     
     #### ADD SIGNAL VIAS FROM L7 to L8
     # Add anti-pad parameters
@@ -521,7 +527,9 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
             layer='L07',
             lineLength='l7offsL', lineWidth='l7offsW', lineDirection='l7offsDir',
             voids=['L07', 'gndPlaneL07', 'l7offsW + 2*lineSpace'],
-            gndLayers=gnd_layers)
+            gndLayers=gnd_layers,
+            bottomUp=True,  # EMANHAN 231030
+            )
 
     #### ADD SIGNAL VIAS FROM L6 to L7
     # Add anti-pad parameters
@@ -584,7 +592,9 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
             layer='L06',
             lineLength='l6offsL', lineWidth='l6offsW', lineDirection='l6offsDir',
             voids=['L06', 'gndPlaneL06', 'l6offsW + 2*lineSpace'],
-            gndLayers=gnd_layers)
+            gndLayers=gnd_layers,
+            bottomUp=True,  # EMANHAN 231030
+            )
 
     #### ADD SIGNAL CORE VIAS FROM L5 to L6
     # Add anti-pad parameters
@@ -666,7 +676,9 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
             layer='L05',
             lineLength='l5offsL', lineWidth='l5offsW', lineDirection='l5offsDir',
             voids=['L05', 'gndPlaneL05', 'l5offsW + 2*lineSpace'],
-            gndLayers=gnd_layers)
+            gndLayers=gnd_layers,
+            bottomUp=True,  # EMANHAN 231030
+            )
 
     #### ADD SIGNAL VIAS FROM L4 to L5
     # Add anti-pad parameters
@@ -735,7 +747,9 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
             layer='L04',
             lineLength='l4offsL', lineWidth='l4offsW', lineDirection='l4offsDir',
             voids=['L04', 'gndPlaneL04', 'l4offsW + 2*lineSpace'],
-            gndLayers=gnd_layers)
+            gndLayers=gnd_layers,
+            bottomUp=True,  # EMANHAN 231030
+            )
 
     #### ADD SIGNAL VIAS FROM L3 to L4
     # Add anti-pad parameters
@@ -816,7 +830,9 @@ def L2_SL_TO_BALL_BOTTOM_DIFF(prjPath,
             layer='L03',
             lineLength='l3offsL', lineWidth='l3offsW', lineDirection='l3offsDir',
             voids=['L03', 'gndPlaneL03', 'l3offsW + 2*lineSpace'],
-            gndLayers=gnd_layers)
+            gndLayers=gnd_layers,
+            bottomUp=True,  # EMANHAN 231030
+            )
 
     #### ADD SIGNAL VIAS FROM L2 to L3
     # Add anti-pad parameters
