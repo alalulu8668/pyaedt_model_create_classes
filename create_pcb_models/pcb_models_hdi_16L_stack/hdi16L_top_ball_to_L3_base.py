@@ -22,7 +22,7 @@ from pyaedt_model_create_classes.common_functions.add_bga_ball_pads_diff \
      import add_bga_ball_pads_diff
 
 
-#### CSP BALL to SL_L2 MULTI SIGNALS
+#### CSP BALL to SL_L3 MULTI SIGNALS
 def BALL_TOP_TO_L3_SL_DIFF(prjPath,
                            stackup,
                            ballPattern,
@@ -90,7 +90,7 @@ def BALL_TOP_TO_L3_SL_DIFF(prjPath,
     edb.add_design_variable('l16viaD', designRules['l16viaD'])
 
     # Strip line design parameters
-    edb.add_design_variable('lineWidth', designRules['minLwL3'])
+    edb.add_design_variable('lineWidth', designRules['minLwL16'])
     edb.add_design_variable('lineSpace', '2*lineWidth')
     edb.add_design_variable('diffLineSpace', '2*lineWidth')
     edb.add_design_variable('shieldViaSpace', 'l16viaD')
@@ -229,7 +229,9 @@ def BALL_TOP_TO_L3_SL_DIFF(prjPath,
             lineLength='l1offsL', lineWidth='l1offsW', lineDirection='l1offsDir',
             voids=['L01', 'gndPlaneL01', 'l1offsW + 2*lineSpace'],
             gndLayers=gnd_layers,
-            symmetric=False)
+            symmetric=False,
+            bottomUp=False,  # EMANHAN 231101
+            )
     
     #### ADD SIGNAL VIAS FROM L1 to L16
     # Add anti-pad parameters
@@ -287,10 +289,10 @@ def BALL_TOP_TO_L3_SL_DIFF(prjPath,
             lineNamesList=lineNamesList,
             lineObjList=lineObjList,
             startViaCoordinateList=l1l16_signal_vias,
-            layer='L3',
+            layer='L03',
             lineLength='l3_fanout_length', lineWidth='tune1_width',
             diffLineSpace='diffLineSpace', fanOutAngle='l3_fanout_angle',
-            voids=['L3', 'gndPlaneL3', 'tune1_width + 2*lineSpace'],
+            voids=['L03', 'gndPlaneL03', 'tune1_width + 2*lineSpace'],
             gndLayers=gnd_layers)
     # Add first tuneline
     lineStructList, lineNamesList, lineObjList, tuneLine1_EndPoints = \
@@ -300,10 +302,10 @@ def BALL_TOP_TO_L3_SL_DIFF(prjPath,
                 lineNamesList=lineNamesList,
                 lineObjList=lineObjList,
                 startViaCoordinateList=foLine_EndPoints,
-                layer='L3',
+                layer='L03',
                 lineLength='tune1_length', lineWidth='tune1_width',
                 diffLineSpace='diffLineSpace',
-                voids=['L3', 'gndPlaneL3', 'tune1_width + 2*lineSpace'],
+                voids=['L03', 'gndPlaneL03', 'tune1_width + 2*lineSpace'],
                 gndLayers=gnd_layers)
     # Add second tuneline
     lineStructList, lineNamesList, lineObjList, tuneLine2_EndPoints = \
@@ -313,12 +315,12 @@ def BALL_TOP_TO_L3_SL_DIFF(prjPath,
                 lineNamesList=lineNamesList,
                 lineObjList=lineObjList,
                 startViaCoordinateList=tuneLine1_EndPoints,
-                layer='L3',
+                layer='L03',
                 lineLength='tune2_length', lineWidth='tune2_width',
                 diffLineSpace='diffLineSpace',
-                voids=['L3', 'gndPlaneL3', 'tune2_width + 2*lineSpace'],
+                voids=['L03', 'gndPlaneL03', 'tune2_width + 2*lineSpace'],
                 gndLayers=gnd_layers)
-    # Add l1 deembedding line
+    # Add deembedding line
     lineStructList, lineNamesList, lineObjList, deembedLine_EndPoints = \
             add_signal_lines_diff(
                 edbWrapper=edb_wrapper,
@@ -326,10 +328,10 @@ def BALL_TOP_TO_L3_SL_DIFF(prjPath,
                 lineNamesList=lineNamesList,
                 lineObjList=lineObjList,
                 startViaCoordinateList=tuneLine2_EndPoints,
-                layer='L3',
+                layer='L03',
                 lineLength='deembedLength', lineWidth='lineWidth',
                 diffLineSpace='diffLineSpace',
-                voids=['L3', 'gndPlaneL3', 'lineWidth + 2*lineSpace'],
+                voids=['L03', 'gndPlaneL03', 'lineWidth + 2*lineSpace'],
                 gndLayers=gnd_layers,
                 endStyle='Flat')
     
@@ -353,7 +355,7 @@ def BALL_TOP_TO_L3_SL_DIFF(prjPath,
     #### CREATE COMPONENTS ON TOP BGA BALLS
     bgaPins = [x for x in edb.core_padstack.get_via_instance_from_net()
                   if x.GetName() in ballNames]
-    bgaComp = edb.core_components.create(pins=bgaPins, component_name='U0', placement_layer='L1')
+    bgaComp = edb.core_components.create(pins=bgaPins, component_name='U0', placement_layer='L03')
     
     #### CREATE WAVE PORT ON END-LINES
     edb.hfss.create_differential_wave_port(lineObjList[-2], deembedLine_EndPoints[0]['coord'],

@@ -824,8 +824,8 @@ def L4_SL_TO_BALL_BOTTOM_DIFF(prjPath,
     bottomBgaComp = edb.core_components.create(pins=bottomBgaPins, component_name='U0', placement_layer='L10')
     
     #### CREATE WAVE PORT ON END-LINES
-    edb.hfss.create_differential_wave_port(lineObjList[-2], deembedLine_EndPoints[0]['coord'],
-                                           lineObjList[-1], deembedLine_EndPoints[1]['coord'], "SL_L4")
+    # edb.hfss.create_differential_wave_port(lineObjList[-2], deembedLine_EndPoints[0]['coord'],
+    #                                        lineObjList[-1], deembedLine_EndPoints[1]['coord'], "SL_L4")
     
     edb.logger.info("Create Components and excitations.")
 

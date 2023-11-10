@@ -22,15 +22,15 @@ from pyaedt_model_create_classes.common_functions.add_bga_ball_pads_diff \
      import add_bga_ball_pads_diff
 
 
-#### CSP BALL to SL_L2 MULTI SIGNALS
-def BALL_TOP_TO_L16_MS_DIFF(prjPath,
+#### CSP BALL to SL_L12 MULTI SIGNALS
+def BALL_TOP_TO_L12_SL_DIFF(prjPath,
                            stackup,
                            ballPattern,
                            sigNamePattern=[],
                            ballPitch='1000um',
                            totalLength='2000um',
                            createAnalysis=False,
-                           designName='PCB_TOP_TO_L16',
+                           designName='PCB_TOP_TO_L3',
                            edbversion="2022.2",
                            ):
 
@@ -278,10 +278,10 @@ def BALL_TOP_TO_L16_MS_DIFF(prjPath,
                 ],
             gndLayers=gnd_layers)    
     
-    #### ADD SIGNAL LINES ON L16
+    #### ADD SIGNAL LINES ON L12
     # Add fanout line
-    edb.add_design_variable('l16_fanout_length', '100um')
-    edb.add_design_variable('l16_fanout_angle', '45deg')
+    edb.add_design_variable('l12_fanout_length', '100um')
+    edb.add_design_variable('l12_fanout_angle', '45deg')
     lineStructList, lineNamesList, lineObjList, foLine_EndPoints = \
         add_signal_fanout_from_vias_diff(
             edbWrapper=edb_wrapper,
@@ -289,10 +289,10 @@ def BALL_TOP_TO_L16_MS_DIFF(prjPath,
             lineNamesList=lineNamesList,
             lineObjList=lineObjList,
             startViaCoordinateList=l1l16_signal_vias,
-            layer='L16',
-            lineLength='l16_fanout_length', lineWidth='tune1_width',
-            diffLineSpace='diffLineSpace', fanOutAngle='l16_fanout_angle',
-            voids=['L16', 'gndPlaneL16', 'tune1_width + 2*lineSpace'],
+            layer='L12',
+            lineLength='l12_fanout_length', lineWidth='tune1_width',
+            diffLineSpace='diffLineSpace', fanOutAngle='l12_fanout_angle',
+            voids=['L12', 'gndPlaneL12', 'tune1_width + 2*lineSpace'],
             gndLayers=gnd_layers)
     # Add first tuneline
     lineStructList, lineNamesList, lineObjList, tuneLine1_EndPoints = \
@@ -302,10 +302,10 @@ def BALL_TOP_TO_L16_MS_DIFF(prjPath,
                 lineNamesList=lineNamesList,
                 lineObjList=lineObjList,
                 startViaCoordinateList=foLine_EndPoints,
-                layer='L16',
+                layer='L12',
                 lineLength='tune1_length', lineWidth='tune1_width',
                 diffLineSpace='diffLineSpace',
-                voids=['L16', 'gndPlaneL16', 'tune1_width + 2*lineSpace'],
+                voids=['L12', 'gndPlaneL12', 'tune1_width + 2*lineSpace'],
                 gndLayers=gnd_layers)
     # Add second tuneline
     lineStructList, lineNamesList, lineObjList, tuneLine2_EndPoints = \
@@ -315,12 +315,12 @@ def BALL_TOP_TO_L16_MS_DIFF(prjPath,
                 lineNamesList=lineNamesList,
                 lineObjList=lineObjList,
                 startViaCoordinateList=tuneLine1_EndPoints,
-                layer='L16',
+                layer='L12',
                 lineLength='tune2_length', lineWidth='tune2_width',
                 diffLineSpace='diffLineSpace',
-                voids=['L16', 'gndPlaneL16', 'tune2_width + 2*lineSpace'],
+                voids=['L12', 'gndPlaneL12', 'tune2_width + 2*lineSpace'],
                 gndLayers=gnd_layers)
-    # Add l1 deembedding line
+    # Add deembedding line
     lineStructList, lineNamesList, lineObjList, deembedLine_EndPoints = \
             add_signal_lines_diff(
                 edbWrapper=edb_wrapper,
@@ -328,10 +328,10 @@ def BALL_TOP_TO_L16_MS_DIFF(prjPath,
                 lineNamesList=lineNamesList,
                 lineObjList=lineObjList,
                 startViaCoordinateList=tuneLine2_EndPoints,
-                layer='L16',
+                layer='L12',
                 lineLength='deembedLength', lineWidth='lineWidth',
                 diffLineSpace='diffLineSpace',
-                voids=['L16', 'gndPlaneL16', 'lineWidth + 2*lineSpace'],
+                voids=['L12', 'gndPlaneL12', 'lineWidth + 2*lineSpace'],
                 gndLayers=gnd_layers,
                 endStyle='Flat')
     
@@ -355,11 +355,11 @@ def BALL_TOP_TO_L16_MS_DIFF(prjPath,
     #### CREATE COMPONENTS ON TOP BGA BALLS
     bgaPins = [x for x in edb.core_padstack.get_via_instance_from_net()
                   if x.GetName() in ballNames]
-    bgaComp = edb.core_components.create(pins=bgaPins, component_name='U0', placement_layer='L16')
+    bgaComp = edb.core_components.create(pins=bgaPins, component_name='U0', placement_layer='L03')
     
     #### CREATE WAVE PORT ON END-LINES
     edb.hfss.create_differential_wave_port(lineObjList[-2], deembedLine_EndPoints[0]['coord'],
-                                           lineObjList[-1], deembedLine_EndPoints[1]['coord'], "SL_L4")
+                                           lineObjList[-1], deembedLine_EndPoints[1]['coord'], "SL")
     
     edb.logger.info("Create Components and excitations.")
 

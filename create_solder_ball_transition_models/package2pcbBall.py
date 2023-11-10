@@ -5,6 +5,7 @@ from pyaedt import Hfss3dLayout
 from wrapperClasses.edb_wrapper_class import edb_wrapper_class
 
 
+#### BALL TRANSITION MODEL SCRIPT - PKG to PCB (via in pad)
 def bga_2_pcb_diff(prjPath, 
                    stackup,
                    ballPattern=[
@@ -492,6 +493,7 @@ def bga_2_pcb_diff(prjPath,
 # END
 
 
+#### BALL TRANSITION MODEL SCRIPT - PKG to PCB (via offset from pad)
 def bga_2_pcb_offset_diff(prjPath, 
                           stackup,
                           ballPattern=[
@@ -1004,6 +1006,7 @@ def bga_2_pcb_offset_diff(prjPath,
 # END
 
 
+#### BALL TRANSITION MODEL SCRIPT - PKG to PKG
 def bga_2_bga_diff(prjPath, 
                    stackup,
                    ballPattern=[

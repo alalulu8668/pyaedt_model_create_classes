@@ -33,8 +33,8 @@ def add_signal_offset_line_diff(edbWrapper,
         sigDir = sigPad['sigDir']
         diffPairCenter = sigPad['diffPairCenter']
         
-        if (bottomUp and abs(sigPol) < int(re.findall(r'\d+', layer)[0])) or \
-           (not(bottomUp) and abs(sigPol) > int(re.findall(r'\d+', layer)[0])):  # EMANHAN 231029
+        if (bottomUp and abs(sigPol) <= int(re.findall(r'\d+', layer)[0])) or \
+           (not(bottomUp) and abs(sigPol) >= int(re.findall(r'\d+', layer)[0])):  # EMANHAN 231029
 
             if sigPol > 0:
                 x1 = x0 + ' + (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'
