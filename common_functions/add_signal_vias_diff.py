@@ -16,7 +16,9 @@ def add_signal_vias_diff(edb,
                          viaType,
                          layers,
                          voids,
-                         gndLayers):
+                         gndLayers,
+                         bottomUp=True,  # EMANHAN 231110
+                         ):
     
     layersInt = [int(re.findall(r'\d+', x)[0]) for x in layers]  # EMANHAN 231029
     
@@ -30,9 +32,11 @@ def add_signal_vias_diff(edb,
         xC = sigVia['diffPairCenter'][0]
         yC = sigVia['diffPairCenter'][1]
 
-        t = [x - abs(sigPol) for x in layersInt]  # EMANHAN 231029
+        # t = [x - abs(sigPol) for x in layersInt]  # EMANHAN 231029
         
-        if not(-1 in t):          # EMANHAN 231029
+        if (bottomUp and not(-1 in [x - abs(sigPol) for x in layersInt])) or \
+           (not(bottomUp) and not(-1 in [abs(sigPol)-x for x in layersInt])):  
+        # if not(-1 in t):          # EMANHAN 231029
             viaList.append({'type': viaType,
                             'signal': sigName,
                             'x': x0,

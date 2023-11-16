@@ -24,6 +24,7 @@ from pyaedt_model_create_classes.common_functions.add_bga_ball_pads_diff \
      import add_bga_ball_pads_diff
 
 
+# EMANHAN 231029
 def createStripLine(edb, edb_wrapper,
                     gnd_layers,
                     lineStructList, lineNamesList, lineObjList,
@@ -248,16 +249,16 @@ def SL_TO_BALL_BOTTOM_DIFF(prjPath,
     # Add anti-pad parameters
     edb.add_design_variable('bottomAntiPad', 'ballPadBottomD/2+lineSpace')
     edb.add_design_variable('l1antiPadR_bottomBall', '0um')
-    edb.add_design_variable('l2antiPadR_bottomBall', 'bottomAntiPad')
-    edb.add_design_variable('l3antiPadR_bottomBall', 'bottomAntiPad')
-    edb.add_design_variable('l4antiPadR_bottomBall', 'bottomAntiPad')
-    edb.add_design_variable('l5antiPadR_bottomBall', 'bottomAntiPad')
-    edb.add_design_variable('l6antiPadR_bottomBall', 'bottomAntiPad')
+    edb.add_design_variable('l2antiPadR_bottomBall', '0um')
+    edb.add_design_variable('l3antiPadR_bottomBall', '0um')
+    edb.add_design_variable('l4antiPadR_bottomBall', '0um')
+    edb.add_design_variable('l5antiPadR_bottomBall', '0um')
+    edb.add_design_variable('l6antiPadR_bottomBall', '0um')
     edb.add_design_variable('l7antiPadR_bottomBall', 'bottomAntiPad')
     edb.add_design_variable('l8antiPadR_bottomBall', 'bottomAntiPad')
     edb.add_design_variable('l9antiPadR_bottomBall', 'bottomAntiPad')
     edb.add_design_variable('l10antiPadR_bottomBall', 'bottomAntiPad')
-    bottomBallList, bottomBallNames, sigNameList, bottom_signal_pads = \
+    bottomBallList, bottomBallNames, sigNameList, bottom_signal_pads, *args = \
         add_bga_ball_pads_diff(edb=edb,
                                edbWrapper=edb_wrapper,
                                ballList=bottomBallList,

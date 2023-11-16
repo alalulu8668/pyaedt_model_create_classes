@@ -15,6 +15,8 @@ from pyaedt_model_create_classes.common_functions.add_signal_lines_diff \
 def SL_DIFF(prjPath,
             stackup,
             numberOfdiffPairs=4,
+            coreMaterial='DS8505SQ',
+            prePregMaterial='DS8505SQ',
             totalLength='20000um',
             createAnalysis=False,
             designName = "L2_STRIP_LINE",
@@ -36,7 +38,7 @@ def SL_DIFF(prjPath,
     ##########################################################################
     #### GET DATA FOR THE SELECTED STACK-UP
     stackUp = stackup(edb)
-    designRules = stackUp.setup()
+    designRules = stackUp.setup(coreMaterial=coreMaterial, buMaterial=prePregMaterial)
 
     ##########################################################################
     #### DEFINE PROJECT VARIABLES FOR TEST BENCH
@@ -77,8 +79,6 @@ def SL_DIFF(prjPath,
                                               ' + 3*deembeddDist + shieldViaSpace')
 
     lineStructList = []
-    lineNamesList = []
-    lineObjList = []
     viaList = []
     viaNames = []
     # sigNameList = []
@@ -119,12 +119,12 @@ def SL_DIFF(prjPath,
 
     #### ADD SIGNAL LINES ON L2
     # Add first de-embedd line
-    lineStructList, lineNamesList, lineObjList, initLineEndCoordinateList = \
+    lineStructList, initLineNamesList, initLineObjList, initLineEndCoordinateList = \
             add_signal_lines_diff(
                 edbWrapper=edb_wrapper,
                 lineStructList=lineStructList,
-                lineNamesList=lineNamesList,
-                lineObjList=lineObjList,
+                lineNamesList=[],
+                lineObjList=[],
                 startViaCoordinateList=lineStartCoordinateList,
                 layer='L02',
                 lineLength='deembeddDist', lineWidth='lineWidth',
@@ -138,8 +138,8 @@ def SL_DIFF(prjPath,
             add_signal_lines_diff(
                 edbWrapper=edb_wrapper,
                 lineStructList=lineStructList,
-                lineNamesList=lineNamesList,
-                lineObjList=lineObjList,
+                lineNamesList=[],
+                lineObjList=[],
                 startViaCoordinateList=initLineEndCoordinateList,
                 layer='L02',
                 lineLength='totalRoutingLength', lineWidth='lineWidth',
@@ -149,12 +149,12 @@ def SL_DIFF(prjPath,
                 endStyle='Flat')
     
     # Add second de-embedd line
-    lineStructList, lineNamesList, lineObjList, exitLineEndCoordinateList = \
+    lineStructList, endLineNamesList, endLineObjList, exitLineEndCoordinateList = \
             add_signal_lines_diff(
                 edbWrapper=edb_wrapper,
                 lineStructList=lineStructList,
-                lineNamesList=lineNamesList,
-                lineObjList=lineObjList,
+                lineNamesList=[],
+                lineObjList=[],
                 startViaCoordinateList=mainLineEndCoordinateList,
                 layer='L02',
                 lineLength='deembeddDist', lineWidth='lineWidth',
@@ -193,8 +193,21 @@ def SL_DIFF(prjPath,
             )
         
     #### CREATE WAVE PORT ON END-LINES
-    # edb.hfss.create_differential_wave_port(lineObjList[-2], deembedLine_EndPoints[0]['coord'],
-    #                                        lineObjList[-1], deembedLine_EndPoints[1]['coord'], "SL_L2")
+    for lo in initLineObjList:
+        lo.create_edge_port(name='Port0_' + lo.net_name,
+                            position='Start', port_type='Gap')
+    for lo in endLineObjList:
+        lo.create_edge_port(name='Port1_' + lo.net_name,
+                            position='End', port_type='Gap')
+
+    tmpList = [x.replace('Port0_', '').replace('Port1_', '').replace('_P', '').replace('_N', '') for x in edb.ports.keys()]
+    uniqueNets = []
+    for x in tmpList:
+        if x not in uniqueNets:
+            uniqueNets.append(x)
+    for net in uniqueNets:
+        edb.ports['Port0_' + net + '_P'].couple_ports(port=edb.ports['Port0_' + net + '_N'])
+        edb.ports['Port1_' + net + '_P'].couple_ports(port=edb.ports['Port1_' + net + '_N'])
     
     edb.logger.info("Create Components and excitations.")
 

@@ -4,8 +4,8 @@ from pyaedt import Edb
 from pyaedt import Hfss3dLayout
 from pyaedt_wrapper_classes.edb_wrapper_class import edb_wrapper_class
 
-from pyaedt_model_create_classes.common_functions.add_4x_gnd_vias_on_bga_ball_pads \
-    import add_4x_gnd_vias_on_bga_ball_pads
+from pyaedt_model_create_classes.common_functions.add_1x_gnd_vias_on_bga_ball_pads \
+    import add_1x_gnd_vias_on_bga_ball_pads
 from pyaedt_model_create_classes.common_functions.add_coax_gnd_vias_around_signal_diff \
      import add_coax_gnd_vias_around_signal_diff
 from pyaedt_model_create_classes.common_functions.add_gnd_vias_around_signal_lines \
@@ -41,9 +41,9 @@ def createStripLine(edb, edb_wrapper,
             lineObjList=lineObjList,
             startViaCoordinateList=startViaCoordinateList,
             layer='L0' + str(layerNo),
-            lineLength='l' + str(layerNo) + '_fanout_length', lineWidth='bottomTune1_width',
+            lineLength='l' + str(layerNo) + '_fanout_length', lineWidth='topTune1_width',
             diffLineSpace='diffLineSpace', fanOutAngle='l' + str(layerNo) + '_fanout_angle',
-            voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'bottomTune1_width + 2*lineSpace'],
+            voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'topTune1_width + 2*lineSpace'],
             gndLayers=gnd_layers)
 
     # Add first tuneline
@@ -55,9 +55,9 @@ def createStripLine(edb, edb_wrapper,
                 lineObjList=lineObjList,
                 startViaCoordinateList=foLine_EndPoints,
                 layer='L0' + str(layerNo),
-                lineLength='bottomTune1_length', lineWidth='bottomTune1_width',
+                lineLength='topTune1_length', lineWidth='topTune1_width',
                 diffLineSpace='diffLineSpace',
-                voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'bottomTune1_width + 2*lineSpace'],
+                voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'topTune1_width + 2*lineSpace'],
                 gndLayers=gnd_layers)
 
     # Add second tuneline
@@ -69,9 +69,9 @@ def createStripLine(edb, edb_wrapper,
                 lineObjList=lineObjList,
                 startViaCoordinateList=tuneLine1_EndPoints,
                 layer='L0' + str(layerNo),
-                lineLength='bottomTune2_length', lineWidth='bottomTune2_width',
+                lineLength='topTune2_length', lineWidth='topTune2_width',
                 diffLineSpace='diffLineSpace',
-                voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'bottomTune2_width + 2*lineSpace'],
+                voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'topTune2_width + 2*lineSpace'],
                 gndLayers=gnd_layers)
 
     # Add deembedding line
@@ -102,7 +102,7 @@ def createStripLine(edb, edb_wrapper,
             noVias=noV, viaSpace='shieldViaSpace',
             viaType='L' + str(layerNo-1) + '_L' + str(layerNo) + '_VIA',
             layers=['L0' + str(layerNo-1), 'L0' + str(layerNo)],
-            lineWidth='max(max(bottomTune1_width, bottomTune2_width), lineWidth)',
+            lineWidth='max(max(topTune1_width, topTune2_width), lineWidth)',
             lineToViaSpace='(lineSpace + max(l' + str(layerNo-1) + 'viaD, l' + str(layerNo) + 'viaD)/2)',
             gndLayers=gnd_layers, 
             )
@@ -114,7 +114,7 @@ def createStripLine(edb, edb_wrapper,
             noVias=noV, viaSpace='shieldViaSpace',
             viaType='L' + str(layerNo) + '_L' + str(layerNo+1) + '_VIA',
             layers=['L0' + str(layerNo), 'L0' + str(layerNo+1)],
-            lineWidth='max(max(bottomTune1_width, bottomTune2_width), lineWidth)',
+            lineWidth='max(max(topTune1_width, topTune2_width), lineWidth)',
             lineToViaSpace='(lineSpace + max(l' + str(layerNo) + 'viaD, l' + str(layerNo+1) + 'viaD)/2)',
             gndLayers=gnd_layers, 
             )
@@ -123,17 +123,19 @@ def createStripLine(edb, edb_wrapper,
         lineStructList, lineNamesList, lineObjList, deembedLine_EndPoints
 
 
-#### CSP BALL to SL_L4 MULTI SIGNALS
-def BALL_TOP_TO_L4_SL_DIFF(prjPath,
-                           stackup,
-                           ballPattern,
-                           sigNamePattern=[],
-                           ballPitchTop='500um',
-                           totalLength='2000um',
-                           createAnalysis=False,
-                           designName = "SiP_TOP_TO_L4",
-                           edbversion="2022.2",
-                           ):
+#### CSP BALL to SL MULTI SIGNALS
+def BALL_TOP_TO_SL_DIFF(prjPath,
+                        stackup,
+                        ballPattern,
+                        sigNamePattern=[],
+                        ballPitchTop='500um',
+                        coreMaterial='DS8505SQ',
+                        prePregMaterial='DS8505SQ',
+                        totalLength='2000um',
+                        createAnalysis=False,
+                        designName = "SiP_TOP_TO_L4",
+                        edbversion="2022.2",
+                        ):
 
     ##########################################################################
     ####  START ACCESS TO ANSYS ELECTRONIC DATABASE  
@@ -153,7 +155,7 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
     ##########################################################################
     #### GET DATA FOR THE SELECTED STACK-UP
     stackUp = stackup(edb)
-    designRules = stackUp.setup()
+    designRules = stackUp.setup(coreMaterial=coreMaterial, buMaterial=prePregMaterial)
 
     ##########################################################################
     #### DEFINE PROJECT VARIABLES FOR TEST BENCH
@@ -249,9 +251,9 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
                                sigNamePattern=sigNamePattern,
                                ballPitch='ballPitchTop')
 
-    #### ADD 4x GND VIAS AT GND PADS ON TOP
+    #### ADD 1x GND VIAS AT GND PADS ON TOP
     viaList, viaNames = \
-        add_4x_gnd_vias_on_bga_ball_pads(
+        add_1x_gnd_vias_on_bga_ball_pads(
             edbWrapper=edb_wrapper,
             viaList=viaList, viaNames=viaNames,
             ballPattern=ballPattern,
@@ -260,7 +262,7 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
             gndLayers=gnd_layers,
             ballPitch='ballPitchTop',
             angleOffset=0,
-            radialOffset='max(l1viaD, l2viaD)')
+            radialOffset='0um')
 
     #### ADD GND VIAS AROUND SIGNAL PADS IN TOP
     # Add coaxial via-via spacing parameters

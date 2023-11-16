@@ -41,9 +41,9 @@ def createStripLine(edb, edb_wrapper,
             lineObjList=lineObjList,
             startViaCoordinateList=startViaCoordinateList,
             layer='L0' + str(layerNo),
-            lineLength='l' + str(layerNo) + '_fanout_length', lineWidth='bottomTune1_width',
+            lineLength='l' + str(layerNo) + '_fanout_length', lineWidth='topTune1_width',
             diffLineSpace='diffLineSpace', fanOutAngle='l' + str(layerNo) + '_fanout_angle',
-            voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'bottomTune1_width + 2*lineSpace'],
+            voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'topTune1_width + 2*lineSpace'],
             gndLayers=gnd_layers)
 
     # Add first tuneline
@@ -55,9 +55,9 @@ def createStripLine(edb, edb_wrapper,
                 lineObjList=lineObjList,
                 startViaCoordinateList=foLine_EndPoints,
                 layer='L0' + str(layerNo),
-                lineLength='bottomTune1_length', lineWidth='bottomTune1_width',
+                lineLength='topTune1_length', lineWidth='topTune1_width',
                 diffLineSpace='diffLineSpace',
-                voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'bottomTune1_width + 2*lineSpace'],
+                voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'topTune1_width + 2*lineSpace'],
                 gndLayers=gnd_layers)
 
     # Add second tuneline
@@ -69,9 +69,9 @@ def createStripLine(edb, edb_wrapper,
                 lineObjList=lineObjList,
                 startViaCoordinateList=tuneLine1_EndPoints,
                 layer='L0' + str(layerNo),
-                lineLength='bottomTune2_length', lineWidth='bottomTune2_width',
+                lineLength='topTune2_length', lineWidth='topTune2_width',
                 diffLineSpace='diffLineSpace',
-                voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'bottomTune2_width + 2*lineSpace'],
+                voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'topTune2_width + 2*lineSpace'],
                 gndLayers=gnd_layers)
 
     # Add deembedding line
@@ -102,7 +102,7 @@ def createStripLine(edb, edb_wrapper,
             noVias=noV, viaSpace='shieldViaSpace',
             viaType='L' + str(layerNo-1) + '_L' + str(layerNo) + '_VIA',
             layers=['L0' + str(layerNo-1), 'L0' + str(layerNo)],
-            lineWidth='max(max(bottomTune1_width, bottomTune2_width), lineWidth)',
+            lineWidth='max(max(topTune1_width, topTune2_width), lineWidth)',
             lineToViaSpace='(lineSpace + max(l' + str(layerNo-1) + 'viaD, l' + str(layerNo) + 'viaD)/2)',
             gndLayers=gnd_layers, 
             )
@@ -114,7 +114,7 @@ def createStripLine(edb, edb_wrapper,
             noVias=noV, viaSpace='shieldViaSpace',
             viaType='L' + str(layerNo) + '_L' + str(layerNo+1) + '_VIA',
             layers=['L0' + str(layerNo), 'L0' + str(layerNo+1)],
-            lineWidth='max(max(bottomTune1_width, bottomTune2_width), lineWidth)',
+            lineWidth='max(max(topTune1_width, topTune2_width), lineWidth)',
             lineToViaSpace='(lineSpace + max(l' + str(layerNo) + 'viaD, l' + str(layerNo+1) + 'viaD)/2)',
             gndLayers=gnd_layers, 
             )
@@ -123,17 +123,17 @@ def createStripLine(edb, edb_wrapper,
         lineStructList, lineNamesList, lineObjList, deembedLine_EndPoints
 
 
-#### CSP BALL to SL_L4 MULTI SIGNALS
-def BALL_TOP_TO_L4_SL_DIFF(prjPath,
-                           stackup,
-                           ballPattern,
-                           sigNamePattern=[],
-                           ballPitchTop='500um',
-                           totalLength='2000um',
-                           createAnalysis=False,
-                           designName = "SiP_TOP_TO_L4",
-                           edbversion="2022.2",
-                           ):
+#### CSP BALL to SL MULTI SIGNALS
+def BALL_TOP_TO_SL_DIFF(prjPath,
+                        stackup,
+                        ballPattern,
+                        sigNamePattern=[],
+                        ballPitchTop='500um',
+                        totalLength='2000um',
+                        createAnalysis=False,
+                        designName = "SiP_TOP_TO_L4",
+                        edbversion="2022.2",
+                        ):
 
     ##########################################################################
     ####  START ACCESS TO ANSYS ELECTRONIC DATABASE  
@@ -370,6 +370,22 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
     #         gndLayers=gnd_layers, 
     #         angleOffset=0,
     #         viaOffset='mViaOffset_l2l3_l1l2via')
+
+    #### ADD SIGNAL LINES ON L2
+    viaList, viaNames,\
+        lineStructList, lineNamesList, lineObjList,\
+            deembedLine_EndPoints_L2 = \
+    createStripLine(edb=edb,
+                    edb_wrapper=edb_wrapper,
+                    gnd_layers=gnd_layers,
+                    lineStructList=lineStructList,
+                    lineNamesList=lineNamesList,
+                    lineObjList=lineObjList,
+                    viaList=viaList,
+                    viaNames=viaNames,
+                    startViaCoordinateList=l1l2_signal_vias, 
+                    layerNo=2,
+                    )
         
     #### ADD OFFSET LINE ON L2
     # Via offset parameters
@@ -547,9 +563,9 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
                   if x.GetName() in topBallNames]
     topBgaComp = edb.core_components.create(pins=topBgaPins, component_name='U0', placement_layer='L01')
     
-    #### CREATE WAVE PORT ON END-LINES
-    edb.hfss.create_differential_wave_port(lineObjList[-2], deembedLine_EndPoints_L4[0]['coord'],
-                                           lineObjList[-1], deembedLine_EndPoints_L4[1]['coord'], "SL_L4")
+    # #### CREATE WAVE PORT ON END-LINES
+    # edb.hfss.create_differential_wave_port(lineObjList[-2], deembedLine_EndPoints_L4[0]['coord'],
+    #                                        lineObjList[-1], deembedLine_EndPoints_L4[1]['coord'], "SL_L4")
     
     edb.logger.info("Create Components and excitations.")
 
@@ -567,6 +583,26 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
     if createAnalysis:
         pass
         # setup, sweep = createAnalysis(h3d=h3d)
+
+    # # CHANGE SOLDER BALL PROPERITES
+    # for cmp in list(h3d.modeler.components):
+    #     h3d.modeler.components[cmp].set_solderball(solderball_type=None)    
+      
+    # ########################################################################    
+
+    # for p in [x for x in h3d.modeler.pins.keys() if 'U0' in x]:
+    #     h3d.modeler.pins[p].set_property_value(property_name='Pad Port Layer', property_value='BGA_N1')
+    # for p in [x for x in h3d.modeler.pins.keys() if 'U1' in x]:
+    #     h3d.modeler.pins[p].set_property_value(property_name='Pad Port Layer', property_value='PCB_N1')
+        
+    # for u in [x for x in h3d.boundaries if 'U0' in x.name]:
+    #     u.props['Layer Alignment'] = 'Lower'
+    #     u.props['Radial Extent Factor'] = '100um'
+    #     u.update()
+    # for u in [x for x in h3d.boundaries if 'U1' in x.name]:
+    #     u.props['Layer Alignment'] = 'Upper'
+    #     u.props['Radial Extent Factor'] = '100um'
+    #     u.update()
 
     h3d.save_project()
     h3d.archive_project(include_results_file=False)

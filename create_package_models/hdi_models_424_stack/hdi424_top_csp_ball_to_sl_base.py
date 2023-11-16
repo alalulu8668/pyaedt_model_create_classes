@@ -4,8 +4,8 @@ from pyaedt import Edb
 from pyaedt import Hfss3dLayout
 from pyaedt_wrapper_classes.edb_wrapper_class import edb_wrapper_class
 
-from pyaedt_model_create_classes.common_functions.add_4x_gnd_vias_on_bga_ball_pads \
-    import add_4x_gnd_vias_on_bga_ball_pads
+from pyaedt_model_create_classes.common_functions.add_1x_gnd_vias_on_bga_ball_pads \
+    import add_1x_gnd_vias_on_bga_ball_pads
 from pyaedt_model_create_classes.common_functions.add_coax_gnd_vias_around_signal_diff \
      import add_coax_gnd_vias_around_signal_diff
 from pyaedt_model_create_classes.common_functions.add_gnd_vias_around_signal_lines \
@@ -41,9 +41,9 @@ def createStripLine(edb, edb_wrapper,
             lineObjList=lineObjList,
             startViaCoordinateList=startViaCoordinateList,
             layer='L0' + str(layerNo),
-            lineLength='l' + str(layerNo) + '_fanout_length', lineWidth='bottomTune1_width',
+            lineLength='l' + str(layerNo) + '_fanout_length', lineWidth='topTune1_width',
             diffLineSpace='diffLineSpace', fanOutAngle='l' + str(layerNo) + '_fanout_angle',
-            voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'bottomTune1_width + 2*lineSpace'],
+            voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'topTune1_width + 2*lineSpace'],
             gndLayers=gnd_layers)
 
     # Add first tuneline
@@ -55,9 +55,9 @@ def createStripLine(edb, edb_wrapper,
                 lineObjList=lineObjList,
                 startViaCoordinateList=foLine_EndPoints,
                 layer='L0' + str(layerNo),
-                lineLength='bottomTune1_length', lineWidth='bottomTune1_width',
+                lineLength='topTune1_length', lineWidth='topTune1_width',
                 diffLineSpace='diffLineSpace',
-                voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'bottomTune1_width + 2*lineSpace'],
+                voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'topTune1_width + 2*lineSpace'],
                 gndLayers=gnd_layers)
 
     # Add second tuneline
@@ -69,9 +69,9 @@ def createStripLine(edb, edb_wrapper,
                 lineObjList=lineObjList,
                 startViaCoordinateList=tuneLine1_EndPoints,
                 layer='L0' + str(layerNo),
-                lineLength='bottomTune2_length', lineWidth='bottomTune2_width',
+                lineLength='topTune2_length', lineWidth='topTune2_width',
                 diffLineSpace='diffLineSpace',
-                voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'bottomTune2_width + 2*lineSpace'],
+                voids=['L0' + str(layerNo), 'gndPlaneL0' + str(layerNo), 'topTune2_width + 2*lineSpace'],
                 gndLayers=gnd_layers)
 
     # Add deembedding line
@@ -102,7 +102,7 @@ def createStripLine(edb, edb_wrapper,
             noVias=noV, viaSpace='shieldViaSpace',
             viaType='L' + str(layerNo-1) + '_L' + str(layerNo) + '_VIA',
             layers=['L0' + str(layerNo-1), 'L0' + str(layerNo)],
-            lineWidth='max(max(bottomTune1_width, bottomTune2_width), lineWidth)',
+            lineWidth='max(max(topTune1_width, topTune2_width), lineWidth)',
             lineToViaSpace='(lineSpace + max(l' + str(layerNo-1) + 'viaD, l' + str(layerNo) + 'viaD)/2)',
             gndLayers=gnd_layers, 
             )
@@ -114,7 +114,7 @@ def createStripLine(edb, edb_wrapper,
             noVias=noV, viaSpace='shieldViaSpace',
             viaType='L' + str(layerNo) + '_L' + str(layerNo+1) + '_VIA',
             layers=['L0' + str(layerNo), 'L0' + str(layerNo+1)],
-            lineWidth='max(max(bottomTune1_width, bottomTune2_width), lineWidth)',
+            lineWidth='max(max(topTune1_width, topTune2_width), lineWidth)',
             lineToViaSpace='(lineSpace + max(l' + str(layerNo) + 'viaD, l' + str(layerNo+1) + 'viaD)/2)',
             gndLayers=gnd_layers, 
             )
@@ -123,17 +123,19 @@ def createStripLine(edb, edb_wrapper,
         lineStructList, lineNamesList, lineObjList, deembedLine_EndPoints
 
 
-#### CSP BALL to SL_L4 MULTI SIGNALS
-def BALL_TOP_TO_L4_SL_DIFF(prjPath,
-                           stackup,
-                           ballPattern,
-                           sigNamePattern=[],
-                           ballPitchTop='500um',
-                           totalLength='2000um',
-                           createAnalysis=False,
-                           designName = "SiP_TOP_TO_L4",
-                           edbversion="2022.2",
-                           ):
+#### CSP BALL to SL MULTI SIGNALS
+def BALL_TOP_TO_SL_DIFF(prjPath,
+                        stackup,
+                        ballPattern,
+                        sigNamePattern=[],
+                        ballPitchTop='500um',
+                        coreMaterial='DS8505SQ',
+                        prePregMaterial='DS8505SQ',
+                        totalLength='2000um',
+                        createAnalysis=False,
+                        designName = "SiP_TOP_TO_L4",
+                        edbversion="2022.2",
+                        ):
 
     ##########################################################################
     ####  START ACCESS TO ANSYS ELECTRONIC DATABASE  
@@ -153,7 +155,7 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
     ##########################################################################
     #### GET DATA FOR THE SELECTED STACK-UP
     stackUp = stackup(edb)
-    designRules = stackUp.setup()
+    designRules = stackUp.setup(coreMaterial=coreMaterial, buMaterial=prePregMaterial)
 
     ##########################################################################
     #### DEFINE PROJECT VARIABLES FOR TEST BENCH
@@ -249,9 +251,9 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
                                sigNamePattern=sigNamePattern,
                                ballPitch='ballPitchTop')
 
-    #### ADD 4x GND VIAS AT GND PADS ON TOP
+    #### ADD 1x GND VIAS AT GND PADS ON TOP
     viaList, viaNames = \
-        add_4x_gnd_vias_on_bga_ball_pads(
+        add_1x_gnd_vias_on_bga_ball_pads(
             edbWrapper=edb_wrapper,
             viaList=viaList, viaNames=viaNames,
             ballPattern=ballPattern,
@@ -260,7 +262,7 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
             gndLayers=gnd_layers,
             ballPitch='ballPitchTop',
             angleOffset=0,
-            radialOffset='max(l1viaD, l2viaD)')
+            radialOffset='0um')
 
     #### ADD GND VIAS AROUND SIGNAL PADS IN TOP
     # Add coaxial via-via spacing parameters
@@ -307,9 +309,9 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
         
     #### ADD OFFSET LINE ON L1
     # Via offset parameters
-    edb.add_design_variable('l1offsL', '0um')
-    edb.add_design_variable('l1offsW', '0um')
-    edb.add_design_variable('l1offsDir', '0deg')
+    edb.add_design_variable('l1offsL', 'l1viaD')
+    edb.add_design_variable('l1offsW', 'l1viaD')
+    edb.add_design_variable('l1offsDir', '30deg')
     lineStructList, lineNamesList, lineObjList, l1l2_signal_vias = \
         add_signal_offset_line_diff(
             edbWrapper=edb_wrapper,
@@ -327,10 +329,10 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
 
     #### ADD SIGNAL VIAS FROM L1 to L2
     # Add anti-pad parameters
-    # edb.add_design_variable('l1antiPadR_l1l2via', 'l1viaD/2 + lineSpace')
-    # edb.add_design_variable('l2antiPadR_l1l2via', 'l2viaD/2 + lineSpace')
-    # edb.add_design_variable('l3antiPadR_l1l2via', '0um')
-    # edb.add_design_variable('l4antiPadR_l1l2via', '0um')
+    edb.add_design_variable('l1antiPadR_l1l2via', 'l1viaD/2 + lineSpace')
+    edb.add_design_variable('l2antiPadR_l1l2via', 'l2viaD/2 + lineSpace')
+    edb.add_design_variable('l3antiPadR_l1l2via', '0um')
+    edb.add_design_variable('l4antiPadR_l1l2via', '0um')
     viaList, viaNames = \
         add_signal_vias_diff(
             edb=edb, edbWrapper=edb_wrapper,
@@ -338,44 +340,60 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
             signalViaCoordinateList=l1l2_signal_vias,
             viaType='L1_L2_VIA', layers=['L01', 'L02'],
             voids=[
-                # 'L01', 'gndPlaneL01', 'l1antiPadR_l1l2via',
-                # 'L02', 'gndPlaneL02', 'l2antiPadR_l1l2via',
-                # 'L03', 'gndPlaneL03', 'l3antiPadR_l1l2via',
-                # 'L04', 'gndPlaneL04', 'l4antiPadR_l1l2via',
+                'L01', 'gndPlaneL01', 'l1antiPadR_l1l2via',
+                'L02', 'gndPlaneL02', 'l2antiPadR_l1l2via',
+                'L03', 'gndPlaneL03', 'l3antiPadR_l1l2via',
+                'L04', 'gndPlaneL04', 'l4antiPadR_l1l2via',
                 ],
             gndLayers=gnd_layers,
             bottomUp=False,  # EMANHAN 231110
             )
 
     #### ADD GND VIAS AROUND L1-L2 SIGNAL VIAS
-    # # Add coaxial via-via spacing parameters
-    # edb.add_design_variable('mViaOffset_l1l2_l1l2via', 'max(l1antiPadR_l1l2via, l2antiPadR_l1l2via) + lineSpace')
-    # edb.add_design_variable('mViaOffset_l2l3_l1l2via', 'max(l2antiPadR_l1l2via, l3antiPadR_l1l2via) + lineSpace')
-    # edb.add_design_variable('mViaOffset_l3l4_l1l2via', 'max(l3antiPadR_l1l2via, l4antiPadR_l1l2via) + lineSpace')
-    # # L1-L2
-    # viaList, viaNames = \
-    #     add_coax_gnd_vias_around_signal_diff(
-    #         edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
-    #         signalViaCoordinateList=l1l2_signal_vias,
-    #         viaType='L1_L2_VIA', layers=['L01', 'L02'],
-    #         gndLayers=gnd_layers, 
-    #         angleOffset=0,
-    #         viaOffset='mViaOffset_l1l2_l1l2via')
-    # # L2-L3
-    # viaList, viaNames = \
-    #     add_coax_gnd_vias_around_signal_diff(
-    #         edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
-    #         signalViaCoordinateList=l1l2_signal_vias,
-    #         viaType='L2_L3_VIA', layers=['L02', 'L03'],
-    #         gndLayers=gnd_layers, 
-    #         angleOffset=0,
-    #         viaOffset='mViaOffset_l2l3_l1l2via')
+    # Add coaxial via-via spacing parameters
+    edb.add_design_variable('mViaOffset_l1l2_l1l2via', 'max(l1antiPadR_l1l2via, l2antiPadR_l1l2via) + lineSpace')
+    edb.add_design_variable('mViaOffset_l2l3_l1l2via', 'max(l2antiPadR_l1l2via, l3antiPadR_l1l2via) + lineSpace')
+    edb.add_design_variable('mViaOffset_l3l4_l1l2via', 'max(l3antiPadR_l1l2via, l4antiPadR_l1l2via) + lineSpace')
+    # L1-L2
+    viaList, viaNames = \
+        add_coax_gnd_vias_around_signal_diff(
+            edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
+            signalViaCoordinateList=l1l2_signal_vias,
+            viaType='L1_L2_VIA', layers=['L01', 'L02'],
+            gndLayers=gnd_layers, 
+            angleOffset=0,
+            viaOffset='mViaOffset_l1l2_l1l2via')
+    # L2-L3
+    viaList, viaNames = \
+        add_coax_gnd_vias_around_signal_diff(
+            edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
+            signalViaCoordinateList=l1l2_signal_vias,
+            viaType='L2_L3_VIA', layers=['L02', 'L03'],
+            gndLayers=gnd_layers, 
+            angleOffset=0,
+            viaOffset='mViaOffset_l2l3_l1l2via')
+
+    #### ADD SIGNAL LINES ON L2
+    viaList, viaNames,\
+        lineStructList, lineNamesList, lineObjList,\
+            deembedLine_EndPoints_L2 = \
+    createStripLine(edb=edb,
+                    edb_wrapper=edb_wrapper,
+                    gnd_layers=gnd_layers,
+                    lineStructList=lineStructList,
+                    lineNamesList=lineNamesList,
+                    lineObjList=lineObjList,
+                    viaList=viaList,
+                    viaNames=viaNames,
+                    startViaCoordinateList=l1l2_signal_vias, 
+                    layerNo=2,
+                    )
         
     #### ADD OFFSET LINE ON L2
     # Via offset parameters
     edb.add_design_variable('l2offsL', 'l1viaD/2 + l2viaD/2')
     edb.add_design_variable('l2offsW', 'max(l1viaD, l2viaD)')
-    edb.add_design_variable('l2offsDir', '45deg')
+    edb.add_design_variable('l2offsDir', '180deg')
     lineStructList, lineNamesList, lineObjList, l2l3_signal_vias = \
         add_signal_offset_line_diff(
             edbWrapper=edb_wrapper,
@@ -391,11 +409,11 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
             )
 
     #### ADD SIGNAL VIAS FROM L2 to L3
-    # # Add anti-pad parameters
-    # edb.add_design_variable('l1antiPadR_l2l3via', '0um')
-    # edb.add_design_variable('l2antiPadR_l2l3via', 'l2viaD/2 + lineSpace')
-    # edb.add_design_variable('l3antiPadR_l2l3via', 'l3viaD/2 + lineSpace')
-    # edb.add_design_variable('l4antiPadR_l2l3via', '0um')
+    # Add anti-pad parameters
+    edb.add_design_variable('l1antiPadR_l2l3via', '0um')
+    edb.add_design_variable('l2antiPadR_l2l3via', 'l2viaD/2 + lineSpace')
+    edb.add_design_variable('l3antiPadR_l2l3via', 'l3viaD/2 + lineSpace')
+    edb.add_design_variable('l4antiPadR_l2l3via', '0um')
     viaList, viaNames = \
         add_signal_vias_diff(
             edb=edb, edbWrapper=edb_wrapper,
@@ -403,53 +421,51 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
             signalViaCoordinateList=l2l3_signal_vias,
             viaType='L2_L3_VIA',
             layers=['L02', 'L03'],
-            voids=[
-                # 'L01', 'gndPlaneL01', 'l1antiPadR_l2l3via',
-                # 'L02', 'gndPlaneL02', 'l2antiPadR_l2l3via',
-                # 'L03', 'gndPlaneL03', 'l3antiPadR_l2l3via',
-                # 'L04', 'gndPlaneL04', 'l4antiPadR_l2l3via',
-                ],
+            voids=['L01', 'gndPlaneL01', 'l1antiPadR_l2l3via',
+                   'L02', 'gndPlaneL02', 'l2antiPadR_l2l3via',
+                   'L03', 'gndPlaneL03', 'l3antiPadR_l2l3via',
+                   'L04', 'gndPlaneL04', 'l4antiPadR_l2l3via'],
             gndLayers=gnd_layers,
             bottomUp=False,  # EMANHAN 231110
             )
     
     #### ADD GND VIAS AROUND L2-L3 SIGNAL VIAS
-    # # Add coaxial via-via spacing parameters
-    # edb.add_design_variable('mViaOffset_l1l2_l2l3via', 'max(l1antiPadR_l2l3via, l2antiPadR_l2l3via) + lineSpace')
-    # edb.add_design_variable('mViaOffset_l2l3_l2l3via', 'max(l2antiPadR_l2l3via, l3antiPadR_l2l3via) + lineSpace')
-    # edb.add_design_variable('mViaOffset_l3l4_l2l3via', 'max(l3antiPadR_l2l3via, l4antiPadR_l2l3via) + lineSpace')
-    # # L1-L2
-    # viaList, viaNames = \
-    #     add_coax_gnd_vias_around_signal_diff(
-    #         edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
-    #         signalViaCoordinateList=l2l3_signal_vias,
-    #         viaType='L1_L2_VIA',
-    #         layers=['L01', 'L02'],
-    #         gndLayers=gnd_layers, 
-    #         viaOffset='mViaOffset_l1l2_l2l3via')
-    # # L2-L3
-    # viaList, viaNames = \
-    #     add_coax_gnd_vias_around_signal_diff(
-    #         edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
-    #         signalViaCoordinateList=l2l3_signal_vias,
-    #         viaType='L2_L3_VIA',
-    #         layers=['L02', 'L03'],
-    #         gndLayers=gnd_layers, 
-    #         viaOffset='mViaOffset_l2l3_l2l3via')
-    # # L3-L4
-    # viaList, viaNames = \
-    #     add_coax_gnd_vias_around_signal_diff(
-    #         edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
-    #         signalViaCoordinateList=l2l3_signal_vias,
-    #         viaType='L3_L4_VIA',
-    #         layers=['L03', 'L04'],
-    #         gndLayers=gnd_layers, 
-    #         viaOffset='mViaOffset_l3l4_l2l3via')
+    # Add coaxial via-via spacing parameters
+    edb.add_design_variable('mViaOffset_l1l2_l2l3via', 'max(l1antiPadR_l2l3via, l2antiPadR_l2l3via) + lineSpace')
+    edb.add_design_variable('mViaOffset_l2l3_l2l3via', 'max(l2antiPadR_l2l3via, l3antiPadR_l2l3via) + lineSpace')
+    edb.add_design_variable('mViaOffset_l3l4_l2l3via', 'max(l3antiPadR_l2l3via, l4antiPadR_l2l3via) + lineSpace')
+    # L1-L2
+    viaList, viaNames = \
+        add_coax_gnd_vias_around_signal_diff(
+            edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
+            signalViaCoordinateList=l2l3_signal_vias,
+            viaType='L1_L2_VIA',
+            layers=['L01', 'L02'],
+            gndLayers=gnd_layers, 
+            viaOffset='mViaOffset_l1l2_l2l3via')
+    # L2-L3
+    viaList, viaNames = \
+        add_coax_gnd_vias_around_signal_diff(
+            edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
+            signalViaCoordinateList=l2l3_signal_vias,
+            viaType='L2_L3_VIA',
+            layers=['L02', 'L03'],
+            gndLayers=gnd_layers, 
+            viaOffset='mViaOffset_l2l3_l2l3via')
+    # L3-L4
+    viaList, viaNames = \
+        add_coax_gnd_vias_around_signal_diff(
+            edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
+            signalViaCoordinateList=l2l3_signal_vias,
+            viaType='L3_L4_VIA',
+            layers=['L03', 'L04'],
+            gndLayers=gnd_layers, 
+            viaOffset='mViaOffset_l3l4_l2l3via')
 
     #### ADD OFFSET LINE ON L3
     # Via offset parameters
-    edb.add_design_variable('l3offsL', '0um')
-    edb.add_design_variable('l3offsW', '0um')
+    edb.add_design_variable('l3offsL', 'l2viaD/2 + l3viaD/2')
+    edb.add_design_variable('l3offsW', 'max(l2viaD, l3viaD)')
     edb.add_design_variable('l3offsDir', '0deg')
     lineStructList, lineNamesList, lineObjList, l3l4_signal_vias = \
         add_signal_offset_line_diff(
@@ -466,12 +482,12 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
             )
         
     #### ADD SIGNAL VIAS FROM L3 to L4
-    # # Add anti-pad parameters
-    # edb.add_design_variable('l1antiPadR_l3l4via', '0um')
-    # edb.add_design_variable('l2antiPadR_l3l4via', '0um')
-    # edb.add_design_variable('l3antiPadR_l3l4via', 'l3viaD/2 + lineSpace')
-    # edb.add_design_variable('l4antiPadR_l3l4via', 'l4viaD/2 + lineSpace')
-    # edb.add_design_variable('l5antiPadR_l3l4via', '0um')
+    # Add anti-pad parameters
+    edb.add_design_variable('l1antiPadR_l3l4via', '0um')
+    edb.add_design_variable('l2antiPadR_l3l4via', '0um')
+    edb.add_design_variable('l3antiPadR_l3l4via', 'l3viaD/2 + lineSpace')
+    edb.add_design_variable('l4antiPadR_l3l4via', 'l4viaD/2 + lineSpace')
+    edb.add_design_variable('l5antiPadR_l3l4via', '0um')
     viaList, viaNames = \
         add_signal_vias_diff(
             edb=edb, edbWrapper=edb_wrapper,
@@ -479,52 +495,50 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
             signalViaCoordinateList=l3l4_signal_vias,
             viaType='L3_L4_VIA',
             layers=['L03', 'L04'],
-            voids=[
-                # 'L01', 'gndPlaneL01', 'l1antiPadR_l3l4via',
-                # 'L02', 'gndPlaneL02', 'l2antiPadR_l3l4via',
-                # 'L03', 'gndPlaneL03', 'l3antiPadR_l3l4via',
-                # 'L04', 'gndPlaneL04', 'l4antiPadR_l3l4via',
-                # 'L05', 'gndPlaneL05', 'l5antiPadR_l3l4via',
-                ],
+            voids=['L01', 'gndPlaneL01', 'l1antiPadR_l3l4via',
+                   'L02', 'gndPlaneL02', 'l2antiPadR_l3l4via',
+                   'L03', 'gndPlaneL03', 'l3antiPadR_l3l4via',
+                   'L04', 'gndPlaneL04', 'l4antiPadR_l3l4via',
+                   'L05', 'gndPlaneL05', 'l5antiPadR_l3l4via'],
             gndLayers=gnd_layers,
             bottomUp=False,  # EMANHAN 231110
             )
         
     #### ADD GND VIAS AROUND L3-L4 SIGNAL VIAS
-    # # Add coaxial via-via spacing parameters
-    # edb.add_design_variable('mViaOffset_l2l3_l3l4via',
-    #                         'max(l2antiPadR_l3l4via, l3antiPadR_l3l4via) + lineSpace')
-    # edb.add_design_variable('mViaOffset_l3l4_l3l4via',
-    #                         'max(l3antiPadR_l3l4via, l4antiPadR_l3l4via) + lineSpace')
-    # edb.add_design_variable('mViaOffset_l4l5_l3l4via',
-    #                         'max(l4antiPadR_l3l4via, l5antiPadR_l3l4via) + lineSpace')
-    # # L2-L3
-    # viaList, viaNames = \
-    #     add_coax_gnd_vias_around_signal_diff(
-    #         edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
-    #         signalViaCoordinateList=l3l4_signal_vias,
-    #         viaType='L2_L3_VIA',
-    #         layers=['L02', 'L03'],
-    #         gndLayers=gnd_layers, 
-    #         viaOffset='mViaOffset_l2l3_l3l4via')
-    # # L3-L4
-    # viaList, viaNames = \
-    #     add_coax_gnd_vias_around_signal_diff(
-    #         edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
-    #         signalViaCoordinateList=l3l4_signal_vias,
-    #         viaType='L3_L4_VIA',
-    #         layers=['L03', 'L04'],
-    #         gndLayers=gnd_layers, 
-    #         viaOffset='mViaOffset_l3l4_l3l4via')
-    # # L4-L5
-    # viaList, viaNames = \
-    #     add_coax_gnd_vias_around_signal_diff(
-    #         edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
-    #         signalViaCoordinateList=l3l4_signal_vias,
-    #         viaType='L4_L5_VIA',
-    #         layers=['L04', 'L05'],
-    #         gndLayers=gnd_layers, 
-    #         viaOffset='mViaOffset_l4l5_l3l4via')
+    # Add coaxial via-via spacing parameters
+    edb.add_design_variable('mViaOffset_l2l3_l3l4via',
+                            'max(l2antiPadR_l3l4via, l3antiPadR_l3l4via) + lineSpace')
+    edb.add_design_variable('mViaOffset_l3l4_l3l4via',
+                            'max(l3antiPadR_l3l4via, l4antiPadR_l3l4via) + lineSpace')
+    edb.add_design_variable('mViaOffset_l4l5_l3l4via',
+                            'max(l4antiPadR_l3l4via, l5antiPadR_l3l4via) + lineSpace')
+    # L2-L3
+    viaList, viaNames = \
+        add_coax_gnd_vias_around_signal_diff(
+            edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
+            signalViaCoordinateList=l3l4_signal_vias,
+            viaType='L2_L3_VIA',
+            layers=['L02', 'L03'],
+            gndLayers=gnd_layers, 
+            viaOffset='mViaOffset_l2l3_l3l4via')
+    # L3-L4
+    viaList, viaNames = \
+        add_coax_gnd_vias_around_signal_diff(
+            edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
+            signalViaCoordinateList=l3l4_signal_vias,
+            viaType='L3_L4_VIA',
+            layers=['L03', 'L04'],
+            gndLayers=gnd_layers, 
+            viaOffset='mViaOffset_l3l4_l3l4via')
+    # L4-L5
+    viaList, viaNames = \
+        add_coax_gnd_vias_around_signal_diff(
+            edbWrapper=edb_wrapper, viaList=viaList, viaNames=viaNames,
+            signalViaCoordinateList=l3l4_signal_vias,
+            viaType='L4_L5_VIA',
+            layers=['L04', 'L05'],
+            gndLayers=gnd_layers, 
+            viaOffset='mViaOffset_l4l5_l3l4via')
 
     #### ADD SIGNAL LINES ON L4
     viaList, viaNames,\
@@ -541,15 +555,15 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
                     startViaCoordinateList=l3l4_signal_vias, 
                     layerNo=4,
                     )
-
+        
     #### CREATE COMPONENTS ON TOP BGA BALLS
     topBgaPins = [x for x in edb.core_padstack.get_via_instance_from_net()
                   if x.GetName() in topBallNames]
     topBgaComp = edb.core_components.create(pins=topBgaPins, component_name='U0', placement_layer='L01')
     
     #### CREATE WAVE PORT ON END-LINES
-    edb.hfss.create_differential_wave_port(lineObjList[-2], deembedLine_EndPoints_L4[0]['coord'],
-                                           lineObjList[-1], deembedLine_EndPoints_L4[1]['coord'], "SL_L4")
+    # edb.hfss.create_differential_wave_port(lineObjList[-2], deembedLine_EndPoints[0]['coord'],
+    #                                        lineObjList[-1], deembedLine_EndPoints[1]['coord'], "SL_L4")
     
     edb.logger.info("Create Components and excitations.")
 
