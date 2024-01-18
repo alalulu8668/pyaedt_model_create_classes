@@ -31,6 +31,10 @@ def L4_SL_TO_BALL_BOTTOM_DIFF(prjPath,
                               sigNamePattern=[],
                               ballPitchBottom='1000um',
                               totalLength='2000um',
+                              coreMtrl='',
+                              coreTh='',
+                              buMtrl='',
+                              buTh='',
                               createAnalysis=False,
                               designName = "L4_TO_SIP_BOTTOM",
                               edbversion="2022.2",
@@ -54,7 +58,15 @@ def L4_SL_TO_BALL_BOTTOM_DIFF(prjPath,
     ##########################################################################
     #### GET DATA FOR THE SELECTED STACK-UP
     stackUp = stackup(edb)
-    designRules = stackUp.setup()
+    try:
+        designRules = stackUp.setup(
+            coreMaterial=coreMtrl, coreThickness=coreTh,
+            buMaterial=buMtrl, buThickness=buTh,
+            )
+    except Exception as e:
+        print(f'ERROR caught {type(e)}')
+        print('-> Error in using stack-up setup with variables. Reverting to non-variable stack-up call')
+        designRules = stackUp.setup()
 
     ##########################################################################
     #### DEFINE PROJECT VARIABLES FOR TEST BENCH

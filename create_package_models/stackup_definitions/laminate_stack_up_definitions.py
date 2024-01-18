@@ -5,7 +5,7 @@ from pyaedt_wrapper_classes.edb_stackUp_wrapper_class import edb_stackup_wrapper
 #
 class CORE_800um_PrePreg_30um_424_LWS25_25(edb_stackup_wrapper_class):
     def __init__(self, edb_object):
-        super().__init__(edb_object)
+        super().__init__(edb_object)  # Inherit from "edb_stackUp_wrapper_class"
 
     def setup(self, coreMaterial='HL832NSF_LC', buMaterial='GL102'):
 
@@ -200,7 +200,7 @@ class CORE_800um_PrePreg_30um_424_LWS25_25(edb_stackup_wrapper_class):
 
 class CORE_200um_PrePreg_30um_424_LWS25_25(edb_stackup_wrapper_class):
     def __init__(self, edb_object):
-        super().__init__(edb_object)
+        super().__init__(edb_object)  # Inherit from "edb_stackUp_wrapper_class"
 
     def setup(self, coreMaterial='HL972LF_LD', buMaterial='GHPL972LF_LD'):
 
@@ -395,7 +395,7 @@ class CORE_200um_PrePreg_30um_424_LWS25_25(edb_stackup_wrapper_class):
 
 class CORE_200um_PrePreg_30um_424_LWS12_12(edb_stackup_wrapper_class):
     def __init__(self, edb_object):
-        super().__init__(edb_object)
+        super().__init__(edb_object)  # Inherit from "edb_stackUp_wrapper_class"
 
     def setup(self, coreMaterial='HL972LF_LD', buMaterial='GHPL972LF_LD'):
 
@@ -588,3 +588,215 @@ class CORE_200um_PrePreg_30um_424_LWS12_12(edb_stackup_wrapper_class):
         # return dielList, stackUp, padStack
         self.create_stackup_from_structs()
         return self.designRules
+    
+class CORE_PP_424_PTH230_100_MVIA120_70_LS25(edb_stackup_wrapper_class):
+    def __init__(self, edb_object):
+        super().__init__(edb_object)  # Inherit from "edb_stackUp_wrapper_class"
+
+    def setup(self,
+              coreMaterial='HL832NSF_LC', coreThickness='250um',
+              buMaterial='GL102', buThickness='30um',
+              ):
+
+        # Dielectical materials
+        self.dielList = {
+            #########################################
+            # Underfill and Solder mask materials
+            'UnderFill': {'name': 'Loctite Eccobond UF 1173 (10GHz)',
+                          'Dk': 3.19,
+                          'tanD': 0.0176},
+            'SolderMask': {'name': '7730L',
+                           'Dk': 3.9,
+                           'tanD': 0.03},
+            #########################################
+            # Mitsubishi_HL972LF-LD materials
+            'BU_GHPL972LF_LD': {'name': 'Mitsubishi_GHPL972LF_LD_PP_10GHz',
+                                'Dk': 3.4,
+                                'tanD': 0.004},
+            'CCL_HL972LF_LD': {'name': 'Mitsubishi_HL972LF_LD_CORE_10GHz',
+                               'Dk': 3.4,
+                               'tanD': 0.004},
+            #########################################
+            # Mitsubishi_HL832NSF-LC materials
+            'CCL_HL832NSF_LC': {'name': 'Mitsubishi_HL832NSF_LC_CORE_10GHz',
+                               'Dk': 3.9,
+                               'tanD': 0.007},
+            #########################################
+            # Ajinimoto ABF materials
+            'BU_GL102': {'name': 'Ajinimoto_ABF_GL102_5p8GHz',
+                                'Dk': 3.3,
+                                'tanD': 0.0044},
+            'BU_GZ41': {'name': 'Ajinimoto_ABF_GZ41_5p8GHz',
+                                'Dk': 3.3,
+                                'tanD': 0.0074},
+
+            }
+
+        self.stackThickness = {'UFT': 40,
+                               'SMT': 20,
+                               'L01': 18,
+                               'DRILL_1': int(buThickness.replace('um','')),
+                               'L02': 15,
+                               'DRILL_2': int(buThickness.replace('um','')),
+                               'L03': 15,
+                               'DRILL_3': int(buThickness.replace('um','')),
+                               'L04': 15,
+                               'DRILL_4': int(buThickness.replace('um','')),
+                               'L05': 20,
+                               'DRILL_5': int(coreThickness.replace('um','')),
+                               'L06': 20,
+                               'DRILL_6': int(buThickness.replace('um','')),
+                               'L07': 15,
+                               'DRILL_7': int(buThickness.replace('um','')),
+                               'L08': 15,
+                               'DRILL_8': int(buThickness.replace('um','')),
+                               'L09': 15,
+                               'DRILL_9': int(buThickness.replace('um','')),
+                               'L10': 18,
+                               'SMB': 20,
+                               'UFB': 140,
+                               }
+        
+        # Build up stack based on number of selected layers
+        dielUF = self.dielList['UnderFill']['name']
+        dielSM = self.dielList['SolderMask']['name']
+        # Select CCL and BU materials for stack-up
+        dielCore = self.dielList['CCL_' + coreMaterial]['name']
+        # dielCore = self.dielList['CCL_' + coreMaterial + '_' + coreThickness]['name'] 
+        dielPP = self.dielList['BU_' + buMaterial]['name']
+        # dielPP = self.dielList['PP_' + buMaterial + '_' + buThickness]['name']
+        self.stackMaterial = {'UFT': dielUF,
+                              'SMT': dielSM,
+                              'L01': 'copper',
+                              'DRILL_1': dielPP,
+                              'L02': 'copper',
+                              'DRILL_2': dielPP,
+                              'L03': 'copper',
+                              'DRILL_3': dielPP,
+                              'L04': 'copper',
+                              'DRILL_4': dielPP,
+                              'L05': 'copper',
+                              'DRILL_5': dielCore,
+                              'L06': 'copper',
+                              'DRILL_6': dielPP,
+                              'L07': 'copper',
+                              'DRILL_7': dielPP,
+                              'L08': 'copper',
+                              'DRILL_8': dielPP,
+                              'L09': 'copper',
+                              'DRILL_9': dielPP,
+                              'L10': 'copper',
+                              'SMB': dielSM,
+                              'UFB': dielUF,
+                               }
+        
+        # Add signal layer
+        self.stackUp = [
+            ['AIRt', 'dielectric','0', 'air', 'air'],
+            ['UFT', 'dielectric', self.stackThickness['UFT'], self.stackMaterial['UFT'], self.stackMaterial['UFT']],
+            ['SMT', 'dielectric', self.stackThickness['SMT'], self.stackMaterial['SMT'], self.stackMaterial['SMT']], 
+            ['L01', 'signal', self.stackThickness['L01'], self.stackMaterial['L01'], self.stackMaterial['SMT']],
+            ['DRILL_1', 'dielectric', self.stackThickness['DRILL_1'], self.stackMaterial['DRILL_1'],  self.stackMaterial['DRILL_1']],
+            ['L02', 'signal', self.stackThickness['L02'], self.stackMaterial['L02'], self.stackMaterial['DRILL_1']],
+            ['DRILL_2', 'dielectric', self.stackThickness['DRILL_2'], self.stackMaterial['DRILL_2'],  self.stackMaterial['DRILL_2']],
+            ['L03', 'signal', self.stackThickness['L03'], self.stackMaterial['L03'], self.stackMaterial['DRILL_2']],
+            ['DRILL_3', 'dielectric', self.stackThickness['DRILL_3'], self.stackMaterial['DRILL_3'],  self.stackMaterial['DRILL_3']],
+            ['L04', 'signal', self.stackThickness['L04'], self.stackMaterial['L04'],  self.stackMaterial['DRILL_3']],
+            ['DRILL_4', 'dielectric', self.stackThickness['DRILL_4'], self.stackMaterial['DRILL_4'],  self.stackMaterial['DRILL_4']],
+            ['L05', 'signal', self.stackThickness['L05'], self.stackMaterial['L05'],  self.stackMaterial['DRILL_4']],
+            ['DRILL_5', 'dielectric', self.stackThickness['DRILL_5'], self.stackMaterial['DRILL_5'],  self.stackMaterial['DRILL_5']],
+            ['L06', 'signal', self.stackThickness['L06'], self.stackMaterial['L06'],  self.stackMaterial['DRILL_6']],
+            ['DRILL_6', 'dielectric', self.stackThickness['DRILL_6'], self.stackMaterial['DRILL_6'],  self.stackMaterial['DRILL_6']],
+            ['L07', 'signal', self.stackThickness['L07'], self.stackMaterial['L07'],  self.stackMaterial['DRILL_7']],
+            ['DRILL_7', 'dielectric', self.stackThickness['DRILL_7'], self.stackMaterial['DRILL_7'],  self.stackMaterial['DRILL_7']],
+            ['L08', 'signal', self.stackThickness['L08'], self.stackMaterial['L08'],  self.stackMaterial['DRILL_8']],
+            ['DRILL_8', 'dielectric', self.stackThickness['DRILL_8'], self.stackMaterial['DRILL_8'],  self.stackMaterial['DRILL_8']],
+            ['L09', 'signal', self.stackThickness['L09'], self.stackMaterial['L09'],  self.stackMaterial['DRILL_9']],
+            ['DRILL_9', 'dielectric', self.stackThickness['DRILL_9'], self.stackMaterial['DRILL_9'],  self.stackMaterial['DRILL_9']],
+            ['L10', 'signal', self.stackThickness['L10'], self.stackMaterial['L10'],  self.stackMaterial['SMB']],
+            ['SMB', 'dielectric', self.stackThickness['SMB'], self.stackMaterial['SMB'],  self.stackMaterial['SMB']],
+            ['UFB', 'dielectric', self.stackThickness['UFB'], self.stackMaterial['UFB'], self.stackMaterial['UFB']],
+            ['AIRb', 'dielectric', '0', 'air', 'air']]
+
+        # Add via to next signal layer
+        self.padStack = []
+        # Via definitions
+        vias = [
+            ['L1_L2_VIA', ['L01', 'L02'], '120um', '70um', 'copper', 100],
+            ['L2_L3_VIA', ['L02', 'L03'], '120um', '70um', 'copper', 100],
+            ['L3_L4_VIA', ['L03', 'L04'], '120um', '70um', 'copper', 100],
+            ['L4_L5_VIA', ['L04', 'L05'], '120um', '70um', 'copper', 100],
+            ['L5_L6_CORE_VIA', ['L05', 'L06'], '230um', '100um', 'copper', 100],
+            ['L6_L7_VIA', ['L06', 'L07'], '120um', '70um', 'copper', 100],
+            ['L7_L8_VIA', ['L06', 'L07'], '120um', '70um', 'copper', 100],
+            ['L8_L9_VIA', ['L08', 'L09'], '120um', '70um', 'copper', 100],
+            ['L9_L10_VIA', ['L09', 'L10'], '120um', '70um', 'copper', 100],
+            ]
+        for v in vias: self.padStack.append(v)
+        # Bump pad definitions
+        bumpPads = [
+            ['BUMP_PAD_120', ['L01'], '120um', '0um', 'copper', 100],
+            ]
+        for v in bumpPads: self.padStack.append(v)
+        # Ball pad definitions
+        ballPadsBottom = [
+            ['BALL_PAD_BOT_300', ['L10'], '300um', '0um', 'copper', 100],
+            ['BALL_PAD_BOT_350', ['L10'], '350um', '0um', 'copper', 100],
+            ['BALL_PAD_BOT_400', ['L10'], '400um', '0um', 'copper', 100],
+            ['BALL_PAD_BOT_550', ['L10'], '550um', '0um', 'copper', 100],
+            ['BALL_PAD_BOT_650', ['L10'], '650um', '0um', 'copper', 100],
+            ['BALL_PAD_BOT_750', ['L10'], '750um', '0um', 'copper', 100],
+            ]
+        for v in ballPadsBottom: self.padStack.append(v)
+        ballPadsTop = [
+            ['BALL_PAD_TOP_300', ['L1'], '300um', '0um', 'copper', 100],
+            ['BALL_PAD_TOP_350', ['L1'], '350um', '0um', 'copper', 100],
+            ]
+        for v in ballPadsTop: self.padStack.append(v)
+        ballPadSizeVsPitch = {
+            '400um': '300um',
+            '500um': '350um',
+            '650um': '400um',
+            '800um': '550um',
+            '1000um': '650um',
+            '1270um': '750um',
+            }
+
+        # Design rules and via size defintions
+        self.designRules = {'l1viaD': '120um',
+                            'l2viaD': '120um',
+                            'l3viaD': '120um',
+                            'l4viaD': '120um',
+                            'l5viaD': '120um',
+                            'cViaD': '230um',
+                            'l6viaD': '120um',
+                            'l7viaD': '120um',
+                            'l8viaD': '120um',
+                            'l9viaD': '120um',
+                            'l10viaD': '120um',
+                            
+                            'bumpD_120': '120um',
+                            
+                            'ballPadD_P400': ballPadSizeVsPitch['400um'],
+                            'ballPadD_P500': ballPadSizeVsPitch['500um'],
+                            'ballPadD_P650': ballPadSizeVsPitch['650um'],
+                            'ballPadD_P800': ballPadSizeVsPitch['800um'],
+                            'ballPadD_P1000': ballPadSizeVsPitch['1000um'],
+                            'ballPadD_P1270': ballPadSizeVsPitch['1270um'],
+                            
+                            'minLwL1': '25um',
+                            'minLwL2': '25um',
+                            'minLwL3': '25um',
+                            'minLwL4': '25um',
+                            'minLwL5': '40um',
+                            'minLwL6': '40um',
+                            'minLwL7': '25um',
+                            'minLwL8': '25um',
+                            'minLwL9': '25um',
+                            'minLwL10': '40um',
+                            }
+
+        # return dielList, stackUp, padStack
+        self.create_stackup_from_structs()
+        return self.designRules
+    

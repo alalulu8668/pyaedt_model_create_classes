@@ -2,7 +2,7 @@ import shutil
 import os
 from pyaedt import Edb
 from pyaedt import Hfss3dLayout
-from wrapperClasses.edb_wrapper_class import edb_wrapper_class
+from pyaedt_wrapper_classes.edb_wrapper_class import edb_wrapper_class
 
 
 #### BALL TRANSITION MODEL SCRIPT - PKG to PCB (via in pad)
@@ -1147,7 +1147,7 @@ def bga_2_bga_diff(prjPath,
     [topBgaBallNames.append(x) for x in tmpViaNames]
 
     ######################################################################
-    # ADD BOTTOMN BGA BALL PADS
+    # ADD BOTTON BGA BALL PADS
     padType = botBgaBallPadViaDef
     for yI, yRow in enumerate(ballPattern):
         for xI, bType in enumerate(yRow):
@@ -1177,7 +1177,7 @@ def bga_2_bga_diff(prjPath,
                     'isPin': False,
                     'x': xC,
                     'y': yC,
-                    'layers': ['PCB_MOUNT'],
+                    'layers': ['BOT_BGA_MOUNT'],
                     'voids': voidArray
                     })
             else:
@@ -1188,7 +1188,7 @@ def bga_2_bga_diff(prjPath,
                     'isPin': False,
                     'x': xC,
                     'y': yC,
-                    'layers': ['PCB_MOUNT'], 'voids': []})
+                    'layers': ['BOT_BGA_MOUNT'], 'voids': []})
 
     tmpViaNames = edb_wrapper.create_signal_via_paths(botBgaBallList, gnd_layers)
     [botBgaBallNames.append(x) for x in tmpViaNames]
@@ -1239,7 +1239,7 @@ def bga_2_bga_diff(prjPath,
                             lower_left_point=[xC, yC + ' - topBgaAntiPadR'],
                             upper_right_point=[xC + ' + ballPitch/2', yC + ' + topBgaAntiPadR'],
                             )
-                        gnd_layers['BGA_BOTTOM'].add_void(rectVoid)
+                        gnd_layers['TOP_BGA_BOTTOM'].add_void(rectVoid)
                         for si in ['+', '-']:
                             topBgaViaList.append(
                                 {'type': viaType,
@@ -1259,7 +1259,7 @@ def bga_2_bga_diff(prjPath,
                             lower_left_point=[xC + ' - topBgaAntiPadR', yC],
                             upper_right_point=[xC + ' + topBgaAntiPadR', yC + ' + ballPitch/2'],
                             )  
-                        gnd_layers['BGA_BOTTOM'].add_void(rectVoid)
+                        gnd_layers['TOP_BGA_BOTTOM'].add_void(rectVoid)
                         for si in ['+', '-']:
                             topBgaViaList.append(
                                 {'type': viaType,
@@ -1280,7 +1280,7 @@ def bga_2_bga_diff(prjPath,
                             lower_left_point=[xC + ' - ballPitch/2', yC + ' - topBgaAntiPadR'],
                             upper_right_point=[xC, yC + ' + topBgaAntiPadR'],
                             )
-                        gnd_layers['BGA_BOTTOM'].add_void(rectVoid)
+                        gnd_layers['TOP_BGA_BOTTOM'].add_void(rectVoid)
                         for si in ['+', '-']:
                             topBgaViaList.append(
                                 {'type': viaType,
@@ -1307,7 +1307,7 @@ def bga_2_bga_diff(prjPath,
                             lower_left_point=[xC + ' - topBgaAntiPadR', yC + ' - ballPitch/2'],
                             upper_right_point=[xC + ' + topBgaAntiPadR', yC],
                             )
-                        gnd_layers['BGA_BOTTOM'].add_void(rectVoid)
+                        gnd_layers['TOP_BGA_BOTTOM'].add_void(rectVoid)
                         for si in ['+', '-']:
                             topBgaViaList.append(
                                 {'type': viaType,
@@ -1528,12 +1528,12 @@ def bga_2_bga_diff(prjPath,
     ######################################################################
     # CREATE COMPONENTS ON TOP AND BOTTOM AND ADD PORTS
     bgaPins = [x for x in edb.core_padstack.get_via_instance_from_net() if 
-                ('SIG' in x.GetName() and 'TOP_BGA_DN1TOP_BGA_BOTTOM' in x.GetName())]
-    edb.core_components.create_component_from_pins(bgaPins, 'U0_' + designNameSuffix, 'BGA_N1')    
+                ('SIG' in x.GetName() and 'TOP_BGA_N1TOP_BGA_BOTTOM' in x.GetName())]
+    edb.core_components.create_component_from_pins(bgaPins, 'U0_' + designNameSuffix, 'TOP_BGA_N1')    
 
     pcbPins = [x for x in edb.core_padstack.get_via_instance_from_net() if 
             ('SIG' in x.GetName() and 'BOT_BGA_MOUNTBOT_BGA_N1' in x.GetName())]
-    edb.core_components.create_component_from_pins(pcbPins, 'U1_' + designNameSuffix, 'PCB_N1')   
+    edb.core_components.create_component_from_pins(pcbPins, 'U1_' + designNameSuffix, 'BOT_BGA_N1')   
     edb.core_components.create_port_on_component(component='U0_' + designNameSuffix,
                                                   net_list=[x for x in edb.core_nets.nets.keys() if 'SIG' in x],
                                                   do_pingroup=False,
@@ -1550,10 +1550,10 @@ def bga_2_bga_diff(prjPath,
                                         sball_diam="0um", sball_height="0um")
     edb.logger.info("Create Components and excitations.")
    
-    # #########################################################################
-    # # SAVE PROJECT
-    # edb.save_edb()
-    # edb.close_edb()
+    #########################################################################
+    # SAVE PROJECT
+    edb.save_edb()
+    edb.close_edb()
 
     h3d = Hfss3dLayout(projectname=os.path.join(prjFileName + ".aedb", 'edb.def'),
                        designname=designName,
@@ -1587,7 +1587,7 @@ def bga_2_bga_diff(prjPath,
     ########################################################################    
 
     for p in [x for x in h3d.modeler.pins.keys() if 'U0' in x]:
-        h3d.modeler.pins[p].set_property_value(property_name='Pad Port Layer', property_value='TOP_BGA_DN1')
+        h3d.modeler.pins[p].set_property_value(property_name='Pad Port Layer', property_value='TOP_BGA_N1')
     for p in [x for x in h3d.modeler.pins.keys() if 'U1' in x]:
         h3d.modeler.pins[p].set_property_value(property_name='Pad Port Layer', property_value='BOT_BGA_N1')
         

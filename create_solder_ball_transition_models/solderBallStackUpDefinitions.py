@@ -1,4 +1,4 @@
-from wrapperClasses.edb_stackUp_wrapper_class import edb_stackup_wrapper_class
+from pyaedt_wrapper_classes.edb_stackUp_wrapper_class import edb_stackup_wrapper_class
 
 ##########################################################################
 # Package stack-up definition with materials, layer order, and vias
@@ -462,9 +462,9 @@ class stackup_Bga2L_viaInPad_Bga2L_viaInPad(edb_stackup_wrapper_class):
 
             # BGA BALL PADS with solder ball below
             ['TOP_BGA_BALL_PAD_0p3', ['TOP_BGA_BOTTOM'],
-             '250um', 'none', 'copper', 100]
+             '250um', 'none', 'copper', 100],
             ['TOP_BGA_BALL_PAD_0p4', ['TOP_BGA_BOTTOM'],
-             '300um', 'none', 'copper', 100]
+             '300um', 'none', 'copper', 100],
             ['TOP_BGA_BALL_PAD_0p5', ['TOP_BGA_BOTTOM'],
              '350um', 'none', 'copper', 100],
             ['TOP_BGA_BALL_PAD_0p65', ['TOP_BGA_BOTTOM'],

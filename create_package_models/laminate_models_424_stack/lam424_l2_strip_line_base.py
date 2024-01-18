@@ -16,6 +16,10 @@ def SL_DIFF(prjPath,
             stackup,
             numberOfdiffPairs=4,
             totalLength='20000um',
+            coreMtrl='',
+            coreTh='',
+            buMtrl='',
+            buTh='',
             createAnalysis=False,
             designName = "L2_STRIP_LINE",
             edbversion="2022.2",
@@ -36,7 +40,15 @@ def SL_DIFF(prjPath,
     ##########################################################################
     #### GET DATA FOR THE SELECTED STACK-UP
     stackUp = stackup(edb)
-    designRules = stackUp.setup()
+    try:
+        designRules = stackUp.setup(
+            coreMaterial=coreMtrl, coreThickness=coreTh,
+            buMaterial=buMtrl, buThickness=buTh,
+            )
+    except Exception as e:
+        print(f'ERROR caught {type(e)}')
+        print('-> Error in using stack-up setup with variables. Reverting to non-variable stack-up call')
+        designRules = stackUp.setup()
 
     ##########################################################################
     #### DEFINE PROJECT VARIABLES FOR TEST BENCH
