@@ -382,6 +382,22 @@ def BALL_TOP_TO_SL_DIFF(prjPath,
     #         gndLayers=gnd_layers, 
     #         angleOffset=0,
     #         viaOffset='mViaOffset_l2l3_l1l2via')
+
+    #### ADD SIGNAL LINES ON L2
+    viaList, viaNames,\
+        lineStructList, lineNamesList, lineObjList,\
+            deembedLine_EndPoints_L2 = \
+    createStripLine(edb=edb,
+                    edb_wrapper=edb_wrapper,
+                    gnd_layers=gnd_layers,
+                    lineStructList=lineStructList,
+                    lineNamesList=lineNamesList,
+                    lineObjList=lineObjList,
+                    viaList=viaList,
+                    viaNames=viaNames,
+                    startViaCoordinateList=l1l2_signal_vias, 
+                    layerNo=2,
+                    )
         
     #### ADD OFFSET LINE ON L2
     # Via offset parameters
