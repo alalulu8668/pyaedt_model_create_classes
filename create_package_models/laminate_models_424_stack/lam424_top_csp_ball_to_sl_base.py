@@ -333,7 +333,7 @@ def BALL_TOP_TO_SL_DIFF(prjPath,
             lineLength='l1offsL', lineWidth='l1offsW', lineDirection='l1offsDir',
             voids=['L01', 'gndPlaneL01', 'l1offsW + 2*lineSpace'],
             gndLayers=gnd_layers,
-            bottomUp=False,  # EMANHAN 231029
+            bottomUp=False,  #  231029
             )
     
 
@@ -413,7 +413,7 @@ def BALL_TOP_TO_SL_DIFF(prjPath,
             lineLength='l2offsL', lineWidth='l2offsW', lineDirection='l2offsDir',
             voids=['L02', 'gndPlaneL02', 'l2offsW + 2*lineSpace'],
             gndLayers=gnd_layers,
-            bottomUp=False,  # EMANHAN 231029
+            bottomUp=False,  #  231029
             )
 
     #### ADD SIGNAL VIAS FROM L2 to L3
@@ -484,7 +484,7 @@ def BALL_TOP_TO_SL_DIFF(prjPath,
             lineLength='l3offsL', lineWidth='l3offsW', lineDirection='l3offsDir',
             voids=['L03', 'gndPlaneL03', 'l3offsW + 2*lineSpace'],
             gndLayers=gnd_layers,
-            bottomUp=False,  # EMANHAN 231029
+            bottomUp=False,  #  231029
             )
         
     #### ADD SIGNAL VIAS FROM L3 to L4

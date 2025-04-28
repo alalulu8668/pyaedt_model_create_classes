@@ -2,7 +2,7 @@
 """
 Created on Mon Jun 26 07:43:32 2023
 
-@author: emanhan
+@author: 
 """
 
 #### ADD CSP BALLS ON TOP LAYER

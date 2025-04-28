@@ -22,7 +22,7 @@ from pyaedt_model_create_classes.common_functions.add_bga_ball_pads_diff \
      import add_bga_ball_pads_diff
 
 
-# EMANHAN 231029
+#  231029
 def createStripLine(edb, edb_wrapper,
                     gnd_layers,
                     lineStructList, lineNamesList, lineObjList,
@@ -321,7 +321,7 @@ def BALL_TOP_TO_SL_DIFF(prjPath,
             voids=['L01', 'gndPlaneL01', 'l1offsW + 2*lineSpace'],
             gndLayers=gnd_layers,
             symmetric=False,
-            bottomUp=False,  # EMANHAN 231101
+            bottomUp=False,  #  231101
             )
     
     #### ADD SIGNAL VIAS FROM L1 to L16

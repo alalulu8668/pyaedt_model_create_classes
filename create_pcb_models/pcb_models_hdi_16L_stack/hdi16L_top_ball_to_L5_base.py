@@ -230,7 +230,7 @@ def BALL_TOP_TO_L5_SL_DIFF(prjPath,
             voids=['L01', 'gndPlaneL01', 'l1offsW + 2*lineSpace'],
             gndLayers=gnd_layers,
             symmetric=False,
-            bottomUp=False,  # EMANHAN 231101
+            bottomUp=False,  #  231101
             )
     
     #### ADD SIGNAL VIAS FROM L1 to L16

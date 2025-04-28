@@ -237,7 +237,7 @@ def BUMP_TOP_TO_L2_SL_DIFF(prjPath,
             lineLength='l1offsL', lineWidth='l1offsW', lineDirection='l1offsDir',
             voids=['L01', 'gndPlaneL01', 'l1offsW + 2*lineSpace'],
             gndLayers=gnd_layers,
-            bottomUp=False,  # EMANHAN 231029
+            bottomUp=False,  #  231029
             )
     
 

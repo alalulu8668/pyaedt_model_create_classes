@@ -2,7 +2,7 @@
 """
 Created on Mon Jun 26 07:46:15 2023
 
-@author: emanhan
+@author: 
 """
 import re
 
@@ -23,7 +23,7 @@ def add_signal_fanout_from_vias_diff(edbWrapper,
                                      ):
         
     startIndx = len(lineStructList)
-    lineEndPointCoordinateList = []  # EMANHAN 231029
+    lineEndPointCoordinateList = []  #  231029
     for sigVia in startViaCoordinateList:
         x0 = sigVia['coord'][0]
         y0 = sigVia['coord'][1]
@@ -33,7 +33,7 @@ def add_signal_fanout_from_vias_diff(edbWrapper,
         xC = sigVia['diffPairCenter'][0]
         yC = sigVia['diffPairCenter'][1]
         
-        if abs(sigPol) == int(re.findall(r'\d+', layer)[0]):  # EMANHAN 231029
+        if abs(sigPol) == int(re.findall(r'\d+', layer)[0]):  #  231029
             if sigPol > 0:
                 if sigDir == '90deg':
                     x1 = xC + ' - (' + diffLineSpace + ' + ' + lineWidth + ')/2'

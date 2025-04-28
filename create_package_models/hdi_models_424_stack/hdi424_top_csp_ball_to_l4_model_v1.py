@@ -333,7 +333,7 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
             lineLength='l1offsL', lineWidth='l1offsW', lineDirection='l1offsDir',
             voids=['L01', 'gndPlaneL01', 'l1offsW + 2*lineSpace'],
             gndLayers=gnd_layers,
-            bottomUp=False,  # EMANHAN 231029
+            bottomUp=False,  #  231029
             )
     
 
@@ -356,7 +356,7 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
                 # 'L04', 'gndPlaneL04', 'l4antiPadR_l1l2via',
                 ],
             gndLayers=gnd_layers,
-            bottomUp=False,  # EMANHAN 231110
+            bottomUp=False,  #  231110
             )
 
     #### ADD GND VIAS AROUND L1-L2 SIGNAL VIAS
@@ -399,7 +399,7 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
             lineLength='l2offsL', lineWidth='l2offsW', lineDirection='l2offsDir',
             voids=['L02', 'gndPlaneL02', 'l2offsW + 2*lineSpace'],
             gndLayers=gnd_layers,
-            bottomUp=False,  # EMANHAN 231029
+            bottomUp=False,  #  231029
             )
 
     #### ADD SIGNAL VIAS FROM L2 to L3
@@ -422,7 +422,7 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
                 # 'L04', 'gndPlaneL04', 'l4antiPadR_l2l3via',
                 ],
             gndLayers=gnd_layers,
-            bottomUp=False,  # EMANHAN 231110
+            bottomUp=False,  #  231110
             )
     
     #### ADD GND VIAS AROUND L2-L3 SIGNAL VIAS
@@ -474,7 +474,7 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
             lineLength='l3offsL', lineWidth='l3offsW', lineDirection='l3offsDir',
             voids=['L03', 'gndPlaneL03', 'l3offsW + 2*lineSpace'],
             gndLayers=gnd_layers,
-            bottomUp=False,  # EMANHAN 231029
+            bottomUp=False,  #  231029
             )
         
     #### ADD SIGNAL VIAS FROM L3 to L4
@@ -499,7 +499,7 @@ def BALL_TOP_TO_L4_SL_DIFF(prjPath,
                 # 'L05', 'gndPlaneL05', 'l5antiPadR_l3l4via',
                 ],
             gndLayers=gnd_layers,
-            bottomUp=False,  # EMANHAN 231110
+            bottomUp=False,  #  231110
             )
         
     #### ADD GND VIAS AROUND L3-L4 SIGNAL VIAS

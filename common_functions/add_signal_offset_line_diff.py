@@ -2,7 +2,6 @@
 """
 Created on Mon Jun 26 07:45:03 2023
 
-@author: emanhan
 """
 import re
 
@@ -20,7 +19,7 @@ def add_signal_offset_line_diff(edbWrapper,
                                 voids,
                                 gndLayers,
                                 symmetric=True,
-                                bottomUp=True,  # EMANHAN 231029
+                                bottomUp=True,  #  231029
                                 ):
     
     startIndx = len(lineStructList)
@@ -34,7 +33,7 @@ def add_signal_offset_line_diff(edbWrapper,
         diffPairCenter = sigPad['diffPairCenter']
         
         if (bottomUp and abs(sigPol) <= int(re.findall(r'\d+', layer)[0])) or \
-           (not(bottomUp) and abs(sigPol) >= int(re.findall(r'\d+', layer)[0])):  # EMANHAN 231029
+           (not(bottomUp) and abs(sigPol) >= int(re.findall(r'\d+', layer)[0])):  #  231029
 
             if sigPol > 0:
                 x1 = x0 + ' + (' + lineLength + ')*cos(' + sigDir + ' - (' + lineDirection + '))'

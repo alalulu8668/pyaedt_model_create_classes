@@ -2,7 +2,7 @@
 """
 Created on Mon Jun 26 07:44:34 2023
 
-@author: emanhan
+@author: 
 """
 
 #### ADD GND VIAS AT GND PADS
