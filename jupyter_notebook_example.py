@@ -106,9 +106,9 @@ def import_with_fallbacks():
     # Method 1: Standard package import
     try:
         from pyaedt_model_create_classes.create_solder_ball_transition_models.package2pcbBall import bga_2_pcb_diff
-        from pyaedt_model_create_classes.create_pcb_models.stackup_definitions.pcbStackUpDefinitions import StackUp_7_2_7_77PP_75C_25Cu
+        from pyaedt_model_create_classes.create_solder_ball_transition_models.solderBallStackUpDefinitions import stackup_Bga2L_viaInPadL_Pcb2L_viaInPad
         print("✓ Method 1: Successfully imported using standard package structure")
-        return bga_2_pcb_diff, StackUp_7_2_7_77PP_75C_25Cu
+        return bga_2_pcb_diff, stackup_Bga2L_viaInPadL_Pcb2L_viaInPad
     except ImportError as e:
         print(f"✗ Method 1 failed: {e}")
     
@@ -138,14 +138,14 @@ def import_with_fallbacks():
         
         # Import stackup definitions directly
         stackup_spec = importlib.util.spec_from_file_location(
-            "pcbStackUpDefinitions",
-            os.path.join(repo_path, "create_pcb_models", "stackup_definitions", "pcbStackUpDefinitions.py")
+            "solderBallStackUpDefinitions",
+            os.path.join(repo_path, "create_solder_ball_transition_models", "solderBallStackUpDefinitions.py")
         )
         stackup_module = importlib.util.module_from_spec(stackup_spec)
         stackup_spec.loader.exec_module(stackup_module)
         
         print("✓ Method 2: Successfully imported using direct file import")
-        return package2pcb_module.bga_2_pcb_diff, stackup_module.StackUp_7_2_7_77PP_75C_25Cu
+        return package2pcb_module.bga_2_pcb_diff, stackup_module.stackup_Bga2L_viaInPadL_Pcb2L_viaInPad
         
     except Exception as e:
         print(f"✗ Method 2 failed: {e}")
@@ -157,9 +157,9 @@ def import_with_fallbacks():
             sys.path.insert(0, parent_dir)
         
         from pyaedt_model_create_classes.create_solder_ball_transition_models.package2pcbBall import bga_2_pcb_diff
-        from pyaedt_model_create_classes.create_pcb_models.stackup_definitions.pcbStackUpDefinitions import StackUp_7_2_7_77PP_75C_25Cu
+        from pyaedt_model_create_classes.create_solder_ball_transition_models.solderBallStackUpDefinitions import stackup_Bga2L_viaInPadL_Pcb2L_viaInPad
         print("✓ Method 3: Successfully imported using parent directory")
-        return bga_2_pcb_diff, StackUp_7_2_7_77PP_75C_25Cu
+        return bga_2_pcb_diff, stackup_Bga2L_viaInPadL_Pcb2L_viaInPad
         
     except ImportError as e:
         print(f"✗ Method 3 failed: {e}")
@@ -167,9 +167,9 @@ def import_with_fallbacks():
     # Method 4: Try importing from subdirectories directly
     try:
         from package2pcbBall import bga_2_pcb_diff
-        from pcbStackUpDefinitions import StackUp_7_2_7_77PP_75C_25Cu
+        from solderBallStackUpDefinitions import stackup_Bga2L_viaInPadL_Pcb2L_viaInPad
         print("✓ Method 4: Successfully imported from subdirectories")
-        return bga_2_pcb_diff, StackUp_7_2_7_77PP_75C_25Cu
+        return bga_2_pcb_diff, stackup_Bga2L_viaInPadL_Pcb2L_viaInPad
         
     except ImportError as e:
         print(f"✗ Method 4 failed: {e}")
@@ -198,14 +198,14 @@ def import_with_fallbacks():
         package2pcb_spec.loader.exec_module(package2pcb_module)
         
         stackup_spec = importlib.util.spec_from_file_location(
-            "pcbStackUpDefinitions",
-            os.path.join(repo_path, "create_pcb_models", "stackup_definitions", "pcbStackUpDefinitions.py")
+            "solderBallStackUpDefinitions",
+            os.path.join(repo_path, "create_solder_ball_transition_models", "solderBallStackUpDefinitions.py")
         )
         stackup_module = importlib.util.module_from_spec(stackup_spec)
         stackup_spec.loader.exec_module(stackup_module)
         
         print("✓ Method 5: Successfully imported using manual sys.modules manipulation")
-        return package2pcb_module.bga_2_pcb_diff, stackup_module.StackUp_7_2_7_77PP_75C_25Cu
+        return package2pcb_module.bga_2_pcb_diff, stackup_module.stackup_Bga2L_viaInPadL_Pcb2L_viaInPad
         
     except Exception as e:
         print(f"✗ Method 5 failed: {e}")
@@ -214,7 +214,7 @@ def import_with_fallbacks():
 
 # Try to import the modules
 try:
-    bga_2_pcb_diff, StackUp_7_2_7_77PP_75C_25Cu = import_with_fallbacks()
+    bga_2_pcb_diff, BgaToPcbStackup = import_with_fallbacks()
     print("✓ Successfully imported all required modules")
 except Exception as e:
     print(f"✗ All import methods failed: {e}")
@@ -239,9 +239,9 @@ print(f"Project will be created in: {project_path}")
 print("Initializing EDB object...")
 edb = Edb(project_path, edbversion="2022.2")
 
-# Initialize the stackup with the Edb object
-print("Setting up stackup...")
-stackup = StackUp_7_2_7_77PP_75C_25Cu(edb)
+# Note: The bga_2_pcb_diff function expects the stackup CLASS, not an instance
+# Using the correct stackup class for BGA to PCB transitions
+print("Stackup class ready (BGA to PCB stackup)...")
 
 # Define ball pattern and other parameters
 # Pattern: 0 = ground, 1 = positive signal, -1 = negative signal
@@ -268,9 +268,10 @@ print("This may take a few minutes...")
 
 try:
     # Run the function to create the model
+    # Note: Pass the correct stackup CLASS (stackup_Bga2L_viaInPadL_Pcb2L_viaInPad)
     design_name = bga_2_pcb_diff(
         prjPath=project_path,
-        stackup=stackup,
+        stackup=BgaToPcbStackup,  # Pass the correct BGA to PCB stackup class
         ballPattern=ball_pattern,
         ballPitch=ball_pitch,
         designNameSuffix=design_name_suffix,

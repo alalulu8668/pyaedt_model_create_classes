@@ -10,7 +10,7 @@ class edb_stackup_wrapper_class():
             self.edb.materials.add_dielectric_material(
                 mat["name"],
                 permittivity=mat["Dk"],
-                loss_tangent=mat['tanD'])
+                dielectric_loss_tangent=mat['tanD'])
 
         # Add layers from bottom up
         for layer in self.stackUp[::-1]:
