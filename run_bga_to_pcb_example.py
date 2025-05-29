@@ -1,5 +1,18 @@
 import os
+import sys
 from pyaedt import Edb
+
+# Add the repository path to Python path for imports
+# Adjust this path to match where your pyaedt_model_create_classes repository is located
+repo_path = r"/path/to/your/pyaedt_model_create_classes"  # Update this path!
+
+# Alternative: use relative path if notebook is in a known location relative to repo
+# repo_path = os.path.abspath(os.path.join(os.getcwd(), "..", "pyaedt_model_create_classes"))
+
+if repo_path not in sys.path:
+    sys.path.append(repo_path)
+
+# Now import from the repository
 from pyaedt_model_create_classes.create_solder_ball_transition_models.package2pcbBall import bga_2_pcb_diff
 from pyaedt_model_create_classes.create_pcb_models.stackup_definitions.pcbStackUpDefinitions import StackUp_7_2_7_77PP_75C_25Cu
 

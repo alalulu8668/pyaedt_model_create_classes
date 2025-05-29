@@ -33,14 +33,18 @@ def bga_2_pcb_diff(prjPath,
     
     ##########################################################################
     # START ACCESS TO ANSYS ELECTRONIC DATABASE
-    # if 'BGA2PCBtmp.aedb' in os.listdir(prjPath + 'EDBscriptTmp\\'):
-    #     shutil.rmtree(prjPath + 'EDBscriptTmp\\' + 'BGA2PCBtmp.aedb')
-    # prjTemp = 'BGA2PCBtmp'
-    # edb = Edb(os.path.join(prjPath, 'EDBscriptTmp', prjTemp + ".aedb"),
-    #           edbversion=edbversion)
+    
+    # Create BALL_ISO_ directory if it doesn't exist
+    ball_iso_dir = os.path.join(prjPath, 'BALL_ISO_')
+    os.makedirs(ball_iso_dir, exist_ok=True)
+    
     prjFileName = os.path.join(prjPath, 'BALL_ISO_', designName)
-    if prjFileName + '.aedb' in os.listdir(prjPath + 'EDBscriptTmp\\'):
-        shutil.rmtree(prjFileName + '.aedb')
+    
+    # Check if the .aedb file already exists and remove it if it does
+    aedb_file_path = prjFileName + '.aedb'
+    if os.path.exists(aedb_file_path):
+        shutil.rmtree(aedb_file_path)
+    
     edb = Edb(prjFileName + ".aedb", edbversion=edbversion)
     edb.active_cell.SetName(designName)
 
@@ -521,9 +525,18 @@ def bga_2_pcb_offset_diff(prjPath,
     
     ##########################################################################
     # START ACCESS TO ANSYS ELECTRONIC DATABASE
+    
+    # Create BALL_ISO_ directory if it doesn't exist
+    ball_iso_dir = os.path.join(prjPath, 'BALL_ISO_')
+    os.makedirs(ball_iso_dir, exist_ok=True)
+    
     prjFileName = os.path.join(prjPath, 'BALL_ISO_', designName)
-    if prjFileName + '.aedb' in os.listdir(prjPath + 'EDBscriptTmp\\'):
-        shutil.rmtree(prjFileName + '.aedb')
+    
+    # Check if the .aedb file already exists and remove it if it does
+    aedb_file_path = prjFileName + '.aedb'
+    if os.path.exists(aedb_file_path):
+        shutil.rmtree(aedb_file_path)
+    
     edb = Edb(prjFileName + ".aedb", edbversion=edbversion)
     edb.active_cell.SetName(designName)
 
@@ -1033,9 +1046,18 @@ def bga_2_bga_diff(prjPath,
     
     ##########################################################################
     # START ACCESS TO ANSYS ELECTRONIC DATABASE
+    
+    # Create BALL_ISO_ directory if it doesn't exist
+    ball_iso_dir = os.path.join(prjPath, 'BALL_ISO_')
+    os.makedirs(ball_iso_dir, exist_ok=True)
+    
     prjFileName = os.path.join(prjPath, 'BALL_ISO_', designName)
-    if prjFileName + '.aedb' in os.listdir(prjPath + 'EDBscriptTmp\\'):
-        shutil.rmtree(prjFileName + '.aedb')
+    
+    # Check if the .aedb file already exists and remove it if it does
+    aedb_file_path = prjFileName + '.aedb'
+    if os.path.exists(aedb_file_path):
+        shutil.rmtree(aedb_file_path)
+    
     edb = Edb(prjFileName + ".aedb", edbversion=edbversion)
     edb.active_cell.SetName(designName)
 
