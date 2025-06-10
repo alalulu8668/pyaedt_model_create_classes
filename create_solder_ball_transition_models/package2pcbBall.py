@@ -417,13 +417,43 @@ def bga_2_pcb_diff(prjPath,
 
     ######################################################################
     # CREATE COMPONENTS ON TOP AND BOTTOM AND ADD PORTS
+    
+    # Get signal pins for BGA component
     bgaPins = [x for x in edb.core_padstack.get_via_instance_from_net() if 
                ('SIG' in x.GetName() and 'BGA_N1BGA_BOTTOM' in x.GetName())]
-    edb.core_components.create_component_from_pins(bgaPins, 'U0_' + designNameSuffix, 'BGA_N1')    
+    
+    # Create BGA component using newer API
+    try:
+        # Try the newer create method
+        edb.core_components.create(pins=bgaPins, 
+                                 component_name='U0_' + designNameSuffix, 
+                                 placement_layer='BGA_N1')
+    except Exception as e:
+        print(f"Warning: Could not create BGA component with new API: {e}")
+        # Fallback: try the deprecated method
+        try:
+            edb.core_components.create_component_from_pins(bgaPins, 'U0_' + designNameSuffix, 'BGA_N1')
+        except Exception as e2:
+            print(f"Warning: Could not create BGA component with deprecated API: {e2}")
 
+    # Get signal pins for PCB component  
     pcbPins = [x for x in edb.core_padstack.get_via_instance_from_net() if 
            ('SIG' in x.GetName() and 'PCB_MOUNTPCB_N1' in x.GetName())]
-    edb.core_components.create_component_from_pins(pcbPins, 'U1_' + designNameSuffix, 'PCB_N1')   
+    
+    # Create PCB component using newer API
+    try:
+        # Try the newer create method
+        edb.core_components.create(pins=pcbPins, 
+                                 component_name='U1_' + designNameSuffix, 
+                                 placement_layer='PCB_N1')
+    except Exception as e:
+        print(f"Warning: Could not create PCB component with new API: {e}")
+        # Fallback: try the deprecated method
+        try:
+            edb.core_components.create_component_from_pins(pcbPins, 'U1_' + designNameSuffix, 'PCB_N1')
+        except Exception as e2:
+            print(f"Warning: Could not create PCB component with deprecated API: {e2}")
+
     edb.core_components.create_port_on_component(component='U0_' + designNameSuffix,
                                                   net_list=[x for x in edb.core_nets.nets.keys() if 'SIG' in x],
                                                   do_pingroup=False,
@@ -939,13 +969,43 @@ def bga_2_pcb_offset_diff(prjPath,
             
     ######################################################################
     # CREATE COMPONENTS ON TOP AND BOTTOM AND ADD PORTS
+    
+    # Get signal pins for BGA component
     bgaPins = [x for x in edb.core_padstack.get_via_instance_from_net() if 
                ('SIG' in x.GetName() and 'BGA_N1BGA_BOTTOM' in x.GetName())]
-    edb.core_components.create_component_from_pins(bgaPins, 'U0_' + designNameSuffix, 'BGA_N1')    
+    
+    # Create BGA component using newer API
+    try:
+        # Try the newer create method
+        edb.core_components.create(pins=bgaPins, 
+                                 component_name='U0_' + designNameSuffix, 
+                                 placement_layer='BGA_N1')
+    except Exception as e:
+        print(f"Warning: Could not create BGA component with new API: {e}")
+        # Fallback: try the deprecated method
+        try:
+            edb.core_components.create_component_from_pins(bgaPins, 'U0_' + designNameSuffix, 'BGA_N1')
+        except Exception as e2:
+            print(f"Warning: Could not create BGA component with deprecated API: {e2}")
 
+    # Get signal pins for PCB component  
     pcbPins = [x for x in edb.core_padstack.get_via_instance_from_net() if 
            ('SIG' in x.GetName() and 'PCB_MOUNTPCB_N1' in x.GetName())]
-    edb.core_components.create_component_from_pins(pcbPins, 'U1_' + designNameSuffix, 'PCB_N1')   
+    
+    # Create PCB component using newer API
+    try:
+        # Try the newer create method
+        edb.core_components.create(pins=pcbPins, 
+                                 component_name='U1_' + designNameSuffix, 
+                                 placement_layer='PCB_N1')
+    except Exception as e:
+        print(f"Warning: Could not create PCB component with new API: {e}")
+        # Fallback: try the deprecated method
+        try:
+            edb.core_components.create_component_from_pins(pcbPins, 'U1_' + designNameSuffix, 'PCB_N1')
+        except Exception as e2:
+            print(f"Warning: Could not create PCB component with deprecated API: {e2}")
+
     edb.core_components.create_port_on_component(component='U0_' + designNameSuffix,
                                                   net_list=[x for x in edb.core_nets.nets.keys() if 'SIG' in x],
                                                   do_pingroup=False,
@@ -1549,13 +1609,43 @@ def bga_2_bga_diff(prjPath,
 
     ######################################################################
     # CREATE COMPONENTS ON TOP AND BOTTOM AND ADD PORTS
+    
+    # Get signal pins for top BGA component
     bgaPins = [x for x in edb.core_padstack.get_via_instance_from_net() if 
                 ('SIG' in x.GetName() and 'TOP_BGA_N1TOP_BGA_BOTTOM' in x.GetName())]
-    edb.core_components.create_component_from_pins(bgaPins, 'U0_' + designNameSuffix, 'TOP_BGA_N1')    
+    
+    # Create top BGA component using newer API
+    try:
+        # Try the newer create method
+        edb.core_components.create(pins=bgaPins, 
+                                 component_name='U0_' + designNameSuffix, 
+                                 placement_layer='TOP_BGA_N1')
+    except Exception as e:
+        print(f"Warning: Could not create top BGA component with new API: {e}")
+        # Fallback: try the deprecated method
+        try:
+            edb.core_components.create_component_from_pins(bgaPins, 'U0_' + designNameSuffix, 'TOP_BGA_N1')
+        except Exception as e2:
+            print(f"Warning: Could not create top BGA component with deprecated API: {e2}")
 
+    # Get signal pins for bottom BGA component
     pcbPins = [x for x in edb.core_padstack.get_via_instance_from_net() if 
             ('SIG' in x.GetName() and 'BOT_BGA_MOUNTBOT_BGA_N1' in x.GetName())]
-    edb.core_components.create_component_from_pins(pcbPins, 'U1_' + designNameSuffix, 'BOT_BGA_N1')   
+    
+    # Create bottom BGA component using newer API
+    try:
+        # Try the newer create method
+        edb.core_components.create(pins=pcbPins, 
+                                 component_name='U1_' + designNameSuffix, 
+                                 placement_layer='BOT_BGA_N1')
+    except Exception as e:
+        print(f"Warning: Could not create bottom BGA component with new API: {e}")
+        # Fallback: try the deprecated method
+        try:
+            edb.core_components.create_component_from_pins(pcbPins, 'U1_' + designNameSuffix, 'BOT_BGA_N1')
+        except Exception as e2:
+            print(f"Warning: Could not create bottom BGA component with deprecated API: {e2}")
+
     edb.core_components.create_port_on_component(component='U0_' + designNameSuffix,
                                                   net_list=[x for x in edb.core_nets.nets.keys() if 'SIG' in x],
                                                   do_pingroup=False,
