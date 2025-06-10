@@ -5,12 +5,22 @@ class edb_stackup_wrapper_class():
 
     def create_stackup_from_structs(self):
         
-        # Add materials from the dielList
+        # Add materials from the dielList - check if they already exist first
         for mat in self.dielList.values():
-            self.edb.materials.add_dielectric_material(
-                mat["name"],
-                permittivity=mat["Dk"],
-                dielectric_loss_tangent=mat['tanD'])
+            material_name = mat["name"]
+            
+            # Check if material already exists
+            if material_name not in self.edb.materials.materials:
+                try:
+                    self.edb.materials.add_dielectric_material(
+                        material_name,
+                        permittivity=mat["Dk"],
+                        dielectric_loss_tangent=mat['tanD'])
+                    print(f"Added material: {material_name}")
+                except Exception as e:
+                    print(f"Warning: Could not add material {material_name}: {e}")
+            else:
+                print(f"Material {material_name} already exists, skipping...")
 
         # Add layers from bottom up
         for layer in self.stackUp[::-1]:
