@@ -422,6 +422,15 @@ def bga_2_pcb_diff(prjPath,
     bgaPins = [x for x in edb.core_padstack.get_via_instance_from_net() if 
                ('SIG' in x.GetName() and 'BGA_N1BGA_BOTTOM' in x.GetName())]
     
+    # Debug: check BGA pins
+    print(f"BGA pins found: {len(bgaPins)}")
+    if len(bgaPins) > 0:
+        print(f"First BGA pin name: {bgaPins[0].GetName()}")
+    else:
+        print("No BGA pins found! Checking all pins:")
+        all_pins = [x.GetName() for x in edb.core_padstack.get_via_instance_from_net()]
+        print(f"All pins: {all_pins[:10]}...")  # Show first 10 pins
+    
     # Create BGA component using newer API
     try:
         # Try the newer create method
@@ -440,6 +449,15 @@ def bga_2_pcb_diff(prjPath,
     pcbPins = [x for x in edb.core_padstack.get_via_instance_from_net() if 
            ('SIG' in x.GetName() and 'PCB_MOUNTPCB_N1' in x.GetName())]
     
+    # Debug: check PCB pins
+    print(f"PCB pins found: {len(pcbPins)}")
+    if len(pcbPins) > 0:
+        print(f"First PCB pin name: {pcbPins[0].GetName()}")
+    else:
+        print("No PCB pins found! Checking for SIG pins:")
+        sig_pins = [x.GetName() for x in edb.core_padstack.get_via_instance_from_net() if 'SIG' in x.GetName()]
+        print(f"SIG pins: {sig_pins[:10]}...")  # Show first 10 SIG pins
+    
     # Create PCB component using newer API
     try:
         # Try the newer create method
@@ -454,20 +472,43 @@ def bga_2_pcb_diff(prjPath,
         except Exception as e2:
             print(f"Warning: Could not create PCB component with deprecated API: {e2}")
 
-    edb.core_components.create_port_on_component(component='U0_' + designNameSuffix,
-                                                  net_list=[x for x in edb.core_nets.nets.keys() if 'SIG' in x],
-                                                  do_pingroup=False,
-                                                  reference_net="GND",
-                                                  )
-    edb.core_components.set_solder_ball(component='U0_' + designNameSuffix,
-                                        sball_diam="0um", sball_height="0um")
-    edb.core_components.create_port_on_component(component='U1_' + designNameSuffix,
-                                                  net_list=[x for x in edb.core_nets.nets.keys() if 'SIG' in x],
-                                                  do_pingroup=False,
-                                                  reference_net="GND",
-                                                  )
-    edb.core_components.set_solder_ball(component='U1_' + designNameSuffix,
-                                        sball_diam="0um", sball_height="0um")
+    # Debug: List all existing components before creating ports
+    print(f"Existing components: {list(edb.core_components.instances.keys())}")
+    
+    # Check BGA component exists before creating ports
+    bga_component_name = 'U0_' + designNameSuffix
+    print(f"Looking for BGA component: {bga_component_name}")
+    
+    if bga_component_name in edb.core_components.instances:
+        print(f"✓ BGA component {bga_component_name} found - creating ports")
+        edb.core_components.create_port_on_component(component='U0_' + designNameSuffix,
+                                                      net_list=[x for x in edb.core_nets.nets.keys() if 'SIG' in x],
+                                                      do_pingroup=False,
+                                                      reference_net="GND",
+                                                      )
+        edb.core_components.set_solder_ball(component='U0_' + designNameSuffix,
+                                            sball_diam="0um", sball_height="0um")
+        print(f"✓ Ports and solder balls set for BGA component")
+    else:
+        print(f"✗ BGA component {bga_component_name} not found - skipping port creation")
+    
+    # Check PCB component exists before creating ports  
+    pcb_component_name = 'U1_' + designNameSuffix
+    print(f"Looking for PCB component: {pcb_component_name}")
+    
+    if pcb_component_name in edb.core_components.instances:
+        print(f"✓ PCB component {pcb_component_name} found - creating ports")
+        edb.core_components.create_port_on_component(component='U1_' + designNameSuffix,
+                                                      net_list=[x for x in edb.core_nets.nets.keys() if 'SIG' in x],
+                                                      do_pingroup=False,
+                                                      reference_net="GND",
+                                                      )
+        edb.core_components.set_solder_ball(component='U1_' + designNameSuffix,
+                                            sball_diam="0um", sball_height="0um")
+        print(f"✓ Ports and solder balls set for PCB component")
+    else:
+        print(f"✗ PCB component {pcb_component_name} not found - skipping port creation")
+    
     edb.logger.info("Create Components and excitations.")
    
     #########################################################################
@@ -974,6 +1015,15 @@ def bga_2_pcb_offset_diff(prjPath,
     bgaPins = [x for x in edb.core_padstack.get_via_instance_from_net() if 
                ('SIG' in x.GetName() and 'BGA_N1BGA_BOTTOM' in x.GetName())]
     
+    # Debug: check BGA pins
+    print(f"BGA pins found: {len(bgaPins)}")
+    if len(bgaPins) > 0:
+        print(f"First BGA pin name: {bgaPins[0].GetName()}")
+    else:
+        print("No BGA pins found! Checking all pins:")
+        all_pins = [x.GetName() for x in edb.core_padstack.get_via_instance_from_net()]
+        print(f"All pins: {all_pins[:10]}...")  # Show first 10 pins
+    
     # Create BGA component using newer API
     try:
         # Try the newer create method
@@ -992,6 +1042,15 @@ def bga_2_pcb_offset_diff(prjPath,
     pcbPins = [x for x in edb.core_padstack.get_via_instance_from_net() if 
            ('SIG' in x.GetName() and 'PCB_MOUNTPCB_N1' in x.GetName())]
     
+    # Debug: check PCB pins
+    print(f"PCB pins found: {len(pcbPins)}")
+    if len(pcbPins) > 0:
+        print(f"First PCB pin name: {pcbPins[0].GetName()}")
+    else:
+        print("No PCB pins found! Checking for SIG pins:")
+        sig_pins = [x.GetName() for x in edb.core_padstack.get_via_instance_from_net() if 'SIG' in x.GetName()]
+        print(f"SIG pins: {sig_pins[:10]}...")  # Show first 10 SIG pins
+    
     # Create PCB component using newer API
     try:
         # Try the newer create method
@@ -1006,20 +1065,43 @@ def bga_2_pcb_offset_diff(prjPath,
         except Exception as e2:
             print(f"Warning: Could not create PCB component with deprecated API: {e2}")
 
-    edb.core_components.create_port_on_component(component='U0_' + designNameSuffix,
-                                                  net_list=[x for x in edb.core_nets.nets.keys() if 'SIG' in x],
-                                                  do_pingroup=False,
-                                                  reference_net="GND",
-                                                  )
-    edb.core_components.set_solder_ball(component='U0_' + designNameSuffix,
-                                        sball_diam="0um", sball_height="0um")
-    edb.core_components.create_port_on_component(component='U1_' + designNameSuffix,
-                                                  net_list=[x for x in edb.core_nets.nets.keys() if 'SIG' in x],
-                                                  do_pingroup=False,
-                                                  reference_net="GND",
-                                                  )
-    edb.core_components.set_solder_ball(component='U1_' + designNameSuffix,
-                                        sball_diam="0um", sball_height="0um")
+    # Debug: List all existing components before creating ports
+    print(f"Existing components: {list(edb.core_components.instances.keys())}")
+    
+    # Check BGA component exists before creating ports
+    bga_component_name = 'U0_' + designNameSuffix
+    print(f"Looking for BGA component: {bga_component_name}")
+    
+    if bga_component_name in edb.core_components.instances:
+        print(f"✓ BGA component {bga_component_name} found - creating ports")
+        edb.core_components.create_port_on_component(component='U0_' + designNameSuffix,
+                                                      net_list=[x for x in edb.core_nets.nets.keys() if 'SIG' in x],
+                                                      do_pingroup=False,
+                                                      reference_net="GND",
+                                                      )
+        edb.core_components.set_solder_ball(component='U0_' + designNameSuffix,
+                                            sball_diam="0um", sball_height="0um")
+        print(f"✓ Ports and solder balls set for BGA component")
+    else:
+        print(f"✗ BGA component {bga_component_name} not found - skipping port creation")
+    
+    # Check PCB component exists before creating ports  
+    pcb_component_name = 'U1_' + designNameSuffix
+    print(f"Looking for PCB component: {pcb_component_name}")
+    
+    if pcb_component_name in edb.core_components.instances:
+        print(f"✓ PCB component {pcb_component_name} found - creating ports")
+        edb.core_components.create_port_on_component(component='U1_' + designNameSuffix,
+                                                      net_list=[x for x in edb.core_nets.nets.keys() if 'SIG' in x],
+                                                      do_pingroup=False,
+                                                      reference_net="GND",
+                                                      )
+        edb.core_components.set_solder_ball(component='U1_' + designNameSuffix,
+                                            sball_diam="0um", sball_height="0um")
+        print(f"✓ Ports and solder balls set for PCB component")
+    else:
+        print(f"✗ PCB component {pcb_component_name} not found - skipping port creation")
+    
     edb.logger.info("Create Components and excitations.")
    
     #########################################################################
@@ -1646,20 +1728,43 @@ def bga_2_bga_diff(prjPath,
         except Exception as e2:
             print(f"Warning: Could not create bottom BGA component with deprecated API: {e2}")
 
-    edb.core_components.create_port_on_component(component='U0_' + designNameSuffix,
-                                                  net_list=[x for x in edb.core_nets.nets.keys() if 'SIG' in x],
-                                                  do_pingroup=False,
-                                                  reference_net="GND",
-                                                  )
-    edb.core_components.set_solder_ball(component='U0_' + designNameSuffix,
-                                        sball_diam="0um", sball_height="0um")
-    edb.core_components.create_port_on_component(component='U1_' + designNameSuffix,
-                                                  net_list=[x for x in edb.core_nets.nets.keys() if 'SIG' in x],
-                                                  do_pingroup=False,
-                                                  reference_net="GND",
-                                                  )
-    edb.core_components.set_solder_ball(component='U1_' + designNameSuffix,
-                                        sball_diam="0um", sball_height="0um")
+    # Debug: List all existing components before creating ports
+    print(f"Existing components: {list(edb.core_components.instances.keys())}")
+    
+    # Check BGA component exists before creating ports
+    bga_component_name = 'U0_' + designNameSuffix
+    print(f"Looking for BGA component: {bga_component_name}")
+    
+    if bga_component_name in edb.core_components.instances:
+        print(f"✓ BGA component {bga_component_name} found - creating ports")
+        edb.core_components.create_port_on_component(component='U0_' + designNameSuffix,
+                                                      net_list=[x for x in edb.core_nets.nets.keys() if 'SIG' in x],
+                                                      do_pingroup=False,
+                                                      reference_net="GND",
+                                                      )
+        edb.core_components.set_solder_ball(component='U0_' + designNameSuffix,
+                                            sball_diam="0um", sball_height="0um")
+        print(f"✓ Ports and solder balls set for BGA component")
+    else:
+        print(f"✗ BGA component {bga_component_name} not found - skipping port creation")
+    
+    # Check PCB component exists before creating ports  
+    pcb_component_name = 'U1_' + designNameSuffix
+    print(f"Looking for PCB component: {pcb_component_name}")
+    
+    if pcb_component_name in edb.core_components.instances:
+        print(f"✓ PCB component {pcb_component_name} found - creating ports")
+        edb.core_components.create_port_on_component(component='U1_' + designNameSuffix,
+                                                      net_list=[x for x in edb.core_nets.nets.keys() if 'SIG' in x],
+                                                      do_pingroup=False,
+                                                      reference_net="GND",
+                                                      )
+        edb.core_components.set_solder_ball(component='U1_' + designNameSuffix,
+                                            sball_diam="0um", sball_height="0um")
+        print(f"✓ Ports and solder balls set for PCB component")
+    else:
+        print(f"✗ PCB component {pcb_component_name} not found - skipping port creation")
+    
     edb.logger.info("Create Components and excitations.")
    
     #########################################################################
