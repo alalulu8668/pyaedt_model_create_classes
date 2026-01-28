@@ -237,7 +237,76 @@ print(f"Project will be created in: {project_path}")
 
 # Initialize the Edb object
 print("Initializing EDB object...")
-edb = Edb(project_path, edbversion="2022.2")
+
+# Try multiple approaches to handle licensing/version issues
+edb_init_success = False
+edb = None
+
+# Method 1: Try with the specified version
+try:
+    print("Trying EDB initialization with version 2022.2...")
+    edb = Edb(project_path, edbversion="2022.2")
+    edb_init_success = True
+    print("✓ EDB initialized successfully with version 2022.2")
+except Exception as e:
+    print(f"✗ Failed with version 2022.2: {e}")
+
+# Method 2: Try without specifying version (use default)
+if not edb_init_success:
+    try:
+        print("Trying EDB initialization without version specification...")
+        edb = Edb(project_path)
+        edb_init_success = True
+        print("✓ EDB initialized successfully with default version")
+    except Exception as e:
+        print(f"✗ Failed with default version: {e}")
+
+# Method 3: Try with newer versions
+if not edb_init_success:
+    for version in ["2024.1", "2023.2", "2023.1", "2022.2"]:
+        try:
+            print(f"Trying EDB initialization with version {version}...")
+            edb = Edb(project_path, edbversion=version)
+            edb_init_success = True
+            print(f"✓ EDB initialized successfully with version {version}")
+            edb_version = version  # Update the version for later use
+            break
+        except Exception as e:
+            print(f"✗ Failed with version {version}: {e}")
+            continue
+
+# Method 4: Try in non-graphical mode or with different parameters
+if not edb_init_success:
+    try:
+        print("Trying EDB initialization with additional parameters...")
+        # Sometimes specifying student_version or other parameters helps
+        edb = Edb(project_path, edbversion="2022.2", student_version=False)
+        edb_init_success = True
+        print("✓ EDB initialized successfully with additional parameters")
+    except Exception as e:
+        print(f"✗ Failed with additional parameters: {e}")
+
+# Final check
+if not edb_init_success:
+    print("\n" + "="*60)
+    print("EDB INITIALIZATION FAILED - TROUBLESHOOTING GUIDE")
+    print("="*60)
+    print("The licensing error suggests one of these issues:")
+    print("1. AEDT is not properly licensed on this machine")
+    print("2. The specified version (2022.2) is not available")
+    print("3. License server is not accessible")
+    print("4. AEDT needs to be running before using EDB")
+    print("\nSuggested solutions:")
+    print("- Check that AEDT Electronics Desktop is properly licensed")
+    print("- Try opening AEDT Electronics Desktop first")
+    print("- Contact your AEDT administrator about licensing")
+    print("- Try running this notebook from within AEDT (if not already)")
+    print("="*60)
+    raise RuntimeError("Failed to initialize EDB - see troubleshooting guide above")
+
+print(f"EDB object created successfully!")
+print(f"EDB version: {getattr(edb, 'edbversion', 'Unknown')}")
+print(f"EDB path: {project_path}")
 
 # Note: The bga_2_pcb_diff function expects the stackup CLASS, not an instance
 # Using the correct stackup class for BGA to PCB transitions
@@ -253,7 +322,7 @@ ball_pattern = [
 ]
 ball_pitch = '500um'
 design_name_suffix = 'JupyterExample'
-edb_version = "2022.2"
+edb_version = '2024.1'
 
 print(f"Ball pattern: {len([x for row in ball_pattern for x in row if x != 0])} signal balls")
 print(f"Ball pitch: {ball_pitch}")
